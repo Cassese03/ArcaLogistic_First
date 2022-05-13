@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" class="md">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="vendor/bootstrap-4.1.3/css/bootstrap.min.css">
+
+    <!-- Material design icons CSS -->
+    <link rel="stylesheet" href="vendor/materializeicon/material-icons.css">
+
+    <!-- swiper carousel CSS -->
+    <link rel="stylesheet" href="vendor/swiper/css/swiper.min.css">
+
+    <!-- app CSS -->
+    <link id="theme" rel="stylesheet" href="css/style.css" type="text/css">
+
+
+    <title>MobileUX</title>
+</head>
+
+<body class="color-theme-blue">
+
+    <div class="wrapper">
+        <!-- page main start -->
+        <div class="page">
+            <div class="background"><img src="img/background.png" alt=""></div>
+            <header class="row m-0 fixed-header no-bg">
+                <div class="left">
+                    <a href="login.html#signup"><i class="material-icons">keyboard_backspace</i></a>
+                </div>
+            </header>
+            <div class="page-content h-100 text-center">
+                <div class="verification">
+                    <div class="row mx-0">
+                        <div class="col">                    
+                            <h3 class="text-white">Verification Code</h3>
+                            <p class="text-white">Enter 6-digit code which was sent to your phone number provided </p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row mx-0">
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="password" placeholder="4-Digit Code" class="form-control text-center border-white text-white">
+                            </div>
+                            <a href="index.html" class="btn btn-block gradient border-0 z-3">verification</a>
+                            <br>
+                            <a href="" class="btn btn-link text-white btn-block text-center mt-3">Resend Code</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+           
+        </div>
+        <!-- page main ends -->
+
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="vendor/bootstrap-4.1.3/js/bootstrap.min.js"></script>
+    
+    <!-- Cookie jquery file -->
+    <script src="vendor/cookie/jquery.cookie.js"></script>
+    
+    <!-- sparklines chart jquery file -->
+    <script src="vendor/sparklines/jquery.sparkline.min.js"></script>
+    
+    <!-- Circular progress gauge jquery file -->
+    <script src="vendor/circle-progress/circle-progress.min.js"></script>
+    
+    <!-- Swiper carousel jquery file -->
+    <script src="vendor/swiper/js/swiper.min.js"></script>
+    
+    <!-- Application main common jquery file -->
+    <script src="js/main.js"></script>
+    
+    <!-- page specific script -->
+    <script>
+        $(window).on('load', function() {
+            /* sparklines */
+            $(".dynamicsparkline").sparkline([5, 6, 7, 2, 0, 4, 2, 5, 6, 7, 2, 0, 4, 2, 4], {
+                type: 'bar',
+                height: '25',
+                barSpacing: 2,
+                barColor: '#a9d7fe',
+                negBarColor: '#ef4055',
+                zeroColor: '#ffffff'
+            });
+
+            /* gauge chart circular progress */
+            $('.progress_profile1').circleProgress({
+                fill: '#169cf1',
+                lineCap: 'butt'
+            });
+            $('.progress_profile2').circleProgress({
+                fill: '#f4465e',
+                lineCap: 'butt'
+            });
+            $('.progress_profile4').circleProgress({
+                fill: '#ffc000',
+                lineCap: 'butt'
+            });
+            $('.progress_profile3').circleProgress({
+                fill: '#00c473',
+                lineCap: 'butt'
+            });
+
+            /*Swiper carousel */
+            var mySwiper = new Swiper('.swiper-container', {
+                slidesPerView: 2,
+                spaceBetween: 0,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
