@@ -336,7 +336,7 @@
 
 
 
-                    <div class="col-sm-6" style="margin-top:0px;">
+                    <div class="col-sm-12" style="margin-top:0px;">
                         <ul class="list-group">
 
                             <?php foreach($documento->righe as $r){ $totale = 0; ?>

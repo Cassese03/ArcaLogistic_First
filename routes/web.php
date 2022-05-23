@@ -45,6 +45,7 @@ Route::any('magazzino/carico2/{cd_do}', 'HomeController@carico_magazzino2');
 Route::any('magazzino/carico3/{id_fornitore}/{cd_do}', 'HomeController@carico_magazzino3');
 Route::any('magazzino/carico3_tot/{id_fornitore}/{cd_do}', 'HomeController@carico_magazzino3_tot');
 Route::any('magazzino/carico4/{id_fornitore}/{id_dotes}', 'HomeController@carico_magazzino4');
+Route::any('magazzino/carico00/{articolo}/{id_dotes}', 'HomeController@carico_magazzino00');
 Route::any('magazzino/carico1/{cd_do}', 'HomeController@carico_magazzino1');
 Route::any('magazzino/carico02/{cd_do}', 'HomeController@carico_magazzino02');
 Route::any('magazzino/carico03/{id_fornitore}/{cd_do}', 'HomeController@carico_magazzino03');
@@ -74,6 +75,7 @@ Route::any('magazzino/scarico03_tot/{id_fornitore}/{cd_do}', 'HomeController@sca
 Route::any('magazzino/scarico04/{id_fornitore}/{id_dotes}', 'HomeController@scarico_magazzino04');
 */
 Route::any('magazzino/inventario', 'HomeController@inventario_magazzino');
+Route::any('magazzino/cercadoc', 'HomeController@cercadoc');
 Route::any('calcola_totali_ordine', 'HomeController@calcola_totali_ordine');
 
 Route::any('ajax/cerca_articolo/{q}', 'AjaxController@cerca_articolo');
@@ -113,5 +115,7 @@ Route::any('ajax/crea_documento/{cd_cf}/{cd_do}/{numero}/{data}', 'AjaxControlle
 //Route::any('ajax/crea_documento_trasporto/{cd_do}/{numero}/{data}', 'AjaxController@crea_documento_trasporto');
 Route::any('ajax/crea_documento_rif/{cd_cf}/{cd_do}/{numero}/{data}/{numero_rif}/{data_rif}', 'AjaxController@crea_documento_rif');
 Route::any('ajax/cerca_articolo_smart/{q}/{cd_cf}', 'AjaxController@cerca_articolo_smart');
+Route::any('ajax/cerca_documento/{q}', 'AjaxController@cerca_documento');
 Route::any('ajax/controllo_articolo_smart/{q}/{id_dotes}', 'AjaxController@controllo_articolo_smart');
+Route::any('ajax/controllo_articolo_smart2/{id_dorig}/{id_dotes}', 'AjaxController@controllo_articolo_smart2');
 Route::any('ajax/esplodi/{id_dorig}', 'AjaxController@esplodi');

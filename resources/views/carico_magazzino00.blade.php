@@ -305,7 +305,7 @@
                 <input style="width:1px;height: 1px" type="text" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
-                    <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> N.<?php echo $documento->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
+                    <h1 class="text-center text-white title-background">Evasione dell'articolo <?php echo $articolo;?><br><small>Giacenza in Magazzino (<?php echo number_format($giacenza,2); ?>)</small></h1>
                 </div>
 
 
@@ -341,7 +341,7 @@
                                         <div class="row" >
                                             <div class="col-xs-6 col-sm-6 col-md-6" >
 
-                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);?>  <br> Qta : <?php echo floatval($r->QtaEvadibile) ?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
+                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);?>  <br> Qta : <?php echo floatval($r->QtaEvadibile) ?> <br> <?php echo 'Cliente : '.$r->DescrizioneCF?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
 
                                             </div>
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
@@ -362,7 +362,7 @@
                                                             </svg>
                                                         </i>
                                                     </button>
-                                                    <button style="width:24%;" type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
+                                                    <button style="width:24%;" type="reset" name="evadi_riga" value="<?php echo $r->Id_DORig;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Id_DORig?>')">
                                                         <i class="bi bi-check-circle">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
                                                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -1105,7 +1105,7 @@
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart2') ?>/" + testo + "/" + id_dotes,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {
@@ -1123,16 +1123,16 @@
 
         }
     }
-    function controllo_articolo_smart2(codice) {
+    function controllo_articolo_smart2(dorig) {
 
-        testo = codice;
+        testo = dorig;
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
         id_dotes ="<?php echo $id_dotes?>";
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart2') ?>/" + testo + "/" + id_dotes,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {
@@ -1167,7 +1167,7 @@
     function checkDoc(){
         segnalazioni = '<br>';
         <?php foreach($documento->righe as $r){ ?>
-            articolo = $('#modal_Cd_AR_c_<?php echo $r->Id_DORig?>').val();
+        articolo = $('#modal_Cd_AR_c_<?php echo $r->Id_DORig?>').val();
         quantita = $('#modal_Qta_c_<?php echo $r->Id_DORig?>').val();
         lotto    = $('#modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>').val();
         quantita_evasa = $('#modal_QtaEvasa_c_<?php echo $r->Id_DORig?>').val();

@@ -9,7 +9,6 @@
 </head>
 
 <style>
-
     @charset "UTF-8";
 
     .collapsable-source pre {
@@ -20,16 +19,24 @@
         display: flex;
         align-items: center;
         width: 260px;
+        autocomplete:off;
     }
 
     .input-field label {
         flex: 0 0 auto;
         padding-right: 0.5rem;
-    }
+        autocomplete:off;
 
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 2px;
+    }
     .input-field input {
         flex: 1 1 auto;
         height: 20px;
+        autocomplete:off;
+
     }
 
     .input-field button {
@@ -37,6 +44,8 @@
         height: 28px;
         font-size: 20px;
         width: 40px;
+        autocomplete:off;
+
     }
 
     .icon-barcode {
@@ -122,10 +131,14 @@
     /* line 19, ../sass/_viewport.scss */
     .controls .input-group {
         float: left;
+        autocomplete:off;
+
     }
     /* line 21, ../sass/_viewport.scss */
     .controls .input-group input, .controls .input-group button {
         display: block;
+        autocomplete:off;
+
     }
     /* line 25, ../sass/_viewport.scss */
     .controls .reader-config-group {
@@ -141,6 +154,67 @@
         display: inline-block;
         text-align: right;
     }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 50%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+
+    ::placeholder {
+        color: transparent;
+    }
+
+    :placeholder-shown ~ .form__label {
+        font-size: 1.3rem;
+        cursor: text;
+        top: 20px;
+    }
+    }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus {
+    ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #11998e;
+        font-weight:700;
+    }
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #11998e,#38ef7d;);
+    border-image-slice: 1;
+    }
+    /* reset input */
+    .form__field{
+    :required,:invalid { box-shadow:none; }
+    }
+    /* demo */
     /* line 37, ../sass/_viewport.scss */
     .controls:after {
         content: '';
@@ -220,6 +294,8 @@
 
         .reader-config-group label > select, .reader-config-group label > input {
             max-width: calc(50% - 2px);
+            autocomplete:off;
+
         }
 
         #interactive.viewport {
@@ -256,9 +332,6 @@
             height: 180px;
         }
     }
-    #\31  {
-        background: hotpink;
-    }
 </style>
 
 <body class="color-theme-red push-content-right theme-light">
@@ -283,7 +356,7 @@
                 <a style="padding-left:20px;" href="/magazzino" ><i class="material-icons">arrow_back_ios</i></a>
             </div>
             <div class="col center">
-                <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Rettifica Quantit&agrave;</a>
+                <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Cerca PKS</a>
             </div>
             <div class="right">
                 <a style="padding-left:20px;" href="/" ><i class="material-icons">home</i></a>
@@ -294,14 +367,19 @@
             <div class="content-sticky-footer">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
-                    <h1 class="text-center text-white title-background">Rettifica Quantit&agrave;</h1>
+                    <h1 class="text-center text-white title-background">Cerca PKS</h1>
                 </div>
-
+            <div style="width: 80%;padding-left: 20%">
+                <input type="input" class="form__field" placeholder="Articolo" autocomplete="off" />
+                <input type="input" class="form__field" placeholder="Articolo" onkeyup="cerca_documento()"  autofocus autocomplete="off" required id="cerca_articolo" />
+            </div>
                 <!-- <div id="interactive" class="viewport" style="position: relative;margin-top:30px;"></div> -->
-                <input type="text" id="cerca_articolo"   onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off">
-                <button class="btn btn-primary" style="margin:0 auto;display:block;margin-top: 100px" onclick="$('#modal_cerca_articolo').modal('show');">Scegli Prodotto</button>
+           <?php //    <input type="text" id="cerca_articolo"   onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off">  <button class="btn btn-primary" style="margin:0 auto;display:block;margin-top: 100px" onclick="$('#modal_cerca_articolo').modal('show');">Scegli Prodotto</button>?>
+
 
             </div>
+
+
         </div>
 
     </div>
@@ -426,6 +504,23 @@
 </div>
 
 
+<div class="modal" id="modal_evasione" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Scegli Documento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div id="ajax_lista_documenti"></div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <div class="modal" id="modal_inserimento" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -525,10 +620,36 @@
 
         }
     }
+    function cerca_documento(){
+        testo = $('#cerca_articolo').val();
+        pos = testo.search('/');
+        if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
 
+        if(testo != '') {
+
+            $.ajax({
+                url: "<?php echo URL::asset('/ajax/cerca_documento') ?>/" + testo,
+                context: document.body
+            }).done(function (result) {
+                if(result != '') {
+                    $('#modal_cerca_articolo').modal('hide');
+                    $('#modal_evasione').modal('show');
+                    $('#ajax_lista_documenti').html(result);
+                } else {
+                    alert('nessun prodotto trovato');
+                    location.reload();
+                }
+            });
+
+        }
+
+    }
     function cerca_articolo_smart2(){
 
         testo = $('#cerca_articolo').val();
+        pos = testo.search('/');
+        if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
+
         if(testo != '') {
 
             $.ajax({
@@ -594,7 +715,35 @@
         });
     }
 
+    function redirect(dotes,cliente){
 
+        if(dotes != '') {
+
+            top.location.href = "/magazzino/carico4/"+cliente+"/"+dotes;
+        }
+    }
+    function redirect_plus(int,articolo){
+
+        pos = articolo.search('/');
+        if(pos !=(-1)){ articolo = articolo.substr(0,pos)+'slash'+articolo.substr(pos+1)}
+
+        if(int!='1'){
+            text = document.getElementById("iddotes").value;
+            position = text.search(int);
+            if(position!='-1')
+                document.getElementById("iddotes").value = text.replace(","+int, "");
+            if(position=='-1')
+                document.getElementById('iddotes').value = document.getElementById('iddotes').value+","+int;
+        }
+        else {
+            dotes = document.getElementById('iddotes').value;
+            dotes = dotes.substr(1);
+            if(dotes == '')
+                alert('Nessun Documento Selezionato');
+            else
+                top.location.href = "/magazzino/carico00/"+articolo+"/"+dotes;
+        }
+    }
     /*
     $(document).scannerDetection({
         timeBeforeScanTest: 200, // wait for the next character for upto 200ms

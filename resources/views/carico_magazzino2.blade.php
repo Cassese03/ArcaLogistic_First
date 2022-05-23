@@ -54,7 +54,7 @@
 
                     <?php  foreach($fornitori as $f){ ?>
                         <li class="list-group-item">
-                            <a <?php if(str_replace(' ','',$documenti) == 'LPL' || str_replace(' ','',$documenti) == 'DDT' ) echo 'href="/magazzino/carico03/'.$f->Id_CF.'/'.$documenti.'"'; else echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
+                            <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
                                 <div class="media-body">
                                     <h5><?php echo $f->Cd_CF ?></h5>
                                     <p>Nome: <?php echo $f->Descrizione ?></p>

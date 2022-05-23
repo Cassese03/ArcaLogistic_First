@@ -281,7 +281,7 @@ class HomeController extends Controller{
 
     public function attivo(){
 
-        $documenti = DB::select('SELECT * FROM DO WHERE Cd_DO in (\'DDT\',\'LPL\') and CliFor = \'C\'');
+        $documenti = DB::select('SELECT * FROM DO WHERE Cd_DO in (\'PKS\',\'OVC\',\'OVS\') and CliFor = \'C\'');
         return View::make('attivo',compact('documenti'));
     }
 /*
@@ -490,8 +490,11 @@ class HomeController extends Controller{
     public function carico_magazzino02($documenti){
         $fornitori = DB::select('SELECT TOP 10 * from CF where Id_CF in(SELECT r.Id_CF FROM DOTes d,Cf r WHERE d.Cd_CF = r.Cd_CF and Cd_DO = \''.$documenti  .'\' and RigheEvadibili > \'0\' and Cd_MGEsercizio =\'2022\'  group by r.Id_CF ) and Fornitore=\'1\'');
         if(sizeof($fornitori) > 0) {
-            $fornitore = $fornitori[0];
             return View::make('carico_magazzino02', compact('documenti','fornitori'));
+        }else{
+            $fornitori = DB::select('SELECT TOP 10 * from CF where  Fornitore=\'1\'');
+            return View::make('carico_magazzino02', compact('documenti','fornitori'));
+
         }
 
     }
@@ -743,6 +746,61 @@ class HomeController extends Controller{
             $articolo = DB::select('SELECT Cd_AR from DORig where Id_DoTes in ('.$id_dotes.') group by Cd_AR');
             $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
             return View::make('carico_magazzino4', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe'));
+
+        }
+
+    }
+
+    public function carico_magazzino00($articolo,$id_dotes,Request $request){
+        if(!session()->has('utente')) {
+            return Redirect::to('login');
+        }
+        $dati = $request->all();
+        if(isset($dati['elimina_riga'])){
+            DB::table('DoRig')->where('Id_DORig',$dati['Id_DORig'])->delete();
+        }
+        if(isset($dati['modifica_riga'])){
+
+            unset($dati['modifica_riga']);
+            $id_riga = $dati['Id_DORig'];
+            unset($dati['Id_DORig']);
+            unset($dati['modal_lotto_m']);/*
+            $dati['Cd_MGUbicazione_A'] = $dati['modal_ubicazione_A_m'];
+            unset($dati['modal_ubicazione_A_m']);
+
+            if($dati['Cd_MGUbicazione_A']=='')
+            {
+                unset($dati['Cd_MGUbicazione_A']);
+            }*/
+
+
+            DB::table('DoRig')->where('Id_DoRig',$id_riga)->update(['Cd_ARLotto'=>Null]);
+            DB::table('DoRig')->where('Id_DoRig',$id_riga)->update(['Cd_MGUbicazione_A'=>Null]);
+
+            DB::table('DoRig')->where('Id_DORig',$id_riga)->update($dati);
+
+            DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = $id_dotes");
+            DB::statement("exec asp_DO_End $id_dotes");
+        }
+        $articolo =  str_replace("-","/",$articolo);
+        $articolo =  str_replace("slash","/",$articolo);
+        $documenti = DB::select('SELECT * from DOTes where Id_DoTes in ('.$id_dotes.')');
+        $fornitori= DB::select('SELECT * from CF where Cd_CF = \''.$documenti[0]->Cd_CF.'\'');
+        $cd_do = DB::select('SELECT * from DOTes where Id_DoTes  in ('.$id_dotes.')')[0]->Cd_Do;
+        if(sizeof($fornitori) > 0){
+            $fornitore = $fornitori[0];
+            $date = date('Y/m/d',strtotime('today')) ;
+            foreach($documenti as $documento)
+                $documento->righe = DB::select('SELECT DORig.*,CF.Descrizione as DescrizioneCF from DORig LEFT JOIN CF ON DORig.Cd_CF = Cf.Cd_CF where Id_DoTes in ('.$id_dotes.') and Cd_AR = \''.$articolo.'\' and QtaEvadibile > \'0\' ORDER BY QtaEvadibile DESC');
+
+            foreach ($documento->righe as $r)
+            {
+                $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
+            }
+            $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and Cd_AR = \''.$articolo.'\' and QtaEvadibile > \'0\'')[0]->Righe;
+            $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
+            $giacenza = DB::SELECT('SELECT SUM(QuantitaSign) as Giacenza FROM MGMov WHERE Cd_AR = \''.$articolo.'\' and Cd_MGEsercizio = \'2022\'')[0]->Giacenza;
+            return View::make('carico_magazzino00', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe','giacenza'));
 
         }
 
@@ -1077,6 +1135,22 @@ class HomeController extends Controller{
         }
 
         return View::make('inventario_magazzino');
+    }
+    public function cercadoc(Request $request){
+        if(!session()->has('utente')) {
+            return Redirect::to('login');
+        }
+        $dati = $request->all();
+
+        if(isset($dati['rettifica'])){
+            $primo_carico = DB::select('SELECT * from MGMov where Cd_AR = \''.$dati['Cd_AR'].'\' and Ini = 1');
+            if(sizeof($primo_carico) > 0){
+                DB::insert('INSERT INTO MGMov (DataMov,PartenzaArrivo,Cd_MGEsercizio,Cd_AR,Cd_MG,Id_MGMovDes,Quantita,Ret) VALUES(\'20200101\',\'\',2020,\''.$dati['Cd_AR'].'\',\'00001\',27,'.$dati['quantita'].',1)');
+            } else DB::insert('INSERT INTO MGMov (DataMov,PartenzaArrivo,Cd_MGEsercizio,Cd_AR,Cd_MG,Id_MGMovDes,Quantita,Ini) VALUES(\'20200101\',\'\',2020,\''.$dati['Cd_AR'].'\',\'00001\',27,'.$dati['quantita'].',1)');
+
+        }
+
+        return View::make('cercadoc');
     }
 
     public function phpinfo(){

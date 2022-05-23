@@ -320,7 +320,7 @@ class AjaxController extends Controller{
             foreach($fornitori as $f){ ?>
 
                 <li class="list-group-item">
-                    <a href="/magazzino/carico03/<?php echo $f->Id_CF ?>/<?php echo $dest ?>" class="media">
+                    <a href="/magazzino/carico3/<?php echo $f->Id_CF ?>/<?php echo $dest ?>" class="media">
                         <div class="media-body">
                             <h5><?php echo $f->Descrizione ?></h5>
                             <p>Codice: <?php echo $f->Cd_CF ?></p>
@@ -675,6 +675,7 @@ class AjaxController extends Controller{
 
 */
     public function evadi_articolo($Id_DoRig,$qtadaEvadere,$magazzino,$ubicazione,$lotto,$cd_cf,$documento,$cd_ar,$magazzino_A){
+        $cd_ar = str_replace("-","/",$cd_ar);
         $cd_ar = str_replace("slash","/",$cd_ar);
         $Id_DoTes = '0';
         if ($qtadaEvadere == '0') {
@@ -824,50 +825,61 @@ class AjaxController extends Controller{
 */
     public function evadi_articolo2($Id_DoRig){
         $Id_DoTes = '';
-        $date = date('d/m/Y',strtotime('today')) ;
-        $controllo = DB::SELECT('SELECT * FROM DORIG WHERE Id_DORig in (\''.$Id_DoRig.'\')')[0]->Id_DOTes;
-        $controlli = DB::SELECT('SELECT * FROM DORIG WHERE Id_DOTes = \''.$controllo.'\'');
-        foreach($controlli as $c){
-            $testata = DB::SELECT('SELECT * FROM DORIG WHERE Id_DORig_Evade = \''.$c->Id_DORig.'\'');
-            if($testata!=null)
-                if($testata[0]->DataDoc == $date)
-                $Id_DoTes = $testata[0]->Id_DOTes;
-        }
+        $date = date('d/m/Y',strtotime('today'));
         $righe = DB::select('SELECT * FROM DORIG WHERE ID_DORIG IN (\''.$Id_DoRig.'\')');
         foreach($righe as $r){
+            $controllo = DB::SELECT('SELECT * FROM DORIG WHERE Id_DORig in (\''.$Id_DoRig.'\')')[0]->Id_DOTes;
+            $controlli = DB::SELECT('SELECT * FROM DORIG WHERE Id_DOTes = \''.$controllo.'\'');
+            foreach($controlli as $c){
+                $testata = DB::SELECT('SELECT * FROM DORIG WHERE Id_DORig_Evade = \''.$c->Id_DORig.'\'');
+                if($testata!=null)
+                    if($testata[0]->DataDoc == $date)
+                        $Id_DoTes = $testata[0]->Id_DOTes;
+            }
             $Id_DoRig = $r->Id_DORig;
             $qtadaEvadere = $r->QtaEvadibile;
             $magazzino = $r->Cd_MG_A;
-            $ubicazione = '0';
-            $lotto = $r->Cd_ARLotto;
+            $ubicazione = $r->Cd_MGUbicazione_P ? $r->Cd_MGUbicazione_P:'';
+            $ubicazione_A = '0';
+            $lotto = '0' ;
             $cd_cf = $r->Cd_CF;
-            IF($r->Cd_DO = 'OAF')
+            if($r->Cd_DO == 'OVS')
+                $magazzino = '00004';
+            else
+                $magazzino = '00001';
+            /*if($r->Cd_DO == 'OVS')
+                $magazzino_A = '00004';
+            else
+                $magazzino_A = '00001';*/
+            if($r->Cd_DO == 'OAF')
                 $documento = 'DCF';
-            IF($r->Cd_DO = 'OVC')
-                $documento = 'DDT';
+            if($r->Cd_DO == 'OVC')
+                $documento = 'PKS';
+            if($r->Cd_DO == 'OVS')
+                $documento = 'PKS';
+            if($r->Cd_DO == 'PKS')
+                $documento = 'CLP';
             $cd_ar = $r->Cd_AR;
-            $magazzino_A = '00001'; //magazzino di default
-            $magazzino = '00001'; //magazzino di default
-            $insert_evasione['Cd_MG_P'] = '';
-            $insert_evasione['Cd_MG_A'] = '' ;
 
             if($Id_DoTes == '') {
                 $Id_DoTes = DB::table('DOTes')->insertGetId(['Cd_CF' => $cd_cf, 'Cd_Do' => $documento]);
-                if ($ubicazione != '0')
-                    $insert_evasione['Cd_MGUbicazione_P'] = $ubicazione;
                 if ($magazzino != '0')
                     $insert_evasione['Cd_MG_P'] = $magazzino;
                 if ($magazzino_A != '0')
                     $insert_evasione['Cd_MG_A'] = $magazzino_A;
+                if ($ubicazione != '0')
+                    $insert_evasione['Cd_MGUbicazione_P'] = $ubicazione;
+                if ($ubicazione_A != '0')
+                    $insert_evasione['Cd_MGUbicazione_A'] = $ubicazione_A;
 
                 DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = '$Id_DoTes'");
                 DB::statement("exec asp_DO_End '$Id_DoTes'");
             }
-
+/*
             if ($insert_evasione['Cd_MG_P'] == null || $insert_evasione['Cd_MG_P'] == '0')
                 $insert_evasione['Cd_MG_P'] = $magazzino;
             if ($insert_evasione['Cd_MG_A'] == null || $insert_evasione['Cd_MG_A'] == '0')
-                $insert_evasione['Cd_MG_A'] = $magazzino_A;
+                $insert_evasione['Cd_MG_A'] = $magazzino_A;*/
             if ($lotto != '0')
                 $insert_evasione['Cd_ARLotto'] = $lotto;
             $Id_DoTes1 = $Id_DoTes;
@@ -995,6 +1007,8 @@ class AjaxController extends Controller{
     }
 */
     public function cerca_articolo_smart($q,$cd_cf){
+            $q =  str_replace("-","/",$q);
+            $q =  str_replace("slash","/",$q);
             $qta='ND';/*
             $decoder = new Decoder($delimiter = '');
             $barcode = $decoder->decode($q);
@@ -1026,7 +1040,75 @@ class AjaxController extends Controller{
         }
     }
 
+    public function cerca_documento($q){
+        $q =  str_replace("-","/",$q);
+        $q =  str_replace("slash","/",$q);
 
+        $documento = DB::select('SELECT * FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'PKS\')');
+        if(sizeof($documento) > 0){
+            foreach($documento as $d){
+                $date = date_create($d->DataDoc);
+                $id_dotes = DB::SELECT('SELECT * FROM DOTes WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ')[0];
+                $fornitore = DB::SELECT('SELECT * FROM CF WHERE Cd_CF =  \''.$id_dotes->Cd_CF.'\' ')[0];
+                echo '<div class="modal-body">
+                <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('.$d->Id_DOTes.', \'\')">
+                <br>
+                <label style="text-align:left;float:left">Cliente</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="Cd_CF" value="'.$fornitore->Descrizione.'" readonly>
+                <label style="text-align:left;float:left">Tipo Documento</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="NumeroDoc" value="'.$id_dotes->Cd_Do.'" readonly>
+                <label style="text-align:left;float:left">Numero Documento</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="NumeroDoc" value="'.$id_dotes->NumeroDoc.'" readonly>
+                <label>Data Documento</label>
+                <input class="form-control" type="text" placeholder="Data Del Documento" id="DataDoc" value="'.date_format($date, 'd-m-Y').'" readonly>
+                <label>Qta da Evadere</label>
+                <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>';
+                $righe_doc = DB::SELECT('SELECT * FROM DORig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
+                    $righe = 0;
+                    foreach($righe_doc as $r){
+                        if($r->Cd_AR !='')
+                            $righe++;
+                    }
+                    if($id_dotes->RigheEvadibili!= $righe) {
+                        echo '<button type="button" style="width: 100%;margin-top: 10px;background-color: red" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Da Completare</button>';
+                    }else{
+                        echo '<button type="button" style="width: 100%;margin-top: 10px" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Vedi</button>';
+                    }
+                echo '<br><br>';
+                echo '</div>';
+             }
+            }
+        /*
+             ?>
+            '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
+            <?php
+
+         */
+          echo '<div class="modal-footer">
+                  <input type="hidden" class="form-control" id="iddotes" value="">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                  <button type="button" class="btn btn-primary" onclick="redirect_plus(\'1\',\''.$q.'\')">Vedi Piu Documenti</button>
+                </div>';
+    }
+    public function controllo_articolo_smart2($id_dorig,$id_dotes){
+
+        $articoli = DB::select('SELECT * FROM DoRig WHERE  Id_DoRig = \''.$id_dorig.'\'  Order By QtaEvadibile DESC');
+        if(sizeof($articoli)>'1')
+            $articoli = $articoli[0];
+        foreach($articoli as $articolo){ ?>
+
+            <script type="text/javascript">
+
+                $('#modal_controllo_articolo').val('<?php echo $articolo->Cd_AR ?>');
+                $('#modal_controllo_quantita').val(<?php echo floatval($articolo->Qta) ?>);
+                $('#modal_controllo_lotto').val('<?php echo $articolo->Cd_ARLotto ?>');
+                $('#modal_controllo_dorig').val('<?php echo $articolo->Id_DORig ?>');
+
+
+            </script>
+
+        <?php }
+    }
 
     public function controllo_articolo_smart($q,$id_dotes){
 /*
@@ -1052,13 +1134,15 @@ class AjaxController extends Controller{
             }
 
         }*/
+        $q =  str_replace("-","/",$q);
+        $q =  str_replace("slash","/",$q);
         $c = $q;
         $q = DB::SELECT('SELECT * FROM ARALias WHERE Alias = \''.$q.'\' ');
         if(sizeof($q)!= 0)
             $q = $q[0]->Cd_AR;
         else
             $q = $c;
-        $articoli = DB::select('SELECT * FROM DoRig WHERE Cd_AR = \''.$q.'\' and Id_DoTes in (\''.$id_dotes.'\') Order By QtaEvadibile DESC');
+        $articoli = DB::select('SELECT * FROM DoRig WHERE Cd_AR = \''.$q.'\' and Id_DoTes in ('.$id_dotes.') Order By QtaEvadibile DESC');
         if(sizeof($articoli)>'1')
             $articoli = $articoli[0];
         foreach($articoli as $articolo){ ?>
@@ -1087,6 +1171,9 @@ class AjaxController extends Controller{
 
 
     public function cerca_articolo_inventario($barcode){
+
+        $barcode = str_replace("-","/",$barcode);
+        $barcode = str_replace("slash","/",$barcode);
 
         $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_AR where AR.Cd_AR = \''.$barcode.'\' or  AR.Descrizione = \''.$barcode.'\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$barcode.'\')  Order By AR.Id_AR DESC');
 
