@@ -455,6 +455,7 @@ class AjaxController extends Controller{
     }
 
     public function cerca_articolo_codice($cd_cf,$codice,$Cd_ARLotto,$qta){
+        $codice = str_replace('slash','/',$codice);
 
         $articoli = DB::select('SELECT AR.Id_AR,AR.Cd_AR,AR.Descrizione,ARAlias.Alias as barcode,ARARMisura.UMFatt,DORig.PrezzoUnitarioV,LSArticolo.Prezzo from AR
             LEFT JOIN ARAlias ON AR.Cd_AR = ARAlias.Cd_AR
@@ -477,7 +478,7 @@ class AjaxController extends Controller{
 
         //TODO Controllare Data Scadenza togliere i commenti
 
-        $date = date('Y/m/d',strtotime('today')) ;
+        $date = date('d/m/Y',strtotime('today')) ;
 
         IF($Cd_ARLotto!='0')
             $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\' and Cd_ARLotto !=\''.$Cd_ARLotto.'\' AND DataScadenza > \''.$date.'\' and Cd_ARLotto in (select Cd_ARLotto from MGMov group by Cd_ARLotto having SUM(QuantitaSign) >= 0)  ');
@@ -535,6 +536,13 @@ class AjaxController extends Controller{
                 LEFT JOIN DORig ON DOrig.Cd_CF LIKE \''.$cd_cf.'\' and DORig.Cd_AR = AR.Cd_AR
                 where AR.CD_AR LIKE \''.$codice.'\'
                 order by DORig.DataDoc DESC');
+            if(sizeof($articoli)<1)
+                $articoli = DB::select('
+                SELECT AR.Id_AR,AR.Cd_AR,AR.Descrizione from AR
+                where AR.CD_AR LIKE \''.$codice.'\'');
+            echo '
+                SELECT AR.Id_AR,AR.Cd_AR,AR.Descrizione from AR
+                where AR.CD_AR LIKE \''.$codice.'\'';
             IF($Cd_ARLotto!='')
                 $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\' and Cd_ARLotto !=\''.$Cd_ARLotto.'\' and  Cd_ARLotto in (select Cd_ARLotto from MGMov group by Cd_ARLotto having SUM(QuantitaSign) > 0)  ');
             else
@@ -824,6 +832,26 @@ class AjaxController extends Controller{
     }
 */
     public function evadi_articolo2($Id_DoRig){
+        $qta = $Id_DoRig;
+        while(strpos($Id_DoRig  ,'=')!= null) {
+            //echo 'Riga Iniziale '.$Id_DoRig.'<br>';
+            $delete = strpos($Id_DoRig, '=');
+            //echo 'Posizione Uguale = '.$delete.'<br>';
+            $new = substr($Id_DoRig, 0, $delete);
+            //echo 'Prima Riga = '.$new.'<br>';
+            $Id_DoRig = substr($Id_DoRig, $delete);
+            //echo 'Restante = '.$Id_DoRig.'<br>';
+            $pos_virgola = strpos($Id_DoRig, '\',\'');
+            //echo 'Posizione Virgola = '.$pos_virgola.'<br>';
+            $pos_virgola = intval($pos_virgola) + 3;
+            $Id_DoRig = substr($Id_DoRig, $pos_virgola);
+            //echo 'Restante '.$Id_DoRig.'<br>';
+            $Id_DoRig2 = $new;
+            if ($Id_DoRig != '')
+                $Id_DoRig2 .= '\',\'' . $Id_DoRig;
+            $Id_DoRig = $Id_DoRig2;
+            //echo 'Nuova Riga '.$Id_DoRig.'<br><br><br>';
+        }
         $Id_DoTes = '';
         $date = date('d/m/Y',strtotime('today'));
         $righe = DB::select('SELECT * FROM DORIG WHERE ID_DORIG IN (\''.$Id_DoRig.'\')');
@@ -836,9 +864,35 @@ class AjaxController extends Controller{
                     if($testata[0]->DataDoc == $date)
                         $Id_DoTes = $testata[0]->Id_DOTes;
             }
-            $Id_DoRig = $r->Id_DORig;
-            $qtadaEvadere = $r->QtaEvadibile;
+            $pos = strpos($qta,$r->Id_DORig);
+            if($pos == 0)
+                $pos = strlen($r->Id_DORig);
+            $pos_virgola = strpos(substr($qta,$pos), ',');
+            //echo substr($qta,$pos).'<br>';
+            //echo 'Posizione Virgola ='.$pos_virgola.'<br>';
+            if($pos_virgola != '') {
+                $qta_riga = substr($qta, $pos++, $pos_virgola);
+                $qta_riga = str_replace('=', '', $qta_riga);
+                $qta_riga = str_replace($r->Id_DORig, '', $qta_riga);
+                $qta_riga = str_replace('\'', '', $qta_riga);
+                $Id_DoRig = $r->Id_DORig;
+            }
+            else
+            {
+                //echo $qta.'<br>';
+                $riga = substr($qta,$pos);
+                $pos_uguale = strpos(substr($qta,$pos), '=');
+                //echo 'Posizione Uguale = '.$pos_uguale.'<br>';
+                $qta_riga = substr($riga,$pos_uguale);
+                $qta_riga = str_replace('=', '', $qta_riga);
+                $qta_riga = str_replace('\'', '', $qta_riga);
+                $Id_DoRig = $r->Id_DORig;
+            }
+            //echo 'Riga '.$Id_DoRig.' Quantita '.$qta_riga.'<br><br><br>';
+
+            $qtadaEvadere = $qta_riga;
             $magazzino = $r->Cd_MG_A;
+            $magazzino_A =0;
             $ubicazione = $r->Cd_MGUbicazione_P ? $r->Cd_MGUbicazione_P:'';
             $ubicazione_A = '0';
             $lotto = '0' ;
@@ -847,10 +901,8 @@ class AjaxController extends Controller{
                 $magazzino = '00004';
             else
                 $magazzino = '00001';
-            /*if($r->Cd_DO == 'OVS')
-                $magazzino_A = '00004';
-            else
-                $magazzino_A = '00001';*/
+            if($r->Cd_DO == 'PKS')
+                $magazzino_A = $r->Cd_MG_P;
             if($r->Cd_DO == 'OAF')
                 $documento = 'DCF';
             if($r->Cd_DO == 'OVC')
@@ -960,6 +1012,8 @@ class AjaxController extends Controller{
     }
 
     public function aggiungi_articolo_ordine($id_ordine,$codice,$quantita,$magazzino_A,$ubicazione_A,$lotto,$magazzino_P,$ubicazione_P){
+
+        $codice = str_replace('slash','/',$codice);
         $i = 0;
         $magazzini = DB::SELECT('SELECT * FROM MGUbicazione WHERE Cd_MG=\''.$magazzino_A.'\'');
         foreach($magazzini as $m){
@@ -971,7 +1025,7 @@ class AjaxController extends Controller{
         if($i>0) {
             ArcaUtilsController::aggiungi_articolo($id_ordine, $codice, $quantita, $magazzino_A, 1, $ubicazione_A, $lotto, $magazzino_P, $ubicazione_P);
 
-            $ordine = DB::select('SELECT * from DOTes where Id_DOtes = ' . $id_ordine)[0];
+            //$ordine = DB::select('SELECT * from DOTes where Id_DOtes = ' . $id_ordine)[0];
 
             echo 'Articolo Caricato Correttamente ';
 
@@ -1086,7 +1140,7 @@ class AjaxController extends Controller{
          */
           echo '<div class="modal-footer">
                   <input type="hidden" class="form-control" id="iddotes" value="">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="document.getElementById(\'cerca_articolo\').value = \'\';document.getElementById(\'cerca_articolo\').focus()">Chiudi</button>
                   <button type="button" class="btn btn-primary" onclick="redirect_plus(\'1\',\''.$q.'\')">Vedi Piu Documenti</button>
                 </div>';
     }
@@ -1302,6 +1356,8 @@ class AjaxController extends Controller{
 
 
     public function cerca_articolo_inventario_codice($codice,$Cd_ARLotto){
+
+        $codice = str_replace('slash','/',$codice);
 
         $articoli = DB::select('SELECT AR.Cd_AR from AR where Cd_AR = \''.$codice.'\'');
 

@@ -730,7 +730,13 @@ class HomeController extends Controller{
             $fornitore = $fornitori[0];
             $date = date('Y/m/d',strtotime('today')) ;
             foreach($documenti as $documento)
-                $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
+                $documento->righe = DB::select('SELECT *,Giacenza = (SELECT sum(MGMov.QuantitaSign) from
+                                                        MGMov
+                                                        WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
+                                                        from DORig
+                                                        where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
+                                                        ORDER BY QtaEvadibile DESC');
+             //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
 
             foreach ($documento->righe as $r)
             {
@@ -845,7 +851,7 @@ class HomeController extends Controller{
             $fornitore = $fornitori[0];
             $date = date('Y/m/d',strtotime('today')) ;
             foreach($documenti as $documento)
-                $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'  ORDER BY QtaEvadibile DESC');
+                $documento->righe = DB::select('SELECT *,Giacenza = (SELECT sum(MGMov.QuantitaSign) from MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' ) from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
 
             foreach ($documento->righe as $r)
             {

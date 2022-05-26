@@ -346,7 +346,7 @@
                                     <div class="media-body">
                                         <div class="row">
                                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo : '.round(floatval($r->PrezzoUnitarioV), 2);?> <br> Qta: <?php echo floatval($r->QtaEvadibile)?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
+                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php /*echo 'Prezzo : '.round(floatval($r->PrezzoUnitarioV), 2);*/echo 'Giacenza :'.number_format($r->Giacenza,2) ?> <br> Qta: <?php echo floatval($r->QtaEvadibile)?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
                                             </div>
                                             <div class="col-xs-6 col-sm-6 col-md-6">
 
@@ -846,6 +846,8 @@
         testo = $('#cerca_articolo').val();
         if(testo=='')
             testo = $('#cerca_articolo2').val(); testo  = testo.trimEnd();
+        pos = testo.search('/');
+        if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
 
         if(testo != '') {
 

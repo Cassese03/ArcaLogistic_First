@@ -341,7 +341,7 @@
                                         <div class="row" >
                                             <div class="col-xs-6 col-sm-6 col-md-6" >
 
-                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);?>  <br> Qta : <?php echo floatval($r->QtaEvadibile) ?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
+                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php /*echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);*/ echo 'Giacenza :'.number_format($r->Giacenza,2)?>  <br> QtaEvadibile : <?php echo floatval($r->QtaEvadibile) ?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5><h5> Righe in Evasione : <input style="border: transparent" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"></h5>
 
                                             </div>
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
@@ -903,25 +903,36 @@
     }
 
     function evadi_articolo2(conf){
-
+        qta = 1;
         if(conf != '1'){
             document.getElementById('cerca_articolo2').value = '';
             text = document.getElementById('modal_controllo_dorig').value;
             dorig = document.getElementById('DORIG').value;
             if(dorig.search(text)==(-1)) {
                 if (dorig != '')
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text;
+                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '='+ qta;
                 if (dorig == '')
-                    document.getElementById('DORIG').value = text;
+                    document.getElementById('DORIG').value = text + '='+ qta;
             }
-            else {
+            else {/*
                 $('#modal_alertEvasione').modal('show');
-                return;
+                return;*/
+                pos = dorig.search(text);
+                pos = pos + text.length;
+                pos++;
+                qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                dopo = document.getElementById('DORIG').value.substr(parseInt(pos)+parseInt(2));
+                document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0,pos--) + qta ;
             }
             document.getElementById('cerca_articolo2').focus();
             righe = document.getElementById('button').value;
             righe++;
             document.getElementById('button').value = righe;
+            wow = document.getElementById('evasione_'+text).value;
+            wow++;
+            document.getElementById('evasione_'+text).value = wow;
+            document.getElementById('evasione_'+text).innerHTML ='Righe in Evasione : '+ wow;
+            document.getElementById('evasione_'+text).style.backgroundColor = 'green';
             document.getElementById('button').innerHTML = 'Evadi Righe ('+righe+')';
             document.getElementById('riga_'+text).style.backgroundColor = 'green';
         }
@@ -991,6 +1002,8 @@
     function carica_articolo(){
 
         codice      =      $('#modal_Cd_AR').val();
+        pos = codice.search('/');
+        if(pos !=(-1)){ codice = codice.substr(0,pos)+'slash'+codice.substr(pos+1)}
         quantita    =      $('#modal_quantita').val();
         magazzino_A =      '00001 - Magazzino Centrale';
         magazzino_P =      '00001 - Magazzino Centrale';
@@ -1059,7 +1072,8 @@
                 context: document.body
             }).done(function (result) {
                 if(result != '') {
-
+                    pos = result.search('/');
+                    if(pos !=(-1)){ result = result.substr(0,pos)+'slash'+result.substr(pos+1)}
                     $('#modal_cerca_articolo').modal('hide');
                     cerca_articolo_codice(result);
                 } else
@@ -1077,6 +1091,8 @@
         if(fornitore.length > 6) {
             const myArray = fornitore.split("','");
             codice = myArray[1];
+            pos = codice.search('/');
+            if(pos !=(-1)){ codice = codice.substr(0,pos)+'slash'+codice.substr(pos+1)}
             lotto = myArray[2];
             qta = myArray[3];
         }
