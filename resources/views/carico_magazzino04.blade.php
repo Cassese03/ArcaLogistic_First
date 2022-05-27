@@ -656,7 +656,7 @@
 
     <div class="modal" id="modal_alertSegnalazione" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="alert alert-success alert-dismissible fade show">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertSegnalazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+            <button type="button" class="close"  onclick="$('#modal_alertSegnalazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
             <strong>Success!</strong><br> Segnalazione Effettuata</a>.
         </div>
     </div>
@@ -665,28 +665,28 @@
 
     <div class="modal" id="modal_alertQuantita" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="alert alert-warning alert-dismissible fade show">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertQuantita').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+            <button type="button" class="close"  onclick="$('#modal_alertQuantita').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
             <strong>Alert!</strong><br> Inserire una quantita </a>.
         </div>
     </div>
 
     <div class="modal" id="modal_alertInserimento" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="alert alert-success alert-dismissible fade show">
-            <button type="button" class="close" data-dismiss="alert" onclick="location.reload()">&times;</button>
+            <button type="button" class="close"  onclick="location.reload()">&times;</button>
             <strong>Success!</strong><br> Articolo Inserito Correttamente</a>.
         </div>
     </div>
 
     <div class="modal" id="modal_alertUbicazione" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="alert alert-warning alert-dismissible fade show">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertUbicazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+            <button type="button" class="close"  onclick="$('#modal_alertUbicazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
             <strong>Alert!</strong><br> Ubicazione inserita non corretta o inesistente</a>.
         </div>
     </div>
 
     <div class="modal" id="modal_alertTrovare" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="alert alert-warning alert-dismissible fade show">
-            <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertTrovare').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+            <button type="button" class="close"  onclick="$('#modal_alertTrovare').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
             <strong>Alert!</strong><br> Nessun Articolo Trovato </a>.
         </div>
     </div>

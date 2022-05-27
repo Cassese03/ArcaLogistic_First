@@ -61,10 +61,18 @@
                                 </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="<?php echo URL::asset('magazzino/cercadoc') ?>" class="media">
+                                <a href="<?php echo URL::asset('magazzino/cercadoc/PKS') ?>" class="media">
                                     <div class="media-body">
-                                        <h5>Cerca Documento</h5>
-                                        <p>Cerca il tuo documento dall'articolo</p>
+                                        <h5>Cerca PKS</h5>
+                                        <p>Cerca il tuo PKS dall'articolo</p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/cercadoc/ordini') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Cerca Ordini</h5>
+                                        <p>Cerca i tuoi ordini dall'articolo</p>
                                     </div>
                                 </a>
                             </li>

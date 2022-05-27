@@ -797,8 +797,12 @@ class HomeController extends Controller{
             $fornitore = $fornitori[0];
             $date = date('Y/m/d',strtotime('today')) ;
             foreach($documenti as $documento)
-                $documento->righe = DB::select('SELECT DORig.*,CF.Descrizione as DescrizioneCF from DORig LEFT JOIN CF ON DORig.Cd_CF = Cf.Cd_CF where Id_DoTes in ('.$id_dotes.') and Cd_AR = \''.$articolo.'\' and QtaEvadibile > \'0\' ORDER BY QtaEvadibile DESC');
-
+                $documento->righe = DB::select('SELECT *,Giacenza = (SELECT sum(MGMov.QuantitaSign) from
+                                                        MGMov
+                                                        WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
+                                                        from DORig
+                                                        where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
+                                                        ORDER BY QtaEvadibile DESC');
             foreach ($documento->righe as $r)
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
@@ -1142,7 +1146,7 @@ class HomeController extends Controller{
 
         return View::make('inventario_magazzino');
     }
-    public function cercadoc(Request $request){
+    public function cercadoc(Request $request, $ordine){
         if(!session()->has('utente')) {
             return Redirect::to('login');
         }
@@ -1156,7 +1160,7 @@ class HomeController extends Controller{
 
         }
 
-        return View::make('cercadoc');
+        return View::make('cercadoc',compact('ordine'));
     }
 
     public function phpinfo(){

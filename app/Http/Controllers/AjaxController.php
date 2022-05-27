@@ -1085,7 +1085,7 @@ class AjaxController extends Controller{
             $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto on AR.Cd_AR = ARLotto.Cd_AR ' . $where . '  Order By Id_AR DESC');
 */
 
-        $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR Like \''.$q.'%\' or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias LIKE \'%'.$q.'%\') Order By AR.Id_AR DESC');
+        $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\'  or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');
         if(sizeof($articoli) > 0){
             $articolo = $articoli[0];
         ?>
@@ -1118,30 +1118,71 @@ class AjaxController extends Controller{
                 <label>Qta da Evadere</label>
                 <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>';
                 $righe_doc = DB::SELECT('SELECT * FROM DORig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
-                    $righe = 0;
-                    foreach($righe_doc as $r){
-                        if($r->Cd_AR !='')
-                            $righe++;
-                    }
-                    if($id_dotes->RigheEvadibili!= $righe) {
-                        echo '<button type="button" style="width: 100%;margin-top: 10px;background-color: red" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Da Completare</button>';
-                    }else{
-                        echo '<button type="button" style="width: 100%;margin-top: 10px" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Vedi</button>';
-                    }
+                $righe = 0;
+                foreach($righe_doc as $r){
+                    if($r->Cd_AR !='')
+                        $righe++;
+                }
+                if($id_dotes->RigheEvadibili!= $righe) {
+                    echo '<button type="button" style="width: 100%;margin-top: 10px;background-color: red" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Da Completare</button>';
+                }else{
+                    echo '<button type="button" style="width: 100%;margin-top: 10px" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Vedi</button>';
+                }
                 echo '<br><br>';
                 echo '</div>';
-             }
             }
+        }
         /*
              ?>
             '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
             <?php
 
          */
-          echo '<div class="modal-footer">
+        echo '<div class="modal-footer">
                   <input type="hidden" class="form-control" id="iddotes" value="">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="document.getElementById(\'cerca_articolo\').value = \'\';document.getElementById(\'cerca_articolo\').focus()">Chiudi</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$(\'#modal_evasione\').modal(\'hide\');document.getElementById(\'cerca_articolo2\').value = \'\';document.getElementById(\'cerca_articolo2\').focus();">Chiudi</button>
                   <button type="button" class="btn btn-primary" onclick="redirect_plus(\'1\',\''.$q.'\')">Vedi Piu Documenti</button>
+                </div>';
+    }
+    public function cerca_documento2($q){
+        $q =  str_replace("-","/",$q);
+        $q =  str_replace("slash","/",$q);
+
+        $documento = DB::select('SELECT  Sum(QtaEvadibile) as QtaEvadibile, Cd_CF FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF');
+        if(sizeof($documento) > 0){
+            foreach($documento as $d){
+                $fornitore = DB::SELECT('SELECT * FROM CF WHERE Cd_CF =  \''.$d->Cd_CF.'\' ')[0];
+                echo '<div class="modal-body">
+                <br>
+                <label style="text-align:left;float:left">Cliente</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="Cd_CF" value="'.$fornitore->Descrizione.'" readonly>
+                <label style="text-align:left;float:left">Tipo Documento</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="NumeroDoc" value="Ordine" readonly>
+                <label>Qta da Evadere</label>
+                <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>';
+                /*$righe_doc = DB::SELECT('SELECT * FROM DORig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
+                $righe = 0;
+                foreach($righe_doc as $r){
+                    if($r->Cd_AR !='')
+                        $righe++;
+                }
+                if($id_dotes->RigheEvadibili!= $righe) {
+                    echo '<button type="button" style="width: 100%;margin-top: 10px;background-color: red" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Da Completare</button>';
+                }else{
+                    echo '<button type="button" style="width: 100%;margin-top: 10px" class="btn btn-primary" onclick="redirect(\''.$d->Id_DOTes.'\',\''.$fornitore->Id_CF.'\')">Vedi</button>';
+                }*/
+                echo '</div>';
+            }
+        }
+        /*
+             ?>
+            '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
+            <?php
+
+         */
+        echo '<div class="modal-footer">
+                  <input type="hidden" class="form-control" id="iddotes" value="">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$(\'#modal_evasione\').modal(\'hide\');document.getElementById(\'cerca_articolo2\').value = \'\';document.getElementById(\'cerca_articolo2\').focus();">Chiudi</button>
                 </div>';
     }
     public function controllo_articolo_smart2($id_dorig,$id_dotes){

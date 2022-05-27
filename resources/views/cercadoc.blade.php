@@ -356,7 +356,7 @@
                 <a style="padding-left:20px;" href="/magazzino" ><i class="material-icons">arrow_back_ios</i></a>
             </div>
             <div class="col center">
-                <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Cerca PKS</a>
+                <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Cerca <?php echo ($ordine == 'PKS')? 'PKS':'OVC-OVS' ?></a>
             </div>
             <div class="right">
                 <a style="padding-left:20px;" href="/" ><i class="material-icons">home</i></a>
@@ -367,15 +367,12 @@
             <div class="content-sticky-footer">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
-                    <h1 class="text-center text-white title-background">Cerca PKS</h1>
+                    <h1 class="text-center text-white title-background">Cerca <?php echo ($ordine == 'PKS')? 'PKS':'OVC-OVS' ?> </h1>
                 </div>
             <div style="width: 80%;padding-left: 20%">
                 <input type="input" class="form__field" placeholder="Articolo" autocomplete="off" />
-                <input type="input" class="form__field" placeholder="Articolo" onkeyup="cerca_documento()"  autofocus autocomplete="off" required id="cerca_articolo" />
+                <input type="input" class="form__field" placeholder="Articolo" onkeyup="cerca_documento()"  autofocus autocomplete="off" required id="cerca_articolo2" />
             </div>
-                <!-- <div id="interactive" class="viewport" style="position: relative;margin-top:30px;"></div> -->
-           <?php //    <input type="text" id="cerca_articolo"   onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off">  <button class="btn btn-primary" style="margin:0 auto;display:block;margin-top: 100px" onclick="$('#modal_cerca_articolo').modal('show');">Scegli Prodotto</button>?>
-
 
             </div>
 
@@ -510,7 +507,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Scegli Documento</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="document.getElementById('cerca_articolo').value = '';document.getElementById('cerca_articolo').focus()">
+                    <button type="button" class="close" aria-label="Close" onclick="$('#modal_evasione').modal('hide');document.getElementById('cerca_articolo2').value = '';document.getElementById('cerca_articolo2').focus();">
                         <span aria-hidden=" true">×</span>
                     </button>
                 </div>
@@ -621,32 +618,48 @@
         }
     }
     function cerca_documento(){
-        testo = $('#cerca_articolo').val();
+        ordine = '<?php echo $ordine ?>';
+        testo = $('#cerca_articolo2').val();
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
 
         if(testo != '') {
+            if(ordine == 'PKS') {
+                $.ajax({
+                    url: "<?php echo URL::asset('/ajax/cerca_documento') ?>/" + testo,
+                    context: document.body
+                }).done(function (result) {
+                    if (result != '') {
+                        $('#modal_cerca_articolo').modal('hide');
+                        $('#modal_evasione').modal('show');
+                        $('#ajax_lista_documenti').html(result);
+                    } else {
+                        alert('nessun prodotto trovato');
+                        location.reload();
+                    }
+                });
 
-            $.ajax({
-                url: "<?php echo URL::asset('/ajax/cerca_documento') ?>/" + testo,
-                context: document.body
-            }).done(function (result) {
-                if(result != '') {
-                    $('#modal_cerca_articolo').modal('hide');
-                    $('#modal_evasione').modal('show');
-                    $('#ajax_lista_documenti').html(result);
-                } else {
-                    alert('nessun prodotto trovato');
-                    location.reload();
-                }
-            });
-
+            }else{
+                $.ajax({
+                    url: "<?php echo URL::asset('/ajax/cerca_documento2') ?>/" + testo,
+                    context: document.body
+                }).done(function (result) {
+                    if (result != '') {
+                        $('#modal_cerca_articolo').modal('hide');
+                        $('#modal_evasione').modal('show');
+                        $('#ajax_lista_documenti').html(result);
+                    } else {
+                        alert('nessun prodotto trovato');
+                        location.reload();
+                    }
+                });
+            }
         }
 
     }
     function cerca_articolo_smart2(){
 
-        testo = $('#cerca_articolo').val();
+        testo = $('#cerca_articolo2').val();
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
 

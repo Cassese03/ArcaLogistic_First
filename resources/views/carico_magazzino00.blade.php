@@ -319,10 +319,10 @@
                         </select>
                     </label>
                 </fieldset>
-                -->
 
                 <button style="width:80%;margin:0 auto;display:block;margin-bottom:0;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">Aggiungi Prodotto</button>
                 <button style="margin-top:10px !important;width:80%;margin:0 auto;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
+                -->
                 <input type="hidden" id="DORIG" value="">
                 <input type="hidden" id="lung" value="0">
                 <?php if(sizeof($documento->righe) > 0){ ?>
@@ -335,13 +335,17 @@
 
                             <?php foreach($documento->righe as $r){ $totale = 0; ?>
                             <?php if($r->QtaEvadibile>0){?>
-                            <li class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>">
+                                <li class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  <?php if($r->QtaEvadibile > $r->Giacenza) echo  /*#ec6565 #e94949*/'style="background-color: #ff8080" '?>>
                                 <a href="#" onclick="" class="media">
                                     <div class="media-body" >
                                         <div class="row" >
+                                            <?php /*
                                             <div class="col-xs-6 col-sm-6 col-md-6" >
 
-                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);?>  <br> Qta : <?php echo floatval($r->QtaEvadibile) ?> <br> <?php echo 'Cliente : '.$r->DescrizioneCF?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
+                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);?>  <br> Qta : <?php echo floatval($r->QtaEvadibile) ?> <br> <?php echo 'Cliente : '.$r->DescrizioneCF?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ /*?></h5>
+*/?>                                           <div class="col-xs-6 col-sm-6 col-md-6">
+                                                    <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' - ';/*.$r->Descrizione;.?><br><?php *//*echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);*/ echo 'Giacenza :'.number_format($r->Giacenza,2).' - '?> QtaEvadibile : <?php echo floatval($r->QtaEvadibile) ?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5><h5 style="text-align: center"> Righe in Evasione : <input onfocus="blur()" style="border:none;width: 10%;text-align: right;<?php if($r->QtaEvadibile > $r->Giacenza) echo  'background-color: #e94949 '?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"></h5>
+                                                <input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>">
 
                                             </div>
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
@@ -393,8 +397,28 @@
 
 
                 <?php } ?>
-                <?php if(sizeof($documento->righe) > 0){?>
-                <button style="margin-top:10px !important;width:80%;margin:0 auto;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">Salva Documento</button>
+                <?php if(sizeof($documento->righe) >= 0){?>
+                <div class="row">
+                    <button style="margin-top:10px !important;width:18%;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">
+                        <i class="bi bi-save2-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2-fill" viewBox="0 0 16 16">
+                                <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
+                            </svg>
+                        </i>
+                    </button>
+
+                    <button style="margin-top:10px !important;width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
+
+                    <button style="margin-top:10px !important;width:17%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
+                        <i class="bi bi-plus-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </i>
+                    </button>
+
+                </div>
                 <?php } ?>
             </div>
         </div>
@@ -775,53 +799,59 @@
 
 <div class="modal" id="modal_alertSegnalazione" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-success alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertSegnalazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <button type="button" class="close" onclick="$('#modal_alertSegnalazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
         <strong>Success!</strong> <br>Segnalazione Effettuata</a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertEvase" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-success alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="location.reload()">&times;</button>
+        <button type="button" class="close" onclick="location.reload()">&times;</button>
         <strong>Success!</strong> <br>Le righe sono state completamente Evase</a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertQuantita" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertQuantita').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <button type="button" class="close"  onclick="$('#modal_alertQuantita').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
         <strong>Alert!</strong> <br>Inserire una quantita </a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertInserimento" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-success alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="location.reload()">&times;</button>
+        <button type="button" class="close"  onclick="location.reload()">&times;</button>
         <strong>Success!</strong> <br>Articolo Inserito Correttamente</a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertUbicazione" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertUbicazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <button type="button" class="close"  onclick="$('#modal_alertUbicazione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
         <strong>Alert!</strong> <br>Ubicazione inserita non corretta o inesistente</a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertQuantita0" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertQuantita0').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <button type="button" class="close"  onclick="$('#modal_alertQuantita0').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
         <strong>Alert!</strong> <br>Impossibile Evadere la Quantita' Evadibile a zero </a>.
+    </div>
+</div>
+
+<div class="modal" id="modal_alertQuantitaTroppo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="alert alert-warning alert-dismissible fade show">
+        <button type="button" class="close"  onclick="$('#modal_alertQuantitaTroppo').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <strong>Alert!</strong> <br>Impossibile Evadere più della Quantita' Evadibile  </a>.
     </div>
 </div>
 
 <div class="modal" id="modal_alertTrovare" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert" onclick="$('#modal_alertTrovare').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <button type="button" class="close"  onclick="$('#modal_alertTrovare').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
         <strong>Alert!</strong><br> Nessun Articolo Trovato </a>.
     </div>
 </div>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="/js/jquery-3.2.1.min.js"></script>
@@ -903,27 +933,56 @@
     }
 
     function evadi_articolo2(conf){
-
+        qta = 1;
         if(conf != '1'){
             document.getElementById('cerca_articolo2').value = '';
             text = document.getElementById('modal_controllo_dorig').value;
+            qtaevadibile = document.getElementById('evadibile_'+text).value;
             dorig = document.getElementById('DORIG').value;
             if(dorig.search(text)==(-1)) {
+                righe = document.getElementById('button').value;
+                righe++;
+                document.getElementById('button').value = righe;
                 if (dorig != '')
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text;
+                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '='+ qta;
                 if (dorig == '')
-                    document.getElementById('DORIG').value = text;
+                    document.getElementById('DORIG').value = text + '='+ qta;
             }
-            else {
+            else {/*
                 $('#modal_alertEvasione').modal('show');
-                return;
+                return;*/
+                qtaevadibile = document.getElementById('evadibile_'+text).value;
+                pos = dorig.search(text);
+                pos = pos + text.length;
+                pos++;
+                qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                if(qta <= qtaevadibile ){
+                    dopo = document.getElementById('DORIG').value.substr(parseInt(pos)+parseInt(2));
+                    document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0,pos--) + qta ;
+                }
+                else{
+                    $('#modal_alertQuantitaTroppo').modal('show');
+                    return;
+                }
             }
             document.getElementById('cerca_articolo2').focus();
-            righe = document.getElementById('button').value;
+            /*righe = document.getElementById('button').value;
             righe++;
-            document.getElementById('button').value = righe;
+            document.getElementById('button').value = righe;*/
+            wow = document.getElementById('evasione_'+text).value;
+            wow++;
+            document.getElementById('evasione_'+text).value = wow;
+            document.getElementById('evasione_'+text).innerHTML ='Righe in Evasione : '+ wow;
             document.getElementById('button').innerHTML = 'Evadi Righe ('+righe+')';
-            document.getElementById('riga_'+text).style.backgroundColor = 'green';
+            if(wow < qtaevadibile) {
+                document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+            }
+            else{
+                document.getElementById('riga_' + text).style.backgroundColor = 'green';
+                document.getElementById('evasione_' + text).style.backgroundColor = 'green';
+            }
+
         }
         else {
             dorig = document.getElementById('DORIG').value;
