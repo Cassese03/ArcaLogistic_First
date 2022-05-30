@@ -685,6 +685,16 @@ class AjaxController extends Controller{
     public function evadi_articolo($Id_DoRig,$qtadaEvadere,$magazzino,$ubicazione,$lotto,$cd_cf,$documento,$cd_ar,$magazzino_A){
         $cd_ar = str_replace("-","/",$cd_ar);
         $cd_ar = str_replace("slash","/",$cd_ar);
+        //controllo se l'articolo esiste
+        $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$cd_ar.'\' ');
+        if(sizeof($c_cd_ar) == 0 ){
+            $cd_ar = str_replace("/","-",$cd_ar);
+            $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$cd_ar.'\' ');
+            if(sizeof($c_cd_ar) == 0 ) {
+                echo 'Articolo non trovato'; exit();
+            }
+        }
+
         $Id_DoTes = '0';
         if ($qtadaEvadere == '0') {
             echo 'Impossibile evadere la Quantita a 0';
@@ -1061,7 +1071,7 @@ class AjaxController extends Controller{
     }
 */
     public function cerca_articolo_smart($q,$cd_cf){
-            $q =  str_replace("-","/",$q);
+        $q =  str_replace("-","/",$q);
             $q =  str_replace("slash","/",$q);
             $qta='ND';/*
             $decoder = new Decoder($delimiter = '');
@@ -1087,6 +1097,12 @@ class AjaxController extends Controller{
 
         $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\'  or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');
         if(sizeof($articoli) > 0){
+            $q =  str_replace("/","-
+            ",$q);
+            $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\'  or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');
+
+        }
+        if(sizeof($articoli) > 0){
             $articolo = $articoli[0];
         ?>
         '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
@@ -1097,6 +1113,15 @@ class AjaxController extends Controller{
     public function cerca_documento($q){
         $q =  str_replace("-","/",$q);
         $q =  str_replace("slash","/",$q);
+        //controllo se l'articolo esiste
+        $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+        if(sizeof($c_cd_ar) == 0 ){
+            $q = str_replace("/","-",$q);
+            $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+            if(sizeof($c_cd_ar) == 0 ) {
+                echo 'Articolo non trovato'; exit();
+            }
+        }
 
         $documento = DB::select('SELECT * FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'PKS\')');
         if(sizeof($documento) > 0){
@@ -1147,6 +1172,15 @@ class AjaxController extends Controller{
     public function cerca_documento2($q){
         $q =  str_replace("-","/",$q);
         $q =  str_replace("slash","/",$q);
+        //controllo se l'articolo esiste
+        $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+        if(sizeof($c_cd_ar) == 0 ){
+            $q = str_replace("/","-",$q);
+            $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+            if(sizeof($c_cd_ar) == 0 ) {
+                echo 'Articolo non trovato'; exit();
+            }
+        }
 
         $documento = DB::select('SELECT  Sum(QtaEvadibile) as QtaEvadibile, Cd_CF FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF');
         if(sizeof($documento) > 0){
@@ -1231,6 +1265,15 @@ class AjaxController extends Controller{
         }*/
         $q =  str_replace("-","/",$q);
         $q =  str_replace("slash","/",$q);
+        //controllo se l'articolo esiste
+        $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+        if(sizeof($c_cd_ar) == 0 ){
+            $q = str_replace("/","-",$q);
+            $c_cd_ar = DB::SELECT('SELECT * FROM AR WHERE Cd_AR = \''.$q.'\' ');
+            if(sizeof($c_cd_ar) == 0 ) {
+                echo 'Articolo non trovato'; exit();
+            }
+        }
         $c = $q;
         $q = DB::SELECT('SELECT * FROM ARALias WHERE Alias = \''.$q.'\' ');
         if(sizeof($q)!= 0)
