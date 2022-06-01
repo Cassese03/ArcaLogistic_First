@@ -47,7 +47,7 @@
 
                 <div class="background bg-170"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
-                    <h1 class="text-center text-white title-background">Scegli un Cliente<br><small><?php  echo  $documenti?></small></h1>
+                    <h1 class="text-center text-white title-background">Scegli un Cliente<br><small><?php  echo  (str_replace(' ','',$documenti) == 'PKS')? 'CLP':$documenti; ?></small></h1>
                 </div>
 
                 <ul class="list-group" id="ajax" style="max-height:500px;">
@@ -56,8 +56,7 @@
                         <li class="list-group-item">
                             <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
                                 <div class="media-body">
-                                    <h5><?php echo $f->Cd_CF ?></h5>
-                                    <p>Nome: <?php echo $f->Descrizione ?></p>
+                                    <h5><?php echo $f->Descrizione ?></h5>
                                 </div>
                             </a>
                         </li>

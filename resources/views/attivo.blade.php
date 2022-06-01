@@ -74,7 +74,7 @@
                                 break;
                         }*/?>class="media">
                             <div class="media-body">
-                                <h5><?php echo $d->Cd_Do ?></h5>
+                                <h5><?php echo ($d->Cd_Do == 'PKS') ? 'CLP':$d->Cd_Do; ?></h5>
                                 <p> <?php echo $d->Descrizione ?></p>
                             </div>
                         </a>

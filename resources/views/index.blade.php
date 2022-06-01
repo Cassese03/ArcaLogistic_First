@@ -42,16 +42,7 @@
                     <div class="col-md-6" style="padding-left:0;">
 
                         <ul class="list-group" >
-                            <li class="list-group-item">
 
-                                <a href="<?php echo URL::ASSET('articoli') ?>" class="media">
-                                    <div class="media-body">
-                                        <h5>Articoli</h5>
-                                        <p>Gestisci gli articoli di Arca</p>
-                                    </div>
-                                </a>
-
-                            </li>
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino') ?>" class="media">
                                     <div class="media-body">
@@ -60,10 +51,29 @@
                                     </div>
                                 </a>
                             </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico2/OVC') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>OVC</h5>
+                                        <p>Scegli OVC da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico2/OVS') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>OVS</h5>
+                                        <p>Scegli OVS da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
+
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/PKS') ?>" class="media">
                                     <div class="media-body">
-                                        <h5>Cerca PKS</h5>
+                                        <h5>Cerca in PKS</h5>
                                         <p>Cerca il tuo PKS dall'articolo</p>
                                     </div>
                                 </a>
@@ -71,7 +81,7 @@
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/ordini') ?>" class="media">
                                     <div class="media-body">
-                                        <h5>Cerca Ordini</h5>
+                                        <h5>Cerca in Ordini</h5>
                                         <p>Cerca i tuoi ordini dall'articolo</p>
                                     </div>
                                 </a>
@@ -85,6 +95,17 @@
                                 </a>
                             </li>
                         <!--
+                         <li class="list-group-item">
+
+                                <a href="<?php echo URL::ASSET('articoli') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Articoli</h5>
+                                        <p>Gestisci gli articoli di Arca</p>
+                                    </div>
+                                </a>
+
+                            </li>
+
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('ordini') ?>" class="media">
                                     <div class="media-body">

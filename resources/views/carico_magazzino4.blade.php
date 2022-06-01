@@ -299,7 +299,7 @@
             </div>
         </header>
 
-        <div class="page-content">
+        <div class="page-content" style="overflow-x: hidden">
             <div class="content-sticky-footer">
 
                 <input style="width:1px;height: 1px" type="text" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
@@ -325,24 +325,70 @@
                 <input type="hidden" id="lung" value="0">
                 <?php if(sizeof($documento->righe) > 0){ ?>
 
+                <div style="position: sticky; top:0;z-index: 500;background-color: white;padding-top:10px">
+                    <div class="row" style="padding-left: 10px">
+                        <div class="col-2" style="text-align: center">
+                            <h6>&nbsp;Articolo</h6>
+                        </div>
+                        <div class="col-2" style="text-align: right">
+                            <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
+                        </div>
+                        <div class="col-2" style="text-align: center">
+                            <h6>Giac</h6>
+                        </div>
+                        <div class="col-2" style="text-align: left">
+                            <h6>Ubic</h6>
+                        </div>
+                        <div class="col-2" style="text-align: center;margin-left:-5px">
+                            <h6>Evadendo</h6>
+                        </div>
+                        <div class="col-2">
 
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
 
-                    <div class="col-sm-12" style="margin-top:5px;">
+                    <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:5px;">
 
                         <ul class="list-group">
 
                             <?php foreach($documento->righe as $r){ $totale = 0; ?>
                             <?php if($r->QtaEvadibile>0){?>
-                                <li class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  <?php if($r->QtaEvadibile > $r->Giacenza) echo  /*#ec6565 #e94949*/'style="background-color: #ff8080" '?>>
+                            <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->QtaEvadibile > $r->Giacenza) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
                                 <a href="#" onclick="" class="media">
                                     <div class="media-body" >
                                         <div class="row" >
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                                <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' - ';/*.$r->Descrizione;.?><br><?php *//*echo 'Prezzo :'.round(floatval($r->PrezzoUnitarioV), 2);*/ echo 'Giacenza :'.number_format($r->Giacenza,2).' - '?> QtaEvadibile : <?php echo floatval($r->QtaEvadibile) ?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5><h5 style="text-align: center"> Righe in Evasione : <input onfocus="blur()" style="border:none;width: 10%;text-align: right;<?php if($r->QtaEvadibile > $r->Giacenza) echo  'background-color: #e94949 '?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"></h5>
-                                                <input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>">
-
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-2" style="text-align: center">
+                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_AR;?></h5>
+                                                    </div>
+                                                    <div class="col-2" style="text-align: right">
+                                                        <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
+                                                    </div>
+                                                    <div class="col-2" style="text-align: center">
+                                                        <h5 style="padding-top :10px;"><?php echo number_format($r->Giacenza,2)?></h5>
+                                                    </div>
+                                                    <div class="col-2" style="text-align: center">
+                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
+                                                    </div>
+                                                    <div class="col-2" style="text-align: center">
+                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;<?php if($r->QtaEvadibile > $r->Giacenza) echo  'background-color: #ff8080 '?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
+                                                    </div>
+                                                    <div class="col-2" style="padding-right: 25px">
+                                                        <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
+                                                            <i class="bi bi-check-circle">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                                                </svg>
+                                                            </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
+                                        <!--
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
                                                 <form  method="post" onsubmit="return confirm('Vuoi Eliminare Questa Riga ?')">
                                                     <input type="hidden" id="codice" value="<?php echo $r->Cd_AR ?>">
@@ -380,6 +426,7 @@
                                                 </form>
 
                                             </div>
+                                            -->
                                         </div>
                                     </div>
                                 </a>
@@ -394,27 +441,27 @@
                 <?php } ?>
                 <?php if(sizeof($documento->righe) >= 0){?>
                 <div class="row">
-                <button style="margin-top:10px !important;width:18%;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">
-                    <i class="bi bi-save2-fill">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2-fill" viewBox="0 0 16 16">
-                            <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
-                        </svg>
-                    </i>
-                </button>
+                    <button style="width:18%;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">
+                        <i class="bi bi-save2-fill">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2-fill" viewBox="0 0 16 16">
+                                <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
+                            </svg>
+                        </i>
+                    </button>
 
-                <button style="margin-top:10px !important;width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
+                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
 
-                    <button style="margin-top:10px !important;width:17%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
-                    <i class="bi bi-plus-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                        </svg>
-                    </i>
-                </button>
+                    <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
+                        <i class="bi bi-plus-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </i>
+                    </button>
 
                 </div>
-            <?php } ?>
+                <?php } ?>
             </div>
         </div>
 
