@@ -1,5 +1,6 @@
 <?php $magazzino_prova = DB::select('SELECT MG.*,MGUbicazione.Cd_MGUbicazione from MG LEFT JOIN MGUbicazione on MGUbicazione.Cd_MG = MG.Cd_MG'); ?>
 <?php $magazzino_ord = DB::select('SELECT * from MG '); //TODO MANCANO GLI ALERT?>
+<?php $evasione = 'false';?>
     <!doctype html>
 <html lang="en" class="md">
 
@@ -267,6 +268,248 @@
             height: 180px;
         }
     }
+    /*
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders *//*
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }*/
+    /* CSS rules are kept repetitive so that you can get CSS rules for each button easily :) */
+
+    {
+        user-select: none;
+        -webkit-tap-highlight-color:transparent;
+    }
+
+    *:focus
+    {
+        outline: none;
+    }
+    /*
+        body
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background-color: #f1f9f9;
+        }
+
+        .row
+        {
+            display: table-row;
+        }
+
+    */
+
+    #app-cover
+    {
+        display: table;
+        width: 600px;
+        margin: 80px auto;
+        counter-reset: button-counter;
+    }
+
+    .toggle-button-cover
+    {
+        display: table-cell;
+        position: relative;
+        width: 200px;
+        height: 140px;
+        box-sizing: border-box;
+    }
+
+    .button-cover
+    {
+        height: 100px;
+        margin: 20px;
+        background-color: #fff;
+        box-shadow: 0 10px 20px -8px #c5d6d6;
+        border-radius: 4px;
+    }
+
+    .button-cover:before
+    {
+        counter-increment: button-counter;
+        content: counter(button-counter);
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: #d7e3e3;
+        font-size: 12px;
+        line-height: 1;
+        padding: 5px;
+    }
+
+    .button-cover, .knobs, .layer
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .button
+    {
+        position: relative;
+        top: 50%;
+        width: 74px;
+        height: 36px;
+        margin: -20px auto 0 auto;
+        overflow: hidden;
+    }
+
+    .button.r, .button.r .layer
+    {
+        border-radius: 100px;
+    }
+
+    .button.b2
+    {
+        border-radius: 2px;
+    }
+
+    .checkbox
+    {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    .knobs
+    {
+        z-index: 2;
+    }
+
+    .layer
+    {
+        height: 70%;
+        width: 90%;
+        background-color: #ebf7fc;
+        transition: 0.3s ease all;
+        z-index: 1;
+    }
+
+    /* Button 1 */
+    #button-1 .knobs:before
+    {
+        content: 'OFF';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 22px;
+        height: 10px;
+        color: white;
+        font-size: 9px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 0.2;
+        padding: 9px 4px;
+        background-color: red;
+        border-radius: 50%;
+        transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+    }
+
+    #button-1 .checkbox:checked + .knobs:before
+    {
+        content: 'ON';
+        left: 42px;
+        background-color: blue;
+    }
+
+    #button-1 .checkbox:checked ~ .layer
+    {
+        background-color: #fcebeb;
+    }
+
+    #button-1 .knobs, #button-1 .knobs:before, #button-1 .layer
+    {
+        transition: 0.3s ease all;
+    }
+    #ytd-url {
+        display: block;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        padding: 10px 14px;
+        margin: 20px;
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+        background-color: #143240;
+        border-radius: 4px;
+        box-shadow: 0 10px 20px -5px rgba(20, 50, 64, 0.76);
+
+    .parent {
+        border: 1px solid black;
+        margin: 1rem;
+        padding: 2rem 2rem;
+        text-align: center;
+    }
+    .child {
+        display: inline-block;
+        border: 1px solid red;
+        padding: 1rem 1rem;
+        vertical-align: middle;
+    }    }
 </style>
 
 <body class="color-theme-red push-content-right theme-light">
@@ -305,9 +548,23 @@
                 <input style="width:1px;height: 1px" type="text" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
-                    <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> N.<?php echo $documento->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
+                    <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
-
+                <div class="form-check" style="margin-top: -30px!important;">
+                <!--
+                    <label class="switch">
+                        <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
+                        <span class="slider round"></span>
+                    </label>
+                    -->
+                    <br>
+                    <label style="font-weight: bold;margin: -20px auto 0 auto;">Evasione Manuale</label>
+                    <div class="button r" id="button-1">
+                        <input type="checkbox" class="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
+                        <div class="knobs"></div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
 
                 <!--
                 <fieldset class="reader-config-group" style="margin-top:50px;">
@@ -325,21 +582,21 @@
                 <input type="hidden" id="lung" value="0">
                 <?php if(sizeof($documento->righe) > 0){ ?>
 
-                <div style="position: sticky; top:0;z-index: 500;background-color: white;padding-top:10px">
-                    <div class="row" style="padding-left: 10px">
-                        <div class="col-2" style="text-align: center">
+                <div style="position: sticky; top:0;z-index: 500;background-color: white;">
+                    <div class="row">
+                        <div class="col-2" style="margin-left: 10px;text-align: center">
                             <h6>&nbsp;Articolo</h6>
                         </div>
-                        <div class="col-2" style="text-align: right">
+                        <div class="col-2" style="margin-left: 10px;text-align: right">
                             <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
                         </div>
-                        <div class="col-2" style="text-align: center">
+                        <div class="col-2" style="margin-left: 10px;text-align: center">
                             <h6>Giac</h6>
                         </div>
-                        <div class="col-2" style="text-align: left">
+                        <div class="col-2" style="margin-left: 10px;text-align: left">
                             <h6>Ubic</h6>
                         </div>
-                        <div class="col-2" style="text-align: center;margin-left:-5px">
+                        <div class="col-2" style="margin-left: 10px;text-align: center;margin-left:-5px">
                             <h6>Evadendo</h6>
                         </div>
                         <div class="col-2">
@@ -355,7 +612,7 @@
 
                             <?php foreach($documento->righe as $r){ $totale = 0; ?>
                             <?php if($r->QtaEvadibile>0){?>
-                            <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->QtaEvadibile > $r->Giacenza) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
+                            <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
                                 <a href="#" onclick="" class="media">
                                     <div class="media-body" >
                                         <div class="row" >
@@ -514,7 +771,7 @@
                     <input class="form-control" type="text" id="modal_controllo_articolo" value=""  autocomplete="off" readonly>
 
                     <label>Quantita</label>
-                    <input class="form-control" type="text" id="modal_controllo_quantita" value=""   autocomplete="off" readonly>
+                    <input class="form-control" type="text" id="modal_controllo_quantita" value="1"   autocomplete="off">
 
                     <input class="form-control" type="hidden" id="modal_controllo_lotto" value=""  autocomplete="off" readonly>
 
@@ -786,7 +1043,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" style="width: 33%" data-dismiss="modal" onclick="$('#modal_evadi_riga_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
-                    <button type="button" class="btn btn-primary" style="width: 33%" onclick="evadi_articolo(<?php echo $r->Id_DORig; ?>);" >Evadi</button>
+                    <button type="button" class="btn btn-primary" style="width: 33%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?>);" >Evadi</button>
                     <?php //<button type="button" class="btn btn-primary" style="width: 38%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?><?php //);" >Nuovo Doc</button>?>
                 </div>
             </div>
@@ -956,15 +1213,29 @@
 
     }
 
+    function manuale(){
+        controllo = document.getElementById('evasione_manuale').value;
+        if(controllo == 'true')
+            document.getElementById('evasione_manuale').value = false;
+        if(controllo == 'false')
+            document.getElementById('evasione_manuale').value = true;
+        document.getElementById('cerca_articolo2').focus();
+    }
+
     function check(){
         check2 = document.getElementById('cerca_articolo2').value;
         pos = check2.search('/');
-        if(pos !=(-1)){ check2 = check2.substr(0,pos)+'slash'+check2.substr(pos)}
+        if(pos !=(-1)){ check3 = check2.substr(0,pos)+'slash'; pos++; check3 = check3 + check2.substr(pos); check2 = check3; }
         lung  = document.getElementById('lung').value;
+        controllo = document.getElementById('evasione_manuale').value;
 
         if(check2.length != 0) {
             if (lung == check2.length) {
-                controllo_articolo_smart();
+                if(controllo == 'false')
+                    controllo_articolo_smart();
+                if(controllo == 'true'){
+                    controllo_articolo_smart2(check2);
+                }
                 document.getElementById('lung').value = 0;
                 document.getElementById('cerca_articolo2').value = '';
             } else {
@@ -976,6 +1247,10 @@
     }
 
     function evadi_articolo2(conf){
+        if(document.getElementById('evasione_manuale').value == 'true') {
+            evadi_articolo(conf);
+            return;
+        }
         qta = 1;
         if(conf != '1'){
             document.getElementById('cerca_articolo2').value = '';
@@ -1046,8 +1321,72 @@
             }
         }
     }
+    function evadi_articolo(conf){
+        qta = document.getElementById('modal_controllo_quantita').value;
+        if(conf != '1'){
+            document.getElementById('cerca_articolo2').value = '';
+            text = document.getElementById('modal_controllo_dorig').value;
+            qtaevadibile = document.getElementById('evadibile_'+text).value;
+            dorig = document.getElementById('DORIG').value;
+            if(dorig.search(text)==(-1)) {
+                righe = document.getElementById('button').value;
+                righe++;
+                document.getElementById('button').value = righe;
+                if (dorig != '')
+                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '='+ qta;
+                if (dorig == '')
+                    document.getElementById('DORIG').value = text + '='+ qta;
+            }
+            else {
+                qtaevadibile = document.getElementById('evadibile_'+text).value;
+                pos = dorig.search(text);
+                pos = pos + text.length;
+                pos++;
+                qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                if(qta <= qtaevadibile ){
+                    dopo = document.getElementById('DORIG').value.substr(parseInt(pos)+parseInt(2));
+                    document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0,pos--) + qta ;
+                }
+                else{
+                    $('#modal_alertQuantitaTroppo').modal('show');
+                    return;
+                }
+            }
+            document.getElementById('cerca_articolo2').focus();
+            document.getElementById('evasione_'+text).value = qta;
+            document.getElementById('evasione_'+text).innerHTML ='Righe in Evasione : '+ qta;
+            document.getElementById('button').innerHTML = 'Evadi Righe ('+righe+')';
+            if(qta < qtaevadibile) {
+                document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+            }
+            else{
+                document.getElementById('riga_' + text).style.backgroundColor = 'green';
+                document.getElementById('evasione_' + text).style.backgroundColor = 'green';
+            }
 
-    function evadi_articolo1(){
+        }
+        else {
+            dorig = document.getElementById('DORIG').value;
+            if (dorig == '') {
+                $('#modal_noriga').modal('show');
+                return;
+            }
+            else {
+                $.ajax({
+                    url: "<?php echo URL::asset('ajax/evadi_articolo2')?>/" + dorig
+                }).done(function (result) {
+                    if (result.length > 1)
+                        $('#modal_alertQuantita0').modal('show');
+                    else
+                        $('#modal_alertEvasa').modal('show');
+                    location.reload();
+                });
+            }
+        }
+    }
+
+    /*function evadi_articolo1(){
         dorig = document.getElementById('modal_controllo_dorig').value;
         $('#modal_evadi_riga_'+dorig).modal('show');
     }
@@ -1089,7 +1428,7 @@
             $('#modal_alertQuantita').modal('show');
 
     }
-
+*/
     function carica_articolo(){
 
         codice      =      $('#modal_Cd_AR').val();
@@ -1118,7 +1457,7 @@
         } else
             $('#modal_alertQuantita').modal('show');
     }
-    function modifica_articolo(){
+    /*function modifica_articolo(){
 
         codice      =      document.getElementById('codice').value;
         quantita    =      $('#modal_quantita_m').val();
@@ -1147,7 +1486,7 @@
         if(barcode != '') {
             top.location.href = '/nuovo_articolo?redirect=/magazzino/carico4/<?php echo $fornitore->Id_CF ?>/<?php echo $id_dotes ?>&barcode=' + barcode;
         }
-    }
+    }*/
 
     function cerca_articolo_smart(){
 
@@ -1256,21 +1595,21 @@
 
         }
     }
-
-    function invia(){
-        testo = 'Il documento (documento) è stato salvato.<br> Le righe del documento sono:';
-        <?php foreach($documento->righe as $r){ ?>
-            articolo = '<?php echo $r->Cd_AR?>';
+    /*
+        function invia(){
+            testo = 'Il documento (documento) è stato salvato.<br> Le righe del documento sono:';
+<?php foreach($documento->righe as $r){ ?>
+    articolo = '<?php echo $r->Cd_AR?>';
         quantita = '<?php echo $r->Qta?>';
         prezzo   = '<?php echo $r->PrezzoUnitarioV?>';
         testo = testo +'<br> Articolo '+ articolo +' quantita\' '+ Number.parseFloat(quantita).toFixed(2) +' prezzo '+ prezzo + '<br>';
         <?php } ?>
-        $.ajax({
-            url: "<?php echo URL::asset('ajax/invia_mail') ?>/<?php echo $id_dotes ?>/" + 3 + "/" + testo
+    $.ajax({
+        url: "<?php echo URL::asset('ajax/invia_mail') ?>/<?php echo $id_dotes ?>/" + 3 + "/" + testo
         }).done(function (result) {
 
         });
-    }
+    }*/
     function checkDoc(){
         segnalazioni = '<br>';
         <?php foreach($documento->righe as $r){ ?>

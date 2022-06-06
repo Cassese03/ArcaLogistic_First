@@ -921,15 +921,23 @@ class AjaxController extends Controller{
                 $documento = 'PKS';
             if($r->Cd_DO == 'PKS')
                 $documento = 'CLP';
+            if($r->Cd_DO == 'OLI')
+                $documento = 'CP';
+            if($r->Cd_DO == 'OLE')
+                $documento = 'CP';
             $cd_ar = $r->Cd_AR;
 
+            if($r->Cd_DO == 'OLI' || $r->Cd_DO == 'OLE') {
+                $magazzino_A = $r->Cd_MG_A;
+                $ubicazione_A = $r->Cd_MGUbicazione_A;
+            }
             if($Id_DoTes == '') {
                 $Id_DoTes = DB::table('DOTes')->insertGetId(['Cd_CF' => $cd_cf, 'Cd_Do' => $documento]);
                 if ($magazzino != '0')
                     $insert_evasione['Cd_MG_P'] = $magazzino;
                 if ($magazzino_A != '0')
                     $insert_evasione['Cd_MG_A'] = $magazzino_A;
-                if ($ubicazione != '0')
+                if ($ubicazione != '0' && $ubicazione != '')
                     $insert_evasione['Cd_MGUbicazione_P'] = $ubicazione;
                 if ($ubicazione_A != '0')
                     $insert_evasione['Cd_MGUbicazione_A'] = $ubicazione_A;
@@ -1288,7 +1296,7 @@ class AjaxController extends Controller{
             <script type="text/javascript">
 
                 $('#modal_controllo_articolo').val('<?php echo $articolo->Cd_AR ?>');
-                $('#modal_controllo_quantita').val(<?php echo floatval($articolo->Qta) ?>);
+                $('#modal_controllo_quantita').val(1);
                 $('#modal_controllo_lotto').val('<?php echo $articolo->Cd_ARLotto ?>');
                 $('#modal_controllo_dorig').val('<?php echo $articolo->Id_DORig ?>');
 

@@ -26,7 +26,7 @@
 
                 <div class="row" style="height:750px;overflow-y: none;">
                     <div class="col-md-6">
-                        <div class="background bg-250" style="height:100%;" ><img src="img/background.png" alt="" style="height:100%;" ></div>
+                        <div class="background bg-250" style="height:70%;" ><img src="img/background.png" alt="" style="height:100%;" ></div>
                         <div class="w-100">
 
                             <img src="img/logo_arca.png" style="width:80%;padding:10%;margin:0 auto; display:block;">
@@ -37,9 +37,9 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" style="text-align:center;">
+                    <div class="col-md-6" style="margin-top: -150px;text-align: center">
                         <form method="post">
-						
+
                             <label style="font-size: medium;color: black">Username</label><br>
                             <input type="text" id="Utente" name="Utente" autocomplete="off"><br>
 

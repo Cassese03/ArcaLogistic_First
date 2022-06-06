@@ -71,6 +71,24 @@
                             </li>
 
                             <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico3/15700/OLI') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>OLI</h5>
+                                        <p>Scegli OLI da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico3/15700/OLE') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>OLE</h5>
+                                        <p>Scegli OLE da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/PKS') ?>" class="media">
                                     <div class="media-body">
                                         <h5>Cerca in PKS</h5>
