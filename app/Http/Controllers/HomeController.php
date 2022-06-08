@@ -735,7 +735,7 @@ class HomeController extends Controller{
                                                         WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
                                                         from DORig
                                                         where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
-                                                        ORDER BY QtaEvadibile DESC');
+                                                        ORDER BY Giacenza DESC');
              //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
 
             foreach ($documento->righe as $r)
@@ -743,12 +743,6 @@ class HomeController extends Controller{
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
             }
             $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
-            /* $totali_documento = DB::select('SELECT * from DoTotali where Id_DoTes = \''.$id_dotes.'\'');
-             if(sizeof($totali_documento) > 0) {
-                 $documento->imponibile = $totali_documento[0]->TotImponibileE;
-                 $documento->imposta = $totali_documento[0]->TotImpostaE;
-                 $documento->totale = $totali_documento[0]->TotaPagareE;
-             }*/
             $articolo = DB::select('SELECT Cd_AR from DORig where Id_DoTes in ('.$id_dotes.') group by Cd_AR');
             $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
             return View::make('carico_magazzino4', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe'));
@@ -802,7 +796,7 @@ class HomeController extends Controller{
                                                         WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
                                                         from DORig
                                                         where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
-                                                        ORDER BY QtaEvadibile DESC');
+                                                        ORDER BY Giacenza DESC');
             foreach ($documento->righe as $r)
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');

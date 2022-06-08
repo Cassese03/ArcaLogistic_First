@@ -532,7 +532,7 @@
         </form>
         <header class="row m-0 fixed-header">
             <div class="left">
-                <a style="padding-left:20px;" href="/magazzino" ><i class="material-icons">arrow_back_ios</i></a>
+                <a style="padding-left:20px;" href="/magazzino/carico3/<?php echo $fornitore->Id_CF?>/<?php echo $documento->Cd_Do?>" ><i class="material-icons">arrow_back_ios</i></a>
             </div>
             <div class="col center">
                 <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Aggiungi Articoli</a>
@@ -550,7 +550,7 @@
                 <div class="w-100">
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
-                <div class="form-check" style="margin-top: -30px!important;">
+                <div class="form-check" style="margin-top: -15px!important;">
                 <!--
                     <label class="switch">
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
@@ -558,7 +558,7 @@
                     </label>
                     -->
                     <br>
-                    <label style="font-weight: bold;margin: -20px auto 0 auto;">Evasione Manuale</label>
+                    <label style="font-weight: bold;margin: auto auto 0 auto;">Evasione Manuale</label>
                     <div class="button r" id="button-1">
                         <input type="checkbox" class="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
                         <div class="knobs"></div>
@@ -584,19 +584,19 @@
 
                 <div style="position: sticky; top:0;z-index: 500;background-color: white;">
                     <div class="row">
-                        <div class="col-2" style="margin-left: 10px;text-align: center">
+                        <div class="col-2" style="margin-left:-5px;text-align: center">
                             <h6>&nbsp;Articolo</h6>
                         </div>
-                        <div class="col-2" style="margin-left: 10px;text-align: right">
+                        <div class="col-2" style="margin-left:-5px;text-align: right">
                             <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
                         </div>
-                        <div class="col-2" style="margin-left: 10px;text-align: center">
+                        <div class="col-2" style="margin-left:-5px;text-align: center">
                             <h6>Giac</h6>
                         </div>
-                        <div class="col-2" style="margin-left: 10px;text-align: left">
+                        <div class="col-2" style="margin-left:-5px;text-align: left">
                             <h6>Ubic</h6>
                         </div>
-                        <div class="col-2" style="margin-left: 10px;text-align: center;margin-left:-5px">
+                        <div class="col-2" style="margin-left:-5px;text-align: center;margin-left:-5px">
                             <h6>Evadendo</h6>
                         </div>
                         <div class="col-2">
