@@ -1166,11 +1166,14 @@ class AjaxController extends Controller{
         $articoli = DB::select('SELECT * FROM DoRig WHERE  Id_DoRig = \''.$id_dorig.'\'  Order By QtaEvadibile DESC');
         if(sizeof($articoli)>'1')
             $articoli = $articoli[0];
+        $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$articoli->Cd_AR.'\' ');
         foreach($articoli as $articolo){ ?>
 
             <script type="text/javascript">
 
                 $('#modal_controllo_articolo').val('<?php echo $articolo->Cd_AR ?>');
+                $('#modal_controllo_descrizione').val('<?php echo $articoli1[0]->Descrizione ?>');
+                $('#modal_controllo_ordine').val('<?php echo $articolo->NumeroDoc ?>');
                 $('#modal_controllo_quantita').val(<?php echo floatval($articolo->Qta) ?>);
                 $('#modal_controllo_lotto').val('<?php echo $articolo->Cd_ARLotto ?>');
                 $('#modal_controllo_dorig').val('<?php echo $articolo->Id_DORig ?>');
@@ -1225,12 +1228,15 @@ class AjaxController extends Controller{
         $articoli = DB::select('SELECT * FROM DoRig WHERE Cd_AR = \''.$q.'\' and Id_DoTes in ('.$id_dotes.') Order By QtaEvadibile DESC');
         if(sizeof($articoli)>'1')
             $articoli = $articoli[0];
+        $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
         foreach($articoli as $articolo){ ?>
 
             <script type="text/javascript">
 
                 $('#modal_controllo_articolo').val('<?php echo $articolo->Cd_AR ?>');
                 $('#modal_controllo_quantita').val(1);
+                $('#modal_controllo_descrizione').val('<?php echo $articoli1[0]->Descrizione ?>');
+                $('#modal_controllo_ordine').val('<?php echo $articolo->NumeroDoc ?>');
                 $('#modal_controllo_lotto').val('<?php echo $articolo->Cd_ARLotto ?>');
                 $('#modal_controllo_dorig').val('<?php echo $articolo->Id_DORig ?>');
 

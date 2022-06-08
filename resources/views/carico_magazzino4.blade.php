@@ -551,7 +551,7 @@
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
                 <div class="form-check" style="margin-top: -15px!important;">
-                <!--
+                    <!--
                     <label class="switch">
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
                         <span class="slider round"></span>
@@ -596,7 +596,7 @@
                         <div class="col-2" style="margin-left:-5px;text-align: left">
                             <h6>Ubic</h6>
                         </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: center;margin-left:-5px">
+                        <div class="col-2" style="margin-left:-5px;text-align: center">
                             <h6>Evadendo</h6>
                         </div>
                         <div class="col-2">
@@ -625,7 +625,8 @@
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
                                                     </div>
                                                     <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo number_format($r->Giacenza,2)?></h5>
+                                                        <h5 style="padding-top :10px;" ><?php echo number_format($r->Giacenza,2)?></h5>
+                                                        <input type="hidden" id="giacenza_<?php echo $r->Id_DORig ?>" value="<?php echo number_format($r->Giacenza,2)?>">
                                                     </div>
                                                     <div class="col-2" style="text-align: center">
                                                         <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
@@ -645,7 +646,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!--
+                                            <!--
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
                                                 <form  method="post" onsubmit="return confirm('Vuoi Eliminare Questa Riga ?')">
                                                     <input type="hidden" id="codice" value="<?php echo $r->Cd_AR ?>">
@@ -764,14 +765,20 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="ajax_lista_articoli"></div>
+                <div id="ajax_lista_articoli"></div>
                 <div class="modal-body">
+
+                    <label>Numero Ordine</label>
+                    <input class="form-control" type="text" id="modal_controllo_ordine" value=""  autocomplete="off" readonly>
 
                     <label>Articolo</label>
                     <input class="form-control" type="text" id="modal_controllo_articolo" value=""  autocomplete="off" readonly>
 
+                    <label>Descrizione</label>
+                    <input class="form-control" type="text" id="modal_controllo_descrizione" value=""  autocomplete="off" readonly>
+
                     <label>Quantita</label>
-                    <input class="form-control" type="text" id="modal_controllo_quantita" value="1"   autocomplete="off">
+                    <input class="form-control" type="number" id="modal_controllo_quantita" step="0.00" value="1" autocomplete="off">
 
                     <input class="form-control" type="hidden" id="modal_controllo_lotto" value=""  autocomplete="off" readonly>
 
@@ -1034,7 +1041,7 @@
                     <input type="hidden" id="modal_codice_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR?>">
                     <input type="hidden" id="modal_ubicazione_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_MGUbicazione_A?>">
                     <input type="hidden" id="modal_lotto_<?php  echo $r->Id_DORig ?>" value="<?php if($r->Cd_ARLotto!=null)echo $r->Cd_ARLotto; else echo '0'?>">
-                <!--
+                    <!--
 
                     <input type="hidden" id="modal_PrezzoUnitarioV_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->PrezzoUnitarioV ?>">
 -->
@@ -1145,6 +1152,13 @@
     </div>
 </div>
 
+<div class="modal" id="modal_alertQuantitaTroppo1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="alert alert-warning alert-dismissible fade show">
+        <button type="button" class="close"  onclick="$('#modal_alertQuantitaTroppo1').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <strong>Alert!</strong> <br>Impossibile Evadere più della Giacenza  </a>.
+    </div>
+</div>
+
 <div class="modal" id="modal_alertTrovare" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
         <button type="button" class="close"  onclick="$('#modal_alertTrovare').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
@@ -1252,55 +1266,59 @@
             return;
         }
         qta = 1;
-        if(conf != '1'){
-            document.getElementById('cerca_articolo2').value = '';
+        if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
-            qtaevadibile = document.getElementById('evadibile_'+text).value;
-            dorig = document.getElementById('DORIG').value;
-            if(dorig.search(text)==(-1)) {
-                righe = document.getElementById('button').value;
-                righe++;
-                document.getElementById('button').value = righe;
-                if (dorig != '')
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '='+ qta;
-                if (dorig == '')
-                    document.getElementById('DORIG').value = text + '='+ qta;
-            }
-            else {/*
+            giacenza = document.getElementById('giacenza_' + text).value;
+            if(giacenza >= qta ){
+                document.getElementById('cerca_articolo2').value = '';
+                text = document.getElementById('modal_controllo_dorig').value;
+                qtaevadibile = document.getElementById('evadibile_' + text).value;
+                dorig = document.getElementById('DORIG').value;
+                if (dorig.search(text) == (-1)) {
+                    righe = document.getElementById('button').value;
+                    righe++;
+                    document.getElementById('button').value = righe;
+                    if (dorig != '')
+                        document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
+                    if (dorig == '')
+                        document.getElementById('DORIG').value = text + '=' + qta;
+                } else {/*
                 $('#modal_alertEvasione').modal('show');
                 return;*/
-                qtaevadibile = document.getElementById('evadibile_'+text).value;
-                pos = dorig.search(text);
-                pos = pos + text.length;
-                pos++;
-                qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
-                if(qta <= qtaevadibile ){
-                    dopo = document.getElementById('DORIG').value.substr(parseInt(pos)+parseInt(2));
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0,pos--) + qta ;
+                    qtaevadibile = document.getElementById('evadibile_' + text).value;
+                    giacenza = document.getElementById('giacenza_' + text).value;
+                    pos = dorig.search(text);
+                    pos = pos + text.length;
+                    pos++;
+                    qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                    if (qta <= qtaevadibile) {
+                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
+                    } else {
+                        $('#modal_alertQuantitaTroppo').modal('show');
+                        return;
+                    }
                 }
-                else{
-                    $('#modal_alertQuantitaTroppo').modal('show');
-                    return;
+                document.getElementById('cerca_articolo2').focus();
+                /*righe = document.getElementById('button').value;
+                righe++;
+                document.getElementById('button').value = righe;*/
+                wow = document.getElementById('evasione_' + text).value;
+                wow++;
+                document.getElementById('evasione_' + text).value = wow;
+                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + wow;
+                document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                if (parseInt(wow) < parseInt(qtaevadibile)) {
+                    document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                    document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+                } else {
+                    document.getElementById('riga_' + text).style.backgroundColor = 'green';
+                    document.getElementById('evasione_' + text).style.backgroundColor = 'green';
                 }
+            }else {
+                $('#modal_alertQuantitaTroppo1').modal('show');
+                return;
             }
-            document.getElementById('cerca_articolo2').focus();
-            /*righe = document.getElementById('button').value;
-            righe++;
-            document.getElementById('button').value = righe;*/
-            wow = document.getElementById('evasione_'+text).value;
-            wow++;
-            document.getElementById('evasione_'+text).value = wow;
-            document.getElementById('evasione_'+text).innerHTML ='Righe in Evasione : '+ wow;
-            document.getElementById('button').innerHTML = 'Evadi Righe ('+righe+')';
-            if(wow < qtaevadibile) {
-                document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
-                document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
-            }
-            else{
-                document.getElementById('riga_' + text).style.backgroundColor = 'green';
-                document.getElementById('evasione_' + text).style.backgroundColor = 'green';
-            }
-
         }
         else {
             dorig = document.getElementById('DORIG').value;
@@ -1323,48 +1341,53 @@
     }
     function evadi_articolo(conf){
         qta = document.getElementById('modal_controllo_quantita').value;
-        if(conf != '1'){
-            document.getElementById('cerca_articolo2').value = '';
+        if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
-            qtaevadibile = document.getElementById('evadibile_'+text).value;
-            dorig = document.getElementById('DORIG').value;
-            if(dorig.search(text)==(-1)) {
-                righe = document.getElementById('button').value;
-                righe++;
-                document.getElementById('button').value = righe;
-                if (dorig != '')
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '='+ qta;
-                if (dorig == '')
-                    document.getElementById('DORIG').value = text + '='+ qta;
-            }
-            else {
-                qtaevadibile = document.getElementById('evadibile_'+text).value;
-                pos = dorig.search(text);
-                pos = pos + text.length;
-                pos++;
-                qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
-                if(qta <= qtaevadibile ){
-                    dopo = document.getElementById('DORIG').value.substr(parseInt(pos)+parseInt(2));
-                    document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0,pos--) + qta ;
+            giacenza = document.getElementById('giacenza_' + text).value
+            if(parseInt(giacenza) >= parseInt(qta) ){
+                document.getElementById('cerca_articolo2').value = '';
+                text = document.getElementById('modal_controllo_dorig').value;
+                qtaevadibile = document.getElementById('evadibile_' + text).value;
+                dorig = document.getElementById('DORIG').value;
+                if (qta <= qtaevadibile) {
+                    if (dorig.search(text) == (-1)) {
+                        righe = document.getElementById('button').value;
+                        righe++;
+                        document.getElementById('button').value = righe;
+                        if (dorig != '')
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
+                        if (dorig == '')
+                            document.getElementById('DORIG').value = text + '=' + qta;
+                    }} else {
+                    qtaevadibile = document.getElementById('evadibile_' + text).value;
+                    pos = dorig.search(text);
+                    pos = pos + text.length;
+                    pos++;
+                    qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                    if (qta <= qtaevadibile) {
+                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
+                    } else {
+                        $('#modal_alertQuantitaTroppo').modal('show');
+                        return;
+                    }
                 }
-                else{
-                    $('#modal_alertQuantitaTroppo').modal('show');
-                    return;
+                document.getElementById('cerca_articolo2').focus();
+                document.getElementById('evasione_' + text).value = qta;
+                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                if (parseInt(qta) < parseInt(qtaevadibile)) {
+                    document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                    document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+                } else {
+                    document.getElementById('riga_' + text).style.backgroundColor = 'green';
+                    document.getElementById('evasione_' + text).style.backgroundColor = 'green';
                 }
-            }
-            document.getElementById('cerca_articolo2').focus();
-            document.getElementById('evasione_'+text).value = qta;
-            document.getElementById('evasione_'+text).innerHTML ='Righe in Evasione : '+ qta;
-            document.getElementById('button').innerHTML = 'Evadi Righe ('+righe+')';
-            if(qta < qtaevadibile) {
-                document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
-                document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
-            }
-            else{
-                document.getElementById('riga_' + text).style.backgroundColor = 'green';
-                document.getElementById('evasione_' + text).style.backgroundColor = 'green';
-            }
+            }else{
+                $('#modal_alertQuantitaTroppo1').modal('show');
+                return;
 
+            }
         }
         else {
             dorig = document.getElementById('DORIG').value;
