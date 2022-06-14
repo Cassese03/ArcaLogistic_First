@@ -736,7 +736,66 @@ class HomeController extends Controller{
                                                         from DORig
                                                         where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
                                                         ORDER BY Giacenza DESC');
-             //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
+            //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
+
+            foreach ($documento->righe as $r)
+            {
+                $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
+            }
+            $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
+            $articolo = DB::select('SELECT Cd_AR from DORig where Id_DoTes in ('.$id_dotes.') group by Cd_AR');
+            $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
+            return View::make('carico_magazzino4', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe'));
+
+        }
+
+    }
+    public function carico_magazzino_pks($id_fornitore,$id_dotes,Request $request){
+        if(!session()->has('utente')) {
+            return Redirect::to('login');
+        }
+        $dati = $request->all();
+        if(isset($dati['elimina_riga'])){
+            DB::table('DoRig')->where('Id_DORig',$dati['Id_DORig'])->delete();
+        }
+        if(isset($dati['modifica_riga'])){
+
+            unset($dati['modifica_riga']);
+            $id_riga = $dati['Id_DORig'];
+            unset($dati['Id_DORig']);
+            unset($dati['modal_lotto_m']);/*
+            $dati['Cd_MGUbicazione_A'] = $dati['modal_ubicazione_A_m'];
+            unset($dati['modal_ubicazione_A_m']);
+
+            if($dati['Cd_MGUbicazione_A']=='')
+            {
+                unset($dati['Cd_MGUbicazione_A']);
+            }*/
+
+
+            DB::table('DoRig')->where('Id_DoRig',$id_riga)->update(['Cd_ARLotto'=>Null]);
+            DB::table('DoRig')->where('Id_DoRig',$id_riga)->update(['Cd_MGUbicazione_A'=>Null]);
+
+            DB::table('DoRig')->where('Id_DORig',$id_riga)->update($dati);
+
+            DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = $id_dotes");
+            DB::statement("exec asp_DO_End $id_dotes");
+        }
+
+        $fornitori= DB::select('SELECT * from CF where Id_CF = '.$id_fornitore);
+        $documenti = DB::select('SELECT * from DOTes where Id_DoTes in ('.$id_dotes.')');
+        $cd_do = DB::select('SELECT * from DOTes where Id_DoTes  in ('.$id_dotes.')')[0]->Cd_Do;
+        if(sizeof($fornitori) > 0){
+            $fornitore = $fornitori[0];
+            $date = date('Y/m/d',strtotime('today')) ;
+            foreach($documenti as $documento)
+                $documento->righe = DB::select('SELECT *,Giacenza = (SELECT sum(MGMov.QuantitaSign) from
+                                                        MGMov
+                                                        WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
+                                                        from DORig
+                                                        where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
+                                                        ORDER BY Giacenza DESC');
+            //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
 
             foreach ($documento->righe as $r)
             {

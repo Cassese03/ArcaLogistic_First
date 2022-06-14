@@ -45,6 +45,7 @@ Route::any('magazzino/carico2/{cd_do}', 'HomeController@carico_magazzino2');
 Route::any('magazzino/carico3/{id_fornitore}/{cd_do}', 'HomeController@carico_magazzino3');
 Route::any('magazzino/carico3_tot/{id_fornitore}/{cd_do}', 'HomeController@carico_magazzino3_tot');
 Route::any('magazzino/carico4/{id_fornitore}/{id_dotes}', 'HomeController@carico_magazzino4');
+Route::any('magazzino/caricopks/{id_fornitore}/{id_dotes}', 'HomeController@carico_magazzino_pks');
 Route::any('magazzino/carico00/{articolo}/{id_dotes}', 'HomeController@carico_magazzino00');
 Route::any('magazzino/carico1/{cd_do}', 'HomeController@carico_magazzino1');
 Route::any('magazzino/carico02/{cd_do}', 'HomeController@carico_magazzino02');

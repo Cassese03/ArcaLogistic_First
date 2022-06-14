@@ -1,7 +1,7 @@
 <?php $magazzino_prova = DB::select('SELECT MG.*,MGUbicazione.Cd_MGUbicazione from MG LEFT JOIN MGUbicazione on MGUbicazione.Cd_MG = MG.Cd_MG'); ?>
 <?php $magazzino_ord = DB::select('SELECT * from MG '); //TODO MANCANO GLI ALERT?>
 <?php $evasione = 'false';?>
-    <!doctype html>
+<!doctype html>
 <html lang="en" class="md">
 
 <head>
@@ -551,7 +551,7 @@
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
                 <div class="form-check" style="margin-top: -15px!important;">
-                <!--
+                    <!--
                     <label class="switch">
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
                         <span class="slider round"></span>
@@ -582,71 +582,65 @@
                 <input type="hidden" id="lung" value="0">
                 <?php if(sizeof($documento->righe) > 0){ ?>
 
-                <div style="position: sticky; top:0;z-index: 500;background-color: white;">
-                    <div class="row">
-                        <div class="col-2" style="margin-left:-5px;text-align: center">
-                            <h6>&nbsp;Articolo</h6>
-                        </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: right">
-                            <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
-                        </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: center">
-                            <h6>Giac</h6>
-                        </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: left">
-                            <h6>Ubic</h6>
-                        </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: center">
-                            <h6>Evadendo</h6>
-                        </div>
-                        <div class="col-2">
+                    <div style="position: sticky; top:0;z-index: 500;background-color: white;">
+                        <div class="row">
+                            <div class="col-2" style="margin-left:-5px;text-align: center">
+                                <h6>&nbsp;Articolo</h6>
+                            </div>
+                            <div class="col-2" style="margin-left:-5px;text-align: right">
+                                <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
+                            </div>
 
+                            <div class="col-2" style="margin-left:-5px;text-align: left">
+                                <h6>Ubic</h6>
+                            </div>
+                            <div class="col-2" style="margin-left:-5px;text-align: center">
+                                <h6>Evadendo</h6>
+                            </div>
+                            <div class="col-2">
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
+                    <div class="row">
 
-                    <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:5px;">
+                        <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:5px;">
 
-                        <ul class="list-group">
+                            <ul class="list-group">
 
-                            <?php foreach($documento->righe as $r){ $totale = 0; ?>
-                            <?php if($r->QtaEvadibile>0){?>
-                            <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
-                                <a href="#" onclick="" class="media">
-                                    <div class="media-body" >
-                                        <div class="row" >
-                                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                                <div class="row">
-                                                    <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_AR;?></h5>
-                                                    </div>
-                                                    <div class="col-2" style="text-align: right">
-                                                        <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
-                                                    </div>
-                                                    <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;" ><?php echo number_format($r->Giacenza,2)?></h5>
-                                                        <input type="hidden" id="giacenza_<?php echo $r->Id_DORig ?>" value="<?php echo number_format($r->Giacenza,2)?>">
-                                                    </div>
-                                                    <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
-                                                    </div>
-                                                    <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;<?php if($r->QtaEvadibile > $r->Giacenza) echo  'background-color: #ff8080 '?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
-                                                    </div>
-                                                    <div class="col-2" style="padding-right: 25px">
-                                                        <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
-                                                            <i class="bi bi-check-circle">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                                                </svg>
-                                                            </i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <!--
+                                <?php foreach($documento->righe as $r){ $totale = 0; ?>
+                                    <?php if($r->QtaEvadibile>0){?>
+                                        <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;">
+                                            <a href="#" onclick="" class="media">
+                                                <div class="media-body" >
+                                                    <div class="row" >
+                                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-2" style="text-align: center">
+                                                                    <h5 style="padding-top :10px;"><?php echo $r->Cd_AR;?></h5>
+                                                                </div>
+                                                                <div class="col-2" style="text-align: right">
+                                                                    <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
+                                                                </div>
+                                                                <div class="col-2" style="text-align: center">
+                                                                    <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
+                                                                </div>
+                                                                <div class="col-2" style="text-align: center">
+                                                                    <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
+                                                                </div>
+                                                                <div class="col-2" style="padding-right: 25px">
+                                                                    <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
+                                                                        <i class="bi bi-check-circle">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                                                <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                                                            </svg>
+                                                                        </i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
                                                 <form  method="post" onsubmit="return confirm('Vuoi Eliminare Questa Riga ?')">
                                                     <input type="hidden" id="codice" value="<?php echo $r->Cd_AR ?>">
@@ -685,40 +679,40 @@
 
                                             </div>
                                             -->
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <?php } ?>
-                            <?php } ?>
-                        </ul>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                <?php } ?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
 
                 <?php } ?>
                 <?php if(sizeof($documento->righe) >= 0){?>
-                <div class="row">
-                    <button style="width:18%;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">
-                        <i class="bi bi-save2-fill">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2-fill" viewBox="0 0 16 16">
-                                <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
-                            </svg>
-                        </i>
-                    </button>
+                    <div class="row">
+                        <button style="width:18%;display:block;background-color:#007bff;border: #007bff" class="btn btn-primary" onclick="$('#modal_salva_documento').modal('show');">
+                            <i class="bi bi-save2-fill">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2-fill" viewBox="0 0 16 16">
+                                    <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
+                                </svg>
+                            </i>
+                        </button>
 
-                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
+                        <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
 
-                    <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
-                        <i class="bi bi-plus-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                        </i>
-                    </button>
+                        <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
+                            <i class="bi bi-plus-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </i>
+                        </button>
 
-                </div>
+                    </div>
                 <?php } ?>
             </div>
         </div>
@@ -835,11 +829,11 @@
                 <div class="modal-body" id="ajax_lista_documenti_1">
                 </div>
                 <?php foreach($documento->righe as $r) {?>
-                <input type="hidden" name="modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>" id="modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>">
-                <input type="hidden" name="modal_Cd_AR_c_<?php echo $r->Id_DORig?>" id="modal_Cd_AR_c_<?php echo $r->Id_DORig?>">
-                <input type="hidden" name="modal_Qta_c_<?php echo $r->Id_DORig?>" id="modal_Qta_c_<?php echo $r->Id_DORig?>">
-                <input type="hidden" name="modal_QtaEvasa_c_<?php echo $r->Id_DORig?>" id="modal_Qta_c_<?php echo $r->Id_DORig?>">
-                <input type="hidden" name="modal_Prezzo_c_<?php echo $r->Id_DORig?>" id="modal_Prezzo_c_<?php echo $r->Id_DORig?>">
+                    <input type="hidden" name="modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>" id="modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>">
+                    <input type="hidden" name="modal_Cd_AR_c_<?php echo $r->Id_DORig?>" id="modal_Cd_AR_c_<?php echo $r->Id_DORig?>">
+                    <input type="hidden" name="modal_Qta_c_<?php echo $r->Id_DORig?>" id="modal_Qta_c_<?php echo $r->Id_DORig?>">
+                    <input type="hidden" name="modal_QtaEvasa_c_<?php echo $r->Id_DORig?>" id="modal_Qta_c_<?php echo $r->Id_DORig?>">
+                    <input type="hidden" name="modal_Prezzo_c_<?php echo $r->Id_DORig?>" id="modal_Prezzo_c_<?php echo $r->Id_DORig?>">
                 <?php } ?>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_lista_salva').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
@@ -872,32 +866,32 @@
     </div>
 </div>
 <?php foreach($documento->righe as $r){ ?>
-<div class="modal" id="modal_segnalazione<?php echo $r->Id_DORig?>" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Segnalazione</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
-                        <span aria-hidden="true">×</span>
-                    </button>
+    <div class="modal" id="modal_segnalazione<?php echo $r->Id_DORig?>" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Segnalazione</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <input type="number" class="form-control" id="Segnala_riga" value="<?php echo $r->Id_DORig;?>" readonly><br>
+                        <input type="text" class="form-control" id="Segnalazione" value="" placeholder="Inserire Segnalazione..." autofocus autocomplete="off">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
+                        <button type="button" class="btn btn-primary" onclick="segnalazione();">Invia Segnalazione</button>
+                    </div>
+
                 </div>
-
-                <div class="modal-body">
-
-                    <input type="number" class="form-control" id="Segnala_riga" value="<?php echo $r->Id_DORig;?>" readonly><br>
-                    <input type="text" class="form-control" id="Segnalazione" value="" placeholder="Inserire Segnalazione..." autofocus autocomplete="off">
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
-                    <button type="button" class="btn btn-primary" onclick="segnalazione();">Invia Segnalazione</button>
-                </div>
-
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 <?php } ?>
 <?php /*
 <div class="modal" id="modal_lista_articoli" tabindex="-1" role="dialog" aria-hidden="true">
@@ -976,87 +970,87 @@
 </div>
 
 <?php foreach($documento->righe as $r ) { ?>
-<div class="modal" id="modal_modifica_<?php  echo $r->Id_DORig ?>" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modifica Articolo <?php echo $r->Cd_AR ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_modifica_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
-                        <span aria-hidden="true">×</span>
-                    </button>
+    <div class="modal" id="modal_modifica_<?php  echo $r->Id_DORig ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modifica Articolo <?php echo $r->Cd_AR ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_modifica_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ajax_modal_modifica"></div>
+
+                        <label>Quantita</label>
+                        <input class="form-control" type="number" name="Qta" value="<?php echo floatval($r->Qta) ?>" required placeholder="Inserisci una Quantità" autocomplete="off" step="0.01">
+
+                        <label>Quantita Evadibile</label>
+                        <input class="form-control" type="number" name="QtaEvadibile" value="<?php echo floatval($r->QtaEvadibile) ?>" required placeholder="Inserisci una Quantità" autocomplete="off" step="0.01" >
+
+                        <label>Prezzo</label>
+                        <input class="form-control" type="number" name="PrezzoUnitarioV" value="<?php echo round(floatval($r->PrezzoUnitarioV), 2); ?>" required placeholder="Inserisci un Prezzo" autocomplete="off" step="0.01" >
+
+                        <input class="form-control" type="hidden" name="modal_lotto_m" value="0"  autocomplete="off" >
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="Id_DORig" value="<?php echo $r->Id_DORig ?>">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_modifica_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
+                        <button type="submit" name="modifica_riga" value="Salva" class="btn btn-primary">Salva</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div id="ajax_modal_modifica"></div>
-
-                    <label>Quantita</label>
-                    <input class="form-control" type="number" name="Qta" value="<?php echo floatval($r->Qta) ?>" required placeholder="Inserisci una Quantità" autocomplete="off" step="0.01">
-
-                    <label>Quantita Evadibile</label>
-                    <input class="form-control" type="number" name="QtaEvadibile" value="<?php echo floatval($r->QtaEvadibile) ?>" required placeholder="Inserisci una Quantità" autocomplete="off" step="0.01" >
-
-                    <label>Prezzo</label>
-                    <input class="form-control" type="number" name="PrezzoUnitarioV" value="<?php echo round(floatval($r->PrezzoUnitarioV), 2); ?>" required placeholder="Inserisci un Prezzo" autocomplete="off" step="0.01" >
-
-                    <input class="form-control" type="hidden" name="modal_lotto_m" value="0"  autocomplete="off" >
-
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="Id_DORig" value="<?php echo $r->Id_DORig ?>">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_modifica_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
-                    <button type="submit" name="modifica_riga" value="Salva" class="btn btn-primary">Salva</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 <?php } ?>
 
 <?php foreach($documento->righe as $r ) { ?>
-<div class="modal" id="modal_evadi_riga_<?php  echo $r->Id_DORig ?>" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="post">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Evadi Articolo <?php echo $r->Cd_AR ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_evadi_riga_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="ajax_modal_evadi_riga_<?php  echo $r->Id_DORig ?>"></div>
+    <div class="modal" id="modal_evadi_riga_<?php  echo $r->Id_DORig ?>" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Evadi Articolo <?php echo $r->Cd_AR ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_evadi_riga_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ajax_modal_evadi_riga_<?php  echo $r->Id_DORig ?>"></div>
 
-                    <label>Quantita</label>
-                    <input class="form-control" type="number" id="modal_Qta_<?php  echo $r->Id_DORig ?>" min="0" max="<?php echo floatval($r->QtaEvadibile)?>" value="<?php echo floatval($r->QtaEvadibile) ?>" required placeholder="Inserisci la Quantità da evadere" step="0.01">
-                    <br>
-                    <label>Documento da Evadere in :</label>
-                    <select style="width:100%;border:none;font-size:medium;background:transparent;" id="modal_inserimento_flusso_<?php  echo $r->Id_DORig ?>">
-                        <?php foreach($flusso as $f){ ?>
-                        <option class="form-control" type="text"  value="<?php echo $f->Cd_DO ?>" ><?php echo $f->Cd_DO ?></option>
-                        <?php } ?>
-                    </select>
-                    <br><br>
-                    <input type="hidden" id="modal_inserimento_magazzino_<?php echo $r->Id_DORig?>" value="00001">
-                    <input type="hidden" id="modal_magazzino_<?php  echo $r->Id_DORig ?>" value="<?php if(str_replace(" ","",$documento->Cd_Do) == 'OF') echo $r->Cd_MG_A; if(str_replace(" ","",$documento->Cd_Do) == 'OC') echo $r->Cd_MG_P ;?>">
-                    <input type="hidden" id="modal_codice_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR?>">
-                    <input type="hidden" id="modal_ubicazione_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_MGUbicazione_A?>">
-                    <input type="hidden" id="modal_lotto_<?php  echo $r->Id_DORig ?>" value="<?php if($r->Cd_ARLotto!=null)echo $r->Cd_ARLotto; else echo '0'?>">
-                <!--
+                        <label>Quantita</label>
+                        <input class="form-control" type="number" id="modal_Qta_<?php  echo $r->Id_DORig ?>" min="0" max="<?php echo floatval($r->QtaEvadibile)?>" value="<?php echo floatval($r->QtaEvadibile) ?>" required placeholder="Inserisci la Quantità da evadere" step="0.01">
+                        <br>
+                        <label>Documento da Evadere in :</label>
+                        <select style="width:100%;border:none;font-size:medium;background:transparent;" id="modal_inserimento_flusso_<?php  echo $r->Id_DORig ?>">
+                            <?php foreach($flusso as $f){ ?>
+                                <option class="form-control" type="text"  value="<?php echo $f->Cd_DO ?>" ><?php echo $f->Cd_DO ?></option>
+                            <?php } ?>
+                        </select>
+                        <br><br>
+                        <input type="hidden" id="modal_inserimento_magazzino_<?php echo $r->Id_DORig?>" value="00001">
+                        <input type="hidden" id="modal_magazzino_<?php  echo $r->Id_DORig ?>" value="<?php if(str_replace(" ","",$documento->Cd_Do) == 'OF') echo $r->Cd_MG_A; if(str_replace(" ","",$documento->Cd_Do) == 'OC') echo $r->Cd_MG_P ;?>">
+                        <input type="hidden" id="modal_codice_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR?>">
+                        <input type="hidden" id="modal_ubicazione_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_MGUbicazione_A?>">
+                        <input type="hidden" id="modal_lotto_<?php  echo $r->Id_DORig ?>" value="<?php if($r->Cd_ARLotto!=null)echo $r->Cd_ARLotto; else echo '0'?>">
+                        <!--
 
                     <input type="hidden" id="modal_PrezzoUnitarioV_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->PrezzoUnitarioV ?>">
 -->
 
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" style="width: 33%" data-dismiss="modal" onclick="$('#modal_evadi_riga_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
+                        <button type="button" class="btn btn-primary" style="width: 33%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?>);" >Evadi</button>
+                        <?php //<button type="button" class="btn btn-primary" style="width: 38%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?><?php //);" >Nuovo Doc</button>?>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" style="width: 33%" data-dismiss="modal" onclick="$('#modal_evadi_riga_<?php  echo $r->Id_DORig ?>').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
-                    <button type="button" class="btn btn-primary" style="width: 33%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?>);" >Evadi</button>
-                    <?php //<button type="button" class="btn btn-primary" style="width: 38%" onclick="evadi_articolo2(<?php echo $r->Id_DORig; ?><?php //);" >Nuovo Doc</button>?>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 <?php } ?>
 
 <div class="modal" id="modal_segnalare" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1289,12 +1283,11 @@
         qta = 1;
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
-            giacenza = document.getElementById('giacenza_' + text).value;
+            qtaevadibile = document.getElementById('evadibile_' + text).value;
             evasione = document.getElementById('evasione_' + text).value;
-            if(giacenza >= (parseInt(evasione)+parseInt(qta)) ){
+            if(qtaevadibile >= (parseInt(evasione)+parseInt(qta)) ){
                 document.getElementById('cerca_articolo2').value = '';
                 text = document.getElementById('modal_controllo_dorig').value;
-                qtaevadibile = document.getElementById('evadibile_' + text).value;
                 dorig = document.getElementById('DORIG').value;
                 if (dorig.search(text) == (-1)) {
                     righe = document.getElementById('button').value;
@@ -1304,11 +1297,8 @@
                         document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
                     if (dorig == '')
                         document.getElementById('DORIG').value = text + '=' + qta;
-                } else {/*
-                $('#modal_alertEvasione').modal('show');
-                return;*/
-                    qtaevadibile = document.getElementById('evadibile_' + text).value;
-                    giacenza = document.getElementById('giacenza_' + text).value;
+                } else {
+
                     pos = dorig.search(text);
                     pos = pos + text.length;
                     pos++;
@@ -1322,9 +1312,6 @@
                     }
                 }
                 document.getElementById('cerca_articolo2').focus();
-                /*righe = document.getElementById('button').value;
-                righe++;
-                document.getElementById('button').value = righe;*/
                 wow = document.getElementById('evasione_' + text).value;
                 wow++;
                 document.getElementById('evasione_' + text).value = wow;
@@ -1365,11 +1352,10 @@
         qta = document.getElementById('modal_controllo_quantita').value;
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
-            giacenza = document.getElementById('giacenza_' + text).value
-            if(parseInt(giacenza) >= parseInt(qta) ){
+            qtaevadibile = document.getElementById('evadibile_' + text).value;
+            if(parseInt(qtaevadibile) >= parseInt(qta) ){
                 document.getElementById('cerca_articolo2').value = '';
                 text = document.getElementById('modal_controllo_dorig').value;
-                qtaevadibile = document.getElementById('evadibile_' + text).value;
                 dorig = document.getElementById('DORIG').value;
                 if (qta <= qtaevadibile) {
                     if (dorig.search(text) == (-1)) {
@@ -1664,7 +1650,7 @@
     function checkDoc(){
         segnalazioni = '<br>';
         <?php foreach($documento->righe as $r){ ?>
-            articolo = $('#modal_Cd_AR_c_<?php echo $r->Id_DORig?>').val();
+        articolo = $('#modal_Cd_AR_c_<?php echo $r->Id_DORig?>').val();
         quantita = $('#modal_Qta_c_<?php echo $r->Id_DORig?>').val();
         lotto    = $('#modal_Cd_ARLotto_c_<?php echo $r->Id_DORig?>').val();
         quantita_evasa = $('#modal_QtaEvasa_c_<?php echo $r->Id_DORig?>').val();

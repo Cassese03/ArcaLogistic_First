@@ -62,7 +62,7 @@
                     <?php  foreach($documenti as $do){ ?>
 
                     <li class="list-group-item">
-                        <a href="/magazzino/carico4/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
+                        <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
                             <div class="media-body">
                                 <div>
                                     <h5 style="text-align:left;float:left"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
