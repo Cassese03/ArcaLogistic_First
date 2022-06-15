@@ -61,16 +61,15 @@
 
                     <?php  foreach($documenti as $do){ ?>
 
-                    <li class="list-group-item">
-                        <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
-                            <div class="media-body">
-                                <div>
-                                    <h5 style="text-align:left;float:left"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
-                                    <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
-                                </div>
-                                <br>
-                                <p>Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
-
+                        <li class="list-group-item" <?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:red"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:green"'?>>
+                            <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
+                                <div class="media-body">
+                                    <div>
+                                        <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
+                                        <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
+                                    </div>
+                                    <br>
+                                    <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
                             </div>
                         </a>
                     </li>

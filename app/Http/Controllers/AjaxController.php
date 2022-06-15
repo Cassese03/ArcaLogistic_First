@@ -1185,29 +1185,6 @@ class AjaxController extends Controller{
     }
 
     public function controllo_articolo_smart($q,$id_dotes){
-/*
-        $decoder = new Decoder($delimiter = '');
-        $barcode = $decoder->decode($q);
-        $where = ' where 1=1 ';
-        foreach ($barcode->toArray()['identifiers'] as $field) {
-
-            if ($field['code'] == '01') {
-                $contenuto = trim($field['content'],'*,');
-                $where .= ' and Cd_AR Like \'%' . $contenuto . '%\'';
-
-            }
-            if ($field['code'] == '10') {
-                $where .= ' and Cd_ARLotto Like \'%' . $field['content'] . '%\'';
-
-            }
-            if ($field['code'] == '310') {
-                $decimali = floatval(substr($field['raw_content'],-2));
-                $qta = floatval(substr($field['raw_content'],0,4))+$decimali/100;
-                $where .= ' and Qta Like \'%' . $qta . '%\'';
-
-            }
-
-        }*/
         $q =  str_replace("-","/",$q);
         $q =  str_replace("slash","/",$q);
         //controllo se l'articolo esiste
@@ -1229,21 +1206,20 @@ class AjaxController extends Controller{
         if(sizeof($articoli)>'1')
             $articoli = $articoli[0];
         $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
-        foreach($articoli as $articolo){ ?>
+        ?>
 
             <script type="text/javascript">
 
-                $('#modal_controllo_articolo').val('<?php echo $articolo->Cd_AR ?>');
+                $('#modal_controllo_articolo').val('<?php echo $articoli->Cd_AR ?>');
                 $('#modal_controllo_quantita').val(1);
                 $('#modal_controllo_descrizione').val('<?php echo $articoli1[0]->Descrizione ?>');
-                $('#modal_controllo_ordine').val('<?php echo $articolo->NumeroDoc ?>');
-                $('#modal_controllo_lotto').val('<?php echo $articolo->Cd_ARLotto ?>');
-                $('#modal_controllo_dorig').val('<?php echo $articolo->Id_DORig ?>');
+                $('#modal_controllo_ordine').val('<?php echo $articoli->NumeroDoc ?>');
+                $('#modal_controllo_lotto').val('<?php echo $articoli->Cd_ARLotto ?>');
+                $('#modal_controllo_dorig').val('<?php echo $articoli->Id_DORig ?>');
 
 
             </script>
-
-        <?php }
+        <?php
 
     }
 
