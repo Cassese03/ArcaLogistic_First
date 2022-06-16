@@ -1184,7 +1184,64 @@ class AjaxController extends Controller{
         <?php }
     }
 
-    public function controllo_articolo_smart($q,$id_dotes){
+    public function controllo_articolo_smart($q,$id_dotes,$Id_DoRig){
+        $noId_DOrig = '';
+        $qta = $Id_DoRig;
+        while(strpos($Id_DoRig  ,'=')!= null) {
+            //echo 'Riga Iniziale '.$Id_DoRig.'<br>';
+            $delete = strpos($Id_DoRig, '=');
+            //echo 'Posizione Uguale = '.$delete.'<br>';
+            $new = substr($Id_DoRig, 0, $delete);
+            //echo 'Prima Riga = '.$new.'<br>';
+            $Id_DoRig = substr($Id_DoRig, $delete);
+            //echo 'Restante = '.$Id_DoRig.'<br>';
+            $pos_virgola = strpos($Id_DoRig, '\',\'');
+            //echo 'Posizione Virgola = '.$pos_virgola.'<br>';
+            $pos_virgola = intval($pos_virgola) + 3;
+            $Id_DoRig = substr($Id_DoRig, $pos_virgola);
+            //echo 'Restante '.$Id_DoRig.'<br>';
+            $Id_DoRig2 = $new;
+            if ($Id_DoRig != '')
+                $Id_DoRig2 .= '\',\'' . $Id_DoRig;
+            $Id_DoRig = $Id_DoRig2;
+            //echo 'Nuova Riga '.$Id_DoRig.'<br><br><br>';
+        }
+        //echo $Id_DoRig.'<br>';
+        $Id_DoRig = DB::SELECT('SELECT * FROM DORig WHERE Id_DOrig in(\''.$Id_DoRig.'\')');
+        foreach ($Id_DoRig as $i){
+            $pos = strpos($qta,$i->Id_DORig);
+            if($pos == 0)
+                $pos = strlen($i->Id_DORig);
+            $pos_virgola = strpos(substr($qta,$pos), ',');
+            //echo substr($qta,$pos).'<br>';
+            //echo 'Posizione Virgola ='.$pos_virgola.'<br>';
+            if($pos_virgola != '') {
+                $qta_riga = substr($qta, $pos++, $pos_virgola);
+                $qta_riga = str_replace('=', '', $qta_riga);
+                $qta_riga = str_replace($i->Id_DORig, '', $qta_riga);
+                $qta_riga = str_replace('\'', '', $qta_riga);
+                $Id_DoRig = $i->Id_DORig;
+            }
+            else
+            {
+                //echo $qta.'<br>';
+                $riga = substr($qta,$pos);
+                $pos_uguale = strpos(substr($qta,$pos), '=');
+                //echo 'Posizione Uguale = '.$pos_uguale.'<br>';
+                $qta_riga = substr($riga,$pos_uguale);
+                $qta_riga = str_replace('=', '', $qta_riga);
+                $qta_riga = str_replace('\'', '', $qta_riga);
+                $Id_DoRig = $i->Id_DORig;
+            }
+            //echo 'Riga '.$Id_DoRig.' Quantita '.$qta_riga.'<br><br><br>';
+
+            $qtadaEvadere = $qta_riga;
+            if($i->QtaEvadibile <= $qta_riga )
+                $noId_DOrig .=$i->Id_DORig.',' ;
+        }
+        $noId_DOrig = substr($noId_DOrig,0,intval(strlen($noId_DOrig))-intval(1));
+        //echo $noId_DOrig;
+
         $q =  str_replace("-","/",$q);
         $q =  str_replace("slash","/",$q);
         //controllo se l'articolo esiste
@@ -1202,10 +1259,18 @@ class AjaxController extends Controller{
             $q = $q[0]->Cd_AR;
         else
             $q = $c;
-        $articoli = DB::select('SELECT * FROM DoRig WHERE Cd_AR = \''.$q.'\' and Id_DoTes in ('.$id_dotes.') Order By QtaEvadibile DESC');
-        if(sizeof($articoli)>'1')
+        $cond = 'WHERE';
+        if($noId_DOrig != '')
+            $cond .= ' Id_DORig not in ('.$noId_DOrig.') and ';
+        $articoli = DB::select('SELECT * FROM DoRig '.$cond.' Cd_AR = \''.$q.'\' and Id_DoTes in ('.$id_dotes.') Order By QtaEvadibile DESC');
+        //echo $articoli[0]->Id_DORig;
+        if(sizeof($articoli)> 0)
             $articoli = $articoli[0];
-        $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
+        else{
+            echo 'Articolo non trovato';
+        }
+
+            $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
         ?>
 
             <script type="text/javascript">

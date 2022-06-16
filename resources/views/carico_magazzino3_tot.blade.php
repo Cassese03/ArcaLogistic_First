@@ -173,7 +173,7 @@
             if(dotes == '')
                 alert('Nessun Documento Selezionato');
             else
-                top.location.href = "/magazzino/carico4/<?php echo $fornitore->Id_CF ?>/"+dotes;
+                top.location.href = "/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/"+dotes;
         }
     }
     function crea_documento(){

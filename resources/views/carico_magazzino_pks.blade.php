@@ -1575,6 +1575,9 @@
     }
 
     function controllo_articolo_smart() {
+        dorig = document.getElementById('DORIG').value;
+        if(dorig == '')
+            dorig = 0;
         testo = $('#cerca_articolo2').val();
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
@@ -1585,7 +1588,7 @@
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes + "/" + dorig,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {
@@ -1604,7 +1607,9 @@
         }
     }
     function controllo_articolo_smart2(codice) {
-
+        dorig = document.getElementById('DORIG').value;
+        if(dorig == '')
+            dorig = 0;
         testo = codice;
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
@@ -1615,7 +1620,7 @@
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes+"/"+dorig,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {

@@ -551,7 +551,7 @@
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
                 <div class="form-check" style="margin-top: -15px!important;">
-                <!--
+                    <!--
                     <label class="switch">
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
                         <span class="slider round"></span>
@@ -646,7 +646,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!--
+                                            <!--
                                             <div class="col-xs-6 col-sm-6 col-md-6" style="padding-left: 10px">
                                                 <form  method="post" onsubmit="return confirm('Vuoi Eliminare Questa Riga ?')">
                                                     <input type="hidden" id="codice" value="<?php echo $r->Cd_AR ?>">
@@ -1041,7 +1041,7 @@
                     <input type="hidden" id="modal_codice_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR?>">
                     <input type="hidden" id="modal_ubicazione_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->Cd_MGUbicazione_A?>">
                     <input type="hidden" id="modal_lotto_<?php  echo $r->Id_DORig ?>" value="<?php if($r->Cd_ARLotto!=null)echo $r->Cd_ARLotto; else echo '0'?>">
-                <!--
+                    <!--
 
                     <input type="hidden" id="modal_PrezzoUnitarioV_<?php  echo $r->Id_DORig ?>" value="<?php echo $r->PrezzoUnitarioV ?>">
 -->
@@ -1291,10 +1291,10 @@
             text = document.getElementById('modal_controllo_dorig').value;
             giacenza = document.getElementById('giacenza_' + text).value;
             evasione = document.getElementById('evasione_' + text).value;
-            if(giacenza >= (parseInt(evasione)+parseInt(qta)) ){
+            qtaevadibile = document.getElementById('evadibile_' + text).value;
+            if(giacenza >= (parseInt(evasione)+parseInt(qta)) && (parseInt(evasione)+parseInt(qta)) <= qtaevadibile){
                 document.getElementById('cerca_articolo2').value = '';
                 text = document.getElementById('modal_controllo_dorig').value;
-                qtaevadibile = document.getElementById('evadibile_' + text).value;
                 dorig = document.getElementById('DORIG').value;
                 if (dorig.search(text) == (-1)) {
                     righe = document.getElementById('button').value;
@@ -1366,12 +1366,13 @@
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
             giacenza = document.getElementById('giacenza_' + text).value
-            if(parseInt(giacenza) >= parseInt(qta) ){
+            qtaevasione = document.getElementById('evasione_' + text).value;
+            qtaevadibile = document.getElementById('evadibile_' + text).value;
+
+            if(parseInt(giacenza) >= parseInt(qta) && parseInt(giacenza) >= (parseInt(qtaevasione)+parseInt(qta))){
                 document.getElementById('cerca_articolo2').value = '';
-                text = document.getElementById('modal_controllo_dorig').value;
-                qtaevadibile = document.getElementById('evadibile_' + text).value;
                 dorig = document.getElementById('DORIG').value;
-                if (qta <= qtaevadibile) {
+                if (parseInt(qta) <= parseInt(qtaevadibile)) {
                     if (dorig.search(text) == (-1)) {
                         righe = document.getElementById('button').value;
                         righe++;
@@ -1380,35 +1381,36 @@
                             document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
                         if (dorig == '')
                             document.getElementById('DORIG').value = text + '=' + qta;
-                    }} else {
-                    qtaevadibile = document.getElementById('evadibile_' + text).value;
-                    pos = dorig.search(text);
-                    pos = pos + text.length;
-                    pos++;
-                    qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
-                    if (qta <= qtaevadibile) {
-                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
-                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
-                    } else {
-                        $('#modal_alertQuantitaTroppo').modal('show');
-                        return;
                     }
-                }
-                document.getElementById('cerca_articolo2').focus();
-                document.getElementById('evasione_' + text).value = qta;
-                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
-                document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
-                if (parseInt(qta) < parseInt(qtaevadibile)) {
-                    document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
-                    document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
-                } else {
-                    document.getElementById('riga_' + text).style.backgroundColor = 'green';
-                    document.getElementById('evasione_' + text).style.backgroundColor = 'green';
-                }
-            }else{
+                    else {
+                        qtaevadibile = document.getElementById('evadibile_' + text).value;
+                        pos = dorig.search(text);
+                        pos = pos + text.length;
+                        pos++;
+                        qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                        if (qta <= qtaevadibile) {
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
+                        } else {
+                            $('#modal_alertQuantitaTroppo').modal('show');
+                            return;
+                        }
+                    }
+
+                    document.getElementById('cerca_articolo2').focus();
+                    document.getElementById('evasione_' + text).value = qta;
+                    document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                    document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                    if (parseInt(qta) < parseInt(qtaevadibile)) {
+                        document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                        document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+                    } else {
+                        document.getElementById('riga_' + text).style.backgroundColor = 'green';
+                        document.getElementById('evasione_' + text).style.backgroundColor = 'green';
+                    }
+                }}else{
                 $('#modal_alertQuantitaTroppo1').modal('show');
                 return;
-
             }
         }
         else {
@@ -1431,49 +1433,7 @@
         }
     }
 
-    /*function evadi_articolo1(){
-        dorig = document.getElementById('modal_controllo_dorig').value;
-        $('#modal_evadi_riga_'+dorig).modal('show');
-    }
-    function evadi_articolo(dorig){
 
-        codice          = $('#modal_codice_'+dorig).val();
-        documento       = $('#modal_inserimento_flusso_'+dorig).val();
-        magazzino_A     = $('#modal_inserimento_magazzino_'+dorig).val();
-        lotto           = $('#modal_lotto_'+dorig).val();
-        magazzino       = $('#modal_magazzino_'+dorig).val();
-        ubicazione      = $('#modal_ubicazione_'+dorig).val();
-        quantita_evasa  = $('#modal_Qta_'+dorig).val();
-        if(ubicazione != '') {
-            pos = ubicazione.indexOf(" - ");
-            pos = pos + 3 ;
-            magazzino_prova = ubicazione.substring(pos);
-            pos = pos - 3 ;
-            ubicazione = ubicazione.substring(0,pos);
-            if(magazzino_prova != magazzino_A.substring(0,5))
-                $('#modal_ubicazione').modal('show');
-        }else
-            ubicazione='0';
-        if(magazzino_A == null){
-            magazzino_A ='0';
-        }
-
-        if(quantita_evasa != ''||quantita_evasa == '0'){
-            $.ajax({
-                url: "<?php echo URL::asset('ajax/evadi_articolo')?>/"+dorig+"/"+quantita_evasa+"/"+magazzino.substring(0,5)+"/"+ubicazione+"/"+lotto+"/"+cd_cf+"/"+documento+"/"+codice+"/"+magazzino_A.substring(0,5)
-            }).done(function(result) {
-                if(result.length>1)
-                    $('#modal_alertQuantita0').modal('show');
-                else
-                    $('#modal_alertEvasa').modal('show');
-                location.reload();
-            });
-
-        } else
-            $('#modal_alertQuantita').modal('show');
-
-    }
-*/
     function carica_articolo(){
 
         codice      =      $('#modal_Cd_AR').val();
@@ -1591,6 +1551,8 @@
     function controllo_articolo_smart() {
         // prendere il dorig portarlo in controllo smart e confrontare la riga, se ci sono 3 dorig con lop stesso ar prendere quello con la qta disponibile
         dorig = document.getElementById('DORIG').value;
+        if(dorig == '')
+            dorig = 0;
         testo = $('#cerca_articolo2').val();
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
@@ -1601,7 +1563,7 @@
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes+ "/" + dorig,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {
@@ -1620,7 +1582,9 @@
         }
     }
     function controllo_articolo_smart2(codice) {
-
+        dorig = document.getElementById('DORIG').value;
+        if(dorig == '')
+            dorig = 0;
         testo = codice;
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
@@ -1631,7 +1595,7 @@
         if (testo != '') {
 
             $.ajax({
-                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes,
+                url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes + "/"+ dorig,
                 context: document.body
             }).done(function (result) {
                 if (result != '') {
