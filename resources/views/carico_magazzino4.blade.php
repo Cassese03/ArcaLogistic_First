@@ -632,7 +632,7 @@
                                                         <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
                                                     </div>
                                                     <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;<?php if($r->QtaEvadibile > $r->Giacenza) echo  'background-color: #ff8080 '?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
+                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
                                                     </div>
                                                     <div class="col-2" style="padding-right: 25px">
                                                         <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
@@ -1589,6 +1589,8 @@
     }
 
     function controllo_articolo_smart() {
+        // prendere il dorig portarlo in controllo smart e confrontare la riga, se ci sono 3 dorig con lop stesso ar prendere quello con la qta disponibile
+        dorig = document.getElementById('DORIG').value;
         testo = $('#cerca_articolo2').val();
         pos = testo.search('/');
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}

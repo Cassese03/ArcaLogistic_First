@@ -507,6 +507,22 @@ class HomeController extends Controller{
             // $documenti = DB::select(' SELECT TOP 10 * from DOTes where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\' and RigheEvadibili > \'0\' order by Id_DOTes DESC');
             $documenti = DB::select('SELECT TOP 10 *, Evadibile =
             (SELECT Evasione = CASE(
+            SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >  0 ,1,2)
+            FROM DORIG
+            WHERE DOTes.Id_DoTes = DORig.Id_DOTes) AS ciao
+            )
+            WHEN 1 THEN Case(SELECT DISTINCT top 1 Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) > 0 ,1,2)
+            FROM DORIG
+            WHERE DOTes.Id_DoTes = DORig.Id_DOTes
+            order by Righe_Evadibili desc) WHEN 1 THEN \'Evadibile\' WHEN 2 THEN \'Non Evadibile\' END
+            WHEN 2 THEN \'Parzialmente\'
+            ELSE \'Errore\'
+            END)
+            from DOTes
+            where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\' and RigheEvadibili > \'0\'
+            order by Id_DOTes DESC');
+            /*echo 'SELECT TOP 10 *, Evadibile =
+            (SELECT Evasione = CASE(
             SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >= QtaEvadibile,1,2)
             FROM DORIG
             WHERE DOTes.Id_DoTes = DORig.Id_DOTes) AS ciao
@@ -520,7 +536,7 @@ class HomeController extends Controller{
             END)
             from DOTes
             where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\' and RigheEvadibili > \'0\'
-            order by Id_DOTes DESC');
+            order by Id_DOTes DESC';*/
             $numero_documento = DB::select('SELECT MAX(numeroDoc)+1 as num from DOTes WHERE Cd_MGEsercizio = \'2022\' and Cd_DO = \''.$cd_do.'\' ')[0]->num;
             return View::make('carico_magazzino3',compact('fornitore','documenti','cd_do','numero_documento'));
 
@@ -534,11 +550,11 @@ class HomeController extends Controller{
             //$documenti = DB::select('SELECT * from DOTes where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\' and RigheEvadibili > \'0\' order by Id_DOTes DESC');
             $documenti = DB::select('SELECT *, Evadibile =
             (SELECT Evasione = CASE(
-            SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >= QtaEvadibile,1,2)
+            SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) > 0 ,1,2)
             FROM DORIG
             WHERE DOTes.Id_DoTes = DORig.Id_DOTes) AS ciao
             )
-            WHEN 1 THEN Case(SELECT DISTINCT top 1 Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >= QtaEvadibile,1,2)
+            WHEN 1 THEN Case(SELECT DISTINCT top 1 Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) > 0 ,1,2)
             FROM DORIG
             WHERE DOTes.Id_DoTes = DORig.Id_DOTes
             order by Righe_Evadibili desc) WHEN 1 THEN \'Evadibile\' WHEN 2 THEN \'Non Evadibile\' END
