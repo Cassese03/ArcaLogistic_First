@@ -1304,9 +1304,7 @@
                         document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
                     if (dorig == '')
                         document.getElementById('DORIG').value = text + '=' + qta;
-                } else {/*
-                $('#modal_alertEvasione').modal('show');
-                return;*/
+                } else {
                     qtaevadibile = document.getElementById('evadibile_' + text).value;
                     giacenza = document.getElementById('giacenza_' + text).value;
                     pos = dorig.search(text);
@@ -1322,9 +1320,6 @@
                     }
                 }
                 document.getElementById('cerca_articolo2').focus();
-                /*righe = document.getElementById('button').value;
-                righe++;
-                document.getElementById('button').value = righe;*/
                 wow = document.getElementById('evasione_' + text).value;
                 wow++;
                 document.getElementById('evasione_' + text).value = wow;

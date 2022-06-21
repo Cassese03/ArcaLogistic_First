@@ -48,18 +48,18 @@ class AjaxController extends Controller{
             $articoli = DB::select('SELECT [Id_AR],[Cd_AR],[Descrizione] FROM AR ' . $where . '  Order By Id_AR DESC');
         }
         if(sizeof($articoli)!='0')
-        foreach($articoli as $articolo){ ?>
+            foreach($articoli as $articolo){ ?>
 
-            <li class="list-group-item">
-                <a href="/modifica_articolo/<?php echo $articolo->Id_AR ?>" class="media">
-                    <div class="media-body">
-                        <h5><?php echo $articolo->Descrizione ?></h5>
-                        <p>Codice: <?php echo $articolo->Cd_AR ?></p>
-                    </div>
-                </a>
-            </li>
+                <li class="list-group-item">
+                    <a href="/modifica_articolo/<?php echo $articolo->Id_AR ?>" class="media">
+                        <div class="media-body">
+                            <h5><?php echo $articolo->Descrizione ?></h5>
+                            <p>Codice: <?php echo $articolo->Cd_AR ?></p>
+                        </div>
+                    </a>
+                </li>
 
-        <?php }
+            <?php }
 
 
     }
@@ -115,65 +115,65 @@ class AjaxController extends Controller{
             </li>
         <?php }
     }
-/*
-    public function storialotto($articolo,$lotto){
-        $lotto1 = DB::SELECT('SELECT * FROM MGMov WHERE Cd_AR = \''.$articolo.'\' AND Cd_MGEsercizio = \'2022\' AND Cd_ARLotto = \''.$lotto.'\' ORDER BY DataMov ASC , PartenzaArrivo Desc');
-        $giacenza =DB::SELECT('SELECT SUM(QuantitaSign) as Giacenza,Cd_AR,Cd_MG,Cd_ARLotto FROM MGMov WHERE Cd_AR = \''.$articolo.'\' AND Cd_ARLotto = \''.$lotto.'\' GROUP BY Cd_AR,Cd_ARLotto,Cd_MG HAVING SUM(QuantitaSign)>0');
-        foreach ($lotto1 as $l){?>
+    /*
+        public function storialotto($articolo,$lotto){
+            $lotto1 = DB::SELECT('SELECT * FROM MGMov WHERE Cd_AR = \''.$articolo.'\' AND Cd_MGEsercizio = \'2022\' AND Cd_ARLotto = \''.$lotto.'\' ORDER BY DataMov ASC , PartenzaArrivo Desc');
+            $giacenza =DB::SELECT('SELECT SUM(QuantitaSign) as Giacenza,Cd_AR,Cd_MG,Cd_ARLotto FROM MGMov WHERE Cd_AR = \''.$articolo.'\' AND Cd_ARLotto = \''.$lotto.'\' GROUP BY Cd_AR,Cd_ARLotto,Cd_MG HAVING SUM(QuantitaSign)>0');
+            foreach ($lotto1 as $l){?>
+                <li class="list-group-item">
+                    <a class="media">
+                        <div class="media-body">
+                            <h5><?php echo $l->Cd_ARLotto ?></h5>
+                            <p>Azione : <?php
+                                if($l->Ini=='1') echo 'Iniziale';
+                                if($l->Ret=='1') echo 'Rettifica';
+                                if($l->Car=='1') echo 'Carico';
+                                if($l->Sca=='1') echo 'Scarico';?></p>
+                            <small>Magazzino : <?php echo  $l->Cd_MG ?></small>
+                            <small>Quantita' : <?php echo floatval($l->QuantitaSign) ?></small>
+                        </div>
+                    </a>
+                </li>
+            <?php } ?>
             <li class="list-group-item">
-                <a class="media">
-                    <div class="media-body">
-                        <h5><?php echo $l->Cd_ARLotto ?></h5>
-                        <p>Azione : <?php
-                            if($l->Ini=='1') echo 'Iniziale';
-                            if($l->Ret=='1') echo 'Rettifica';
-                            if($l->Car=='1') echo 'Carico';
-                            if($l->Sca=='1') echo 'Scarico';?></p>
-                        <small>Magazzino : <?php echo  $l->Cd_MG ?></small>
-                        <small>Quantita' : <?php echo floatval($l->QuantitaSign) ?></small>
-                    </div>
-                </a>
-            </li>
-        <?php } ?>
-        <li class="list-group-item">
-                <a class="media">
-                    <div class="media-body">
-                        <h5><?php echo $giacenza[0]->Cd_ARLotto ?></h5>
-                        <p>Azione : <?php echo 'Giacenza'?></p>
-                        <small>Magazzino : <?php echo  $giacenza[0]->Cd_MG ?></small>
-                        <small>Quantita' : <?php echo floatval($giacenza[0]->Giacenza) ?></small>
-                    </div>
-                </a>
-            </li>
-   <?php }
+                    <a class="media">
+                        <div class="media-body">
+                            <h5><?php echo $giacenza[0]->Cd_ARLotto ?></h5>
+                            <p>Azione : <?php echo 'Giacenza'?></p>
+                            <small>Magazzino : <?php echo  $giacenza[0]->Cd_MG ?></small>
+                            <small>Quantita' : <?php echo floatval($giacenza[0]->Giacenza) ?></small>
+                        </div>
+                    </a>
+                </li>
+       <?php }
 
-    public function inserisci_lotto($lotto,$articolo,$fornitore,$descrizione,$fornitore_pallet,$pallet){
-        $esiste = DB::SELECT('SELECT * FROM ARLotto WHERE Cd_AR = \''.$articolo.'\' and Cd_ARLotto = \''.$lotto.'\' ');
-        if(sizeof($esiste)>0){
-            echo 'Impossibile creare il lotto in quanto già esistente';
-        }else {
-            if($fornitore!='0') {
-                $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Fornitore = 1 and (Cd_CF Like \'%' . $fornitore . '%\' or  Descrizione Like \'%' . $fornitore . '%\')  Order By Id_CF DESC');
-                if ($fornitori == null) {
-                    echo 'Fornitore non trovato';
-                    exit();
-                } else
-                    $fornitori = $fornitori[0]->Cd_CF;
+        public function inserisci_lotto($lotto,$articolo,$fornitore,$descrizione,$fornitore_pallet,$pallet){
+            $esiste = DB::SELECT('SELECT * FROM ARLotto WHERE Cd_AR = \''.$articolo.'\' and Cd_ARLotto = \''.$lotto.'\' ');
+            if(sizeof($esiste)>0){
+                echo 'Impossibile creare il lotto in quanto già esistente';
+            }else {
+                if($fornitore!='0') {
+                    $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Fornitore = 1 and (Cd_CF Like \'%' . $fornitore . '%\' or  Descrizione Like \'%' . $fornitore . '%\')  Order By Id_CF DESC');
+                    if ($fornitori == null) {
+                        echo 'Fornitore non trovato';
+                        exit();
+                    } else
+                        $fornitori = $fornitori[0]->Cd_CF;
+                }
+                    $id_Lotto = DB::table('ARLotto')->insertGetId(['Cd_AR' => $articolo, 'Cd_ARLotto' => $lotto, 'Descrizione' => $descrizione]);
+                if($fornitore!='0'){
+                            DB::update("UPDATE ARLotto Set Cd_CF = '$fornitori' where Id_ARLotto = '$id_Lotto' ");
+                }
+                if($fornitore_pallet!='0'){
+                    DB::update("UPDATE ARLotto Set xNr_PalletFornitore = '$fornitore_pallet' where Id_ARLotto = '$id_Lotto' ");
+                }
+                if($pallet!='0'){
+                    DB::update("UPDATE ARLotto Set xCd_xPallet = '$pallet' where Id_ARLotto = '$id_Lotto' ");
+                }
+                echo 'Lotto Inserito Correttamente';
             }
-                $id_Lotto = DB::table('ARLotto')->insertGetId(['Cd_AR' => $articolo, 'Cd_ARLotto' => $lotto, 'Descrizione' => $descrizione]);
-            if($fornitore!='0'){
-                        DB::update("UPDATE ARLotto Set Cd_CF = '$fornitori' where Id_ARLotto = '$id_Lotto' ");
-            }
-            if($fornitore_pallet!='0'){
-                DB::update("UPDATE ARLotto Set xNr_PalletFornitore = '$fornitore_pallet' where Id_ARLotto = '$id_Lotto' ");
-            }
-            if($pallet!='0'){
-                DB::update("UPDATE ARLotto Set xCd_xPallet = '$pallet' where Id_ARLotto = '$id_Lotto' ");
-            }
-            echo 'Lotto Inserito Correttamente';
         }
-    }
-*/
+    */
     public function segnalazione_salva($id_dotes,$id_dorig,$testo){
         $testo = str_replace('*','',$testo);
         $esiste = DB::SELECT('SELECT * FROM DoTes WHERE Id_DoTes = \''.$id_dotes.'\' ')[0]->NotePiede;
@@ -415,9 +415,9 @@ class AjaxController extends Controller{
             ?>
 
 
-                $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
-                $('#modal_prezzo').val('<?php echo number_format($articolo->Prezzo,2,'.','') ?>');
-                $('#modal_quantita').val(<?php echo intval($articolo->UMFatt) ?>);
+            $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
+            $('#modal_prezzo').val('<?php echo number_format($articolo->Prezzo,2,'.','') ?>');
+            $('#modal_quantita').val(<?php echo intval($articolo->UMFatt) ?>);
             </script>
             <?php
         }
@@ -579,22 +579,22 @@ class AjaxController extends Controller{
             }
         }
     }
-/*
-    public function evadi_documento1($Id_DoTes,$Cd_DO){
-        $righe = DB::SELECT('SELECT * FROM DoRig WHERE Id_DoTes = \''.$Id_DoTes.'\' and QtaEvadibile > \'0\' ');
-        foreach ($righe as $riga){?>
-            <li class="list-group-item">
-                <a href="#"  class="media">
-                    <div class="media-body">
-                        <h5><?php echo $riga->Cd_AR;if($riga->Cd_ARLotto != '')echo '  Lotto: '.$riga->Cd_ARLotto;  ?></h5>
-                        <p>Quantita': <?php echo $riga->Qta ?></p>
-                    </div>
-                </a>
-            </li>
-        <?php }
-    }*/
+    /*
+        public function evadi_documento1($Id_DoTes,$Cd_DO){
+            $righe = DB::SELECT('SELECT * FROM DoRig WHERE Id_DoTes = \''.$Id_DoTes.'\' and QtaEvadibile > \'0\' ');
+            foreach ($righe as $riga){?>
+                <li class="list-group-item">
+                    <a href="#"  class="media">
+                        <div class="media-body">
+                            <h5><?php echo $riga->Cd_AR;if($riga->Cd_ARLotto != '')echo '  Lotto: '.$riga->Cd_ARLotto;  ?></h5>
+                            <p>Quantita': <?php echo $riga->Qta ?></p>
+                        </div>
+                    </a>
+                </li>
+            <?php }
+        }*/
     public function salva_documento1($Id_DoTes,$Cd_DO){
-        $righe = DB::SELECT('SELECT * FROM DoRig WHERE Id_DoTes = \''.$Id_DoTes.'\' and QtaEvadibile > \'0\' ');
+        $righe = DB::SELECT('SELECT * FROM DoRig WHERE Id_DoTes in ('.$Id_DoTes.') and QtaEvadibile > \'0\' ');
         foreach ($righe as $riga){?>
             <li class="list-group-item">
                 <a href="#"  class="media">
@@ -604,84 +604,84 @@ class AjaxController extends Controller{
                     </div>
                 </a>
             </li>
-        <script type="text/javascript">
-            $('#modal_Cd_AR_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Cd_AR ?>');
-            $('#modal_Cd_ARLotto_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Cd_ARLotto ?>');
-            $('#modal_Qta_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Qta ?>');
-            $('#modal_QtaEvasa_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->QtaEvasa ?>');
-            $('#modal_QtaEvasa_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->PrezzoUnitarioV ?>');
-        </script>
+            <script type="text/javascript">
+                $('#modal_Cd_AR_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Cd_AR ?>');
+                $('#modal_Cd_ARLotto_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Cd_ARLotto ?>');
+                $('#modal_Qta_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->Qta ?>');
+                $('#modal_QtaEvasa_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->QtaEvasa ?>');
+                $('#modal_QtaEvasa_c_<?php echo $riga->Id_DORig ?>').val('<?php echo $riga->PrezzoUnitarioV ?>');
+            </script>
         <?php }
     }
-/*
-    public function evadi_documento($Id_DoTes,$Cd_DO,$magazzino_A){
+    /*
+        public function evadi_documento($Id_DoTes,$Cd_DO,$magazzino_A){
 
-        $righe  = DB::SELECT('SELECT * FROM DoRig where Id_DoTes = \''.$Id_DoTes.'\'');
-        $cf     = DB::SELECT('SELECT * FROM DORIG WHERE Id_DoTes = \''.$Id_DoTes.'\' ')[0]->Cd_CF;
+            $righe  = DB::SELECT('SELECT * FROM DoRig where Id_DoTes = \''.$Id_DoTes.'\'');
+            $cf     = DB::SELECT('SELECT * FROM DORIG WHERE Id_DoTes = \''.$Id_DoTes.'\' ')[0]->Cd_CF;
 
-                $Id_DoTes1 = DB::table('DOTes')->insertGetId(['Cd_CF' => $cf, 'Cd_Do' => $Cd_DO]);
+                    $Id_DoTes1 = DB::table('DOTes')->insertGetId(['Cd_CF' => $cf, 'Cd_Do' => $Cd_DO]);
 
-        foreach($righe as $r) {
+            foreach($righe as $r) {
 
-            if ($r->QtaEvadibile > 0) {
+                if ($r->QtaEvadibile > 0) {
 
-                if ($r->Cd_MGUbicazione_P != NULL || $r->Cd_ARLotto != '0')
-                    $insert_evasione['Cd_MGUbicazione_P'] = $r->Cd_MGUbicazione_P;
+                    if ($r->Cd_MGUbicazione_P != NULL || $r->Cd_ARLotto != '0')
+                        $insert_evasione['Cd_MGUbicazione_P'] = $r->Cd_MGUbicazione_P;
 
-                if( $Cd_DO == 'DTR' || $Cd_DO == 'DTG') {
-                    if ($r->Cd_MG_P != null || $r->Cd_ARLotto != '0')
-                        $insert_evasione['Cd_MG_P'] = $r->Cd_MG_P;
+                    if( $Cd_DO == 'DTR' || $Cd_DO == 'DTG') {
+                        if ($r->Cd_MG_P != null || $r->Cd_ARLotto != '0')
+                            $insert_evasione['Cd_MG_P'] = $r->Cd_MG_P;
+                    }
+                    else
+                        $insert_evasione['Cd_MG_P'] = $r->Cd_MG_A;
+
+                    if ($r->Cd_ARLotto != null || $r->Cd_ARLotto != '0')
+                        $insert_evasione['Cd_ARLotto'] = $r->Cd_ARLotto;
+
+                    if ($r->Cd_MGUbicazione_A != NULL || $r->Cd_ARLotto != '0')
+                        $insert_evasione['Cd_MGUbicazione_A'] = $r->Cd_MGUbicazione_A;
+
+                    if( $Cd_DO == 'DTR' || $Cd_DO == 'DTG'){
+                        if ($r->Cd_MG_A != null || $r->Cd_ARLotto != '0')
+                            $insert_evasione['Cd_MG_A'] = $r->Cd_MG_A;
+                    }
+                    else
+                        $insert_evasione['Cd_MG_A'] = $magazzino_A;
+
+                    if ($r->Cd_ARLotto != null || $r->Cd_ARLotto != '0')
+                        $insert_evasione['Cd_ARLotto'] = $r->Cd_ARLotto;
+
+                    $insert_evasione['Qta'] = $r->QtaEvadibile;
+                    $insert_evasione['QtaEvadibile'] = $r->QtaEvadibile;
+                    $insert_evasione['QtaEvasa'] = $r->QtaEvadibile;
+                    $insert_evasione['Id_DoRig_Evade'] = $r->Id_DORig;
+                    $insert_evasione['Cd_AR'] = $r->Cd_AR;
+                    $insert_evasione['PrezzoUnitarioV'] = $r->PrezzoUnitarioV;
+                    $insert_evasione['Cd_Aliquota'] = $r->Cd_Aliquota;
+                    $insert_evasione['Cd_CGConto'] = $r->Cd_CGConto;
+                    $insert_evasione['Id_DoRig_Evade'] = $r->Id_DORig;
+
+                    $insert_evasione['Id_Dotes'] = $Id_DoTes1;
+                    DB::table('DoRig')->insertGetId($insert_evasione);
+
+                    $newId_DORIG = DB::SELECT('SELECT TOP 1 * FROM DORig ORDER BY Id_DORig DESC')[0]->Id_DORig;
+
+                    DB::update('Update dorig set QtaEvadibile = \'0\'   where Id_DoRig = \'' . $r->Id_DORig . '\' ');
+                    DB::update('Update dorig set Evasa = \'1\'   where Id_DoRig = \'' . $r->Id_DORig . '\' ');;
+
+                    DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = $Id_DoTes1");
+                    DB::statement("exec asp_DO_End $Id_DoTes1");
+
                 }
-                else
-                    $insert_evasione['Cd_MG_P'] = $r->Cd_MG_A;
 
-                if ($r->Cd_ARLotto != null || $r->Cd_ARLotto != '0')
-                    $insert_evasione['Cd_ARLotto'] = $r->Cd_ARLotto;
-
-                if ($r->Cd_MGUbicazione_A != NULL || $r->Cd_ARLotto != '0')
-                    $insert_evasione['Cd_MGUbicazione_A'] = $r->Cd_MGUbicazione_A;
-
-                if( $Cd_DO == 'DTR' || $Cd_DO == 'DTG'){
-                    if ($r->Cd_MG_A != null || $r->Cd_ARLotto != '0')
-                        $insert_evasione['Cd_MG_A'] = $r->Cd_MG_A;
-                }
-                else
-                    $insert_evasione['Cd_MG_A'] = $magazzino_A;
-
-                if ($r->Cd_ARLotto != null || $r->Cd_ARLotto != '0')
-                    $insert_evasione['Cd_ARLotto'] = $r->Cd_ARLotto;
-
-                $insert_evasione['Qta'] = $r->QtaEvadibile;
-                $insert_evasione['QtaEvadibile'] = $r->QtaEvadibile;
-                $insert_evasione['QtaEvasa'] = $r->QtaEvadibile;
-                $insert_evasione['Id_DoRig_Evade'] = $r->Id_DORig;
-                $insert_evasione['Cd_AR'] = $r->Cd_AR;
-                $insert_evasione['PrezzoUnitarioV'] = $r->PrezzoUnitarioV;
-                $insert_evasione['Cd_Aliquota'] = $r->Cd_Aliquota;
-                $insert_evasione['Cd_CGConto'] = $r->Cd_CGConto;
-                $insert_evasione['Id_DoRig_Evade'] = $r->Id_DORig;
-
-                $insert_evasione['Id_Dotes'] = $Id_DoTes1;
-                DB::table('DoRig')->insertGetId($insert_evasione);
-
-                $newId_DORIG = DB::SELECT('SELECT TOP 1 * FROM DORig ORDER BY Id_DORig DESC')[0]->Id_DORig;
-
-                DB::update('Update dorig set QtaEvadibile = \'0\'   where Id_DoRig = \'' . $r->Id_DORig . '\' ');
-                DB::update('Update dorig set Evasa = \'1\'   where Id_DoRig = \'' . $r->Id_DORig . '\' ');;
-
-                DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = $Id_DoTes1");
-                DB::statement("exec asp_DO_End $Id_DoTes1");
 
             }
-
-
+            DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = '$Id_DoTes'");
+            DB::statement("exec asp_DO_End '$Id_DoTes'");
+            echo 'Le riga sono state completamente evase';
         }
-        DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = '$Id_DoTes'");
-        DB::statement("exec asp_DO_End '$Id_DoTes'");
-        echo 'Le riga sono state completamente evase';
-    }
 
-*/
+    */
     public function evadi_articolo($Id_DoRig,$qtadaEvadere,$magazzino,$ubicazione,$lotto,$cd_cf,$documento,$cd_ar,$magazzino_A){
         $cd_ar = str_replace("-","/",$cd_ar);
         $cd_ar = str_replace("slash","/",$cd_ar);
@@ -712,7 +712,7 @@ class AjaxController extends Controller{
 
         }
         if($Id_DoTes == '0')
-        $Id_DoTes = '';
+            $Id_DoTes = '';
         $Id_DoTes_old = DB::SELECT('SELECT * from DoRig where id_dorig = \'' . $Id_DoRig . '\' ')[0]->Id_DOTes;
         $listino = DB::SELECT('SELECT * from DOTes where Id_DOTes = \'' . $Id_DoTes_old . '\' ');
         $insert_evasione['PrezzoUnitarioV'] =$controlli[0]->PrezzoUnitarioV;
@@ -877,11 +877,11 @@ class AjaxController extends Controller{
                 DB::update("Update dotes set dotes.reserved_1= 'RRRRRRRRRR' where dotes.id_dotes = '$Id_DoTes'");
                 DB::statement("exec asp_DO_End '$Id_DoTes'");
             }
-/*
-            if ($insert_evasione['Cd_MG_P'] == null || $insert_evasione['Cd_MG_P'] == '0')
-                $insert_evasione['Cd_MG_P'] = $magazzino;
-            if ($insert_evasione['Cd_MG_A'] == null || $insert_evasione['Cd_MG_A'] == '0')
-                $insert_evasione['Cd_MG_A'] = $magazzino_A;*/
+            /*
+                        if ($insert_evasione['Cd_MG_P'] == null || $insert_evasione['Cd_MG_P'] == '0')
+                            $insert_evasione['Cd_MG_P'] = $magazzino;
+                        if ($insert_evasione['Cd_MG_A'] == null || $insert_evasione['Cd_MG_A'] == '0')
+                            $insert_evasione['Cd_MG_A'] = $magazzino_A;*/
             if ($lotto != '0')
                 $insert_evasione['Cd_ARLotto'] = $lotto;
             $Id_DoTes1 = $Id_DoTes;
@@ -958,7 +958,7 @@ class AjaxController extends Controller{
             $data_rif = str_replace('-', '', $data_rif);
         }
         if($data_rif != '0')
-        $insert_testata_ordine['DataDocRif'] = $data_rif;
+            $insert_testata_ordine['DataDocRif'] = $data_rif;
         $Id_DoTes = DB::table('DOTes')->insertGetId($insert_testata_ordine);
         echo $Id_DoTes;
     }
@@ -986,36 +986,36 @@ class AjaxController extends Controller{
             exit();
         }
     }
-/*
-    public function trasporto_articolo($documento,$codice,$quantita,$magazzino,$ubicazione_P,$magazzino_A,$ubicazione_A,$fornitore,$lotto,$Id_DoTes){
+    /*
+        public function trasporto_articolo($documento,$codice,$quantita,$magazzino,$ubicazione_P,$magazzino_A,$ubicazione_A,$fornitore,$lotto,$Id_DoTes){
 
-        ArcaUtilsController::trasporto_articolo($codice,$documento,$quantita,$magazzino,$ubicazione_P,$magazzino_A,$ubicazione_A,$fornitore,$lotto,$Id_DoTes);
+            ArcaUtilsController::trasporto_articolo($codice,$documento,$quantita,$magazzino,$ubicazione_P,$magazzino_A,$ubicazione_A,$fornitore,$lotto,$Id_DoTes);
 
-    }
+        }
 
-    public function modifica_articolo_ordine($id_ordine,$codice,$quantita,$magazzino_A,$ubicazione_A,$lotto,$magazzino_P,$ubicazione_P){
+        public function modifica_articolo_ordine($id_ordine,$codice,$quantita,$magazzino_A,$ubicazione_A,$lotto,$magazzino_P,$ubicazione_P){
 
-        ArcaUtilsController::modifica_articolo($id_ordine,$codice,$quantita,$magazzino_A,1,$ubicazione_A,$lotto,$magazzino_P,$ubicazione_P);
+            ArcaUtilsController::modifica_articolo($id_ordine,$codice,$quantita,$magazzino_A,1,$ubicazione_A,$lotto,$magazzino_P,$ubicazione_P);
 
-        $ordine = DB::select('SELECT * from DOTes where Id_DOtes = '.$id_ordine)[0];
+            $ordine = DB::select('SELECT * from DOTes where Id_DOtes = '.$id_ordine)[0];
 
-        echo 'Articolo Modificato Correttamente Ordine OAF: '.$ordine->NumeroDoc;
+            echo 'Articolo Modificato Correttamente Ordine OAF: '.$ordine->NumeroDoc;
 
-    }
-    public function scarica_articolo_ordine($id_ordine,$codice,$quantita,$magazzino,$ubicazione,$lotto){
+        }
+        public function scarica_articolo_ordine($id_ordine,$codice,$quantita,$magazzino,$ubicazione,$lotto){
 
-        ArcaUtilsController::scarica_articolo($id_ordine,$codice,$quantita,$magazzino,1,$ubicazione,$lotto);
+            ArcaUtilsController::scarica_articolo($id_ordine,$codice,$quantita,$magazzino,1,$ubicazione,$lotto);
 
-        $ordine = DB::select('SELECT * from DOTes where Id_DOtes = '.$id_ordine)[0];
+            $ordine = DB::select('SELECT * from DOTes where Id_DOtes = '.$id_ordine)[0];
 
-        echo 'Articolo Scaricato Correttamente : '.$ordine->NumeroDoc;
+            echo 'Articolo Scaricato Correttamente : '.$ordine->NumeroDoc;
 
-    }
-*/
+        }
+    */
     public function cerca_articolo_smart($q,$cd_cf){
         $q =  str_replace("-","/",$q);
-            $q =  str_replace("slash","/",$q);
-            $qta='ND';/*
+        $q =  str_replace("slash","/",$q);
+        $qta='ND';/*
             $decoder = new Decoder($delimiter = '');
             $barcode = $decoder->decode($q);
             $where = ' where 1=1 ';
@@ -1046,9 +1046,9 @@ class AjaxController extends Controller{
         }
         if(sizeof($articoli) > 0){
             $articolo = $articoli[0];
-        ?>
-        '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
-        <?php
+            ?>
+            '<?php echo $cd_cf ?>','<?php echo $articolo->Cd_AR ?>','<?php if($articolo->Cd_ARLotto != '')echo $articolo->Cd_ARLotto;else echo '0'; ?>','<?php if($qta != '')echo $qta;else echo '0'; ?>'
+            <?php
         }
     }
 
@@ -1270,20 +1270,21 @@ class AjaxController extends Controller{
             echo 'Articolo non trovato';
         }
 
-            $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
+        $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
+        if(sizeof($articoli1) != 0 )$articoli1 = str_replace('\'','',$articoli1[0]->Descrizione);
         ?>
 
-            <script type="text/javascript">
+        <script type="text/javascript">
 
-                $('#modal_controllo_articolo').val('<?php echo $articoli->Cd_AR ?>');
-                $('#modal_controllo_quantita').val(1);
-                $('#modal_controllo_descrizione').val('<?php echo $articoli1[0]->Descrizione ?>');
-                $('#modal_controllo_ordine').val('<?php echo $articoli->NumeroDoc ?>');
-                $('#modal_controllo_lotto').val('<?php echo $articoli->Cd_ARLotto ?>');
-                $('#modal_controllo_dorig').val('<?php echo $articoli->Id_DORig ?>');
+            $('#modal_controllo_articolo').val('<?php echo $articoli->Cd_AR ?>');
+            $('#modal_controllo_quantita').val(1);
+            $('#modal_controllo_descrizione').val('<?php echo $articoli1 ?>');
+            $('#modal_controllo_ordine').val('<?php echo $articoli->NumeroDoc ?>');
+            $('#modal_controllo_lotto').val('<?php echo $articoli->Cd_ARLotto ?>');
+            $('#modal_controllo_dorig').val('<?php echo $articoli->Id_DORig ?>');
 
 
-            </script>
+        </script>
         <?php
 
     }
@@ -1326,27 +1327,27 @@ class AjaxController extends Controller{
             $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto on AR.Cd_AR = ARLotto.Cd_AR ' . $where . '  Order By Id_AR DESC');
 
         }
-                if(sizeof($articoli) > 0) {
-                    $articolo = $articoli[0];
-                    $quantita = 0;
-                    $disponibilita = DB::select('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'');
-                    if (sizeof($disponibilita) > 0) {
-                        $quantita = floatval($disponibilita[0]->disponibilita);
-                        $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_ARLotto,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\' and Cd_ARLotto IS NOT NULL group by Cd_ARLotto, Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
-                    }
+        if(sizeof($articoli) > 0) {
+            $articolo = $articoli[0];
+            $quantita = 0;
+            $disponibilita = DB::select('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'');
+            if (sizeof($disponibilita) > 0) {
+                $quantita = floatval($disponibilita[0]->disponibilita);
+                $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_ARLotto,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\' and Cd_ARLotto IS NOT NULL group by Cd_ARLotto, Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
+            }
 
-                  /*  echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
-                    ?>
-                    <script type="text/javascript">
-                        $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
-                        $('#modal_Cd_ARLotto').html('<option value="">Nessun Lotto</option>');
-                        <?php foreach($prova as $l){?>
-                        $('#modal_Cd_ARLotto').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>" <?php echo ($Cd_ARLotto == $l->Cd_ARLotto)?'selected':'' ?>><?php echo $l->Cd_ARLotto.' - '.$l->Cd_MG ?></option>')
-                        <?php } ?>
+            /*  echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
+            ?>
+            <script type="text/javascript">
+                $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
+                $('#modal_Cd_ARLotto').html('<option value="">Nessun Lotto</option>');
+                <?php foreach($prova as $l){?>
+                $('#modal_Cd_ARLotto').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>" <?php echo ($Cd_ARLotto == $l->Cd_ARLotto)?'selected':'' ?>><?php echo $l->Cd_ARLotto.' - '.$l->Cd_MG ?></option>')
+                <?php } ?>
 
-                        cambioLotto();
+                cambioLotto();
 
-                    </script>
+            </script>
         <?php }
     }
 
@@ -1442,7 +1443,7 @@ class AjaxController extends Controller{
                 $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_ARLotto,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\' and Cd_ARLotto IS NOT NULL group by Cd_ARLotto, Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
             }
 
-           /* echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
+            /* echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
             ?>
             <script type="text/javascript">
                 $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
@@ -1488,12 +1489,12 @@ class AjaxController extends Controller{
             }
         }else {
             if($id_dorig == '2'){
-            $testo = str_replace('*','',$testo);
-            $where = $testo;
-        }
-        else{
-            $where = trim($testo, '-');
-        }
+                $testo = str_replace('*','',$testo);
+                $where = $testo;
+            }
+            else{
+                $where = trim($testo, '-');
+            }
 
 
         }

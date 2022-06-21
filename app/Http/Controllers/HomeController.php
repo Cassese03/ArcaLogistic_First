@@ -840,7 +840,7 @@ class HomeController extends Controller{
                                                         MGMov
                                                         WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' )
                                                         from DORig
-                                                        where Id_DoTes in ('.$id_dotes.') and Qta > \'0\'
+                                                        where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'
                                                         ORDER BY Giacenza DESC');
             //   $documento->righe = DB::select('SELECT * from DORig where Id_DoTes in ('.$id_dotes.') and Qta > \'0\' ORDER BY QtaEvadibile DESC');
 
