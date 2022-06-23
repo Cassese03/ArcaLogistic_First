@@ -630,8 +630,9 @@
                                         <div class="row" >
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="row">
+                                                    <input type="hidden" id="descrizione_<?php echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR ?>">
                                                     <div class="col-3 border" style="border-color:black!important;text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,7);?></h5>
+                                                        <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,9);?></h5>
                                                     </div>
                                                     <div class="col-2 border" style="border-color:black!important;text-align: right">
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
@@ -1104,6 +1105,13 @@
     </div>
 </div>
 
+<div class="modal" id="modal_norigadoc" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="alert alert-warning alert-dismissible fade show">
+        <button type="button" class="close" onclick="$('#modal_norigadoc').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
+        <strong>Warning!</strong> <br>L'articolo selezionato non si trova in questo/i documento/i</a>.
+    </div>
+</div>
+
 <div class="modal" id="modal_alertEvasione" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-success alert-dismissible fade show">
         <button type="button" class="close"  onclick="$('#modal_alertEvasione').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus() ">&times;</button>
@@ -1321,6 +1329,9 @@
                         dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
                         document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
                     } else {
+                        cerca_dorig = text;
+                        cerca_dorig = document.getElementById('descrizione_' + text).value;
+                        document.getElementById('modal_alertQuantitaTroppo').innerHTML = '<div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Quantita\' Evadibile dell\'articolo '+cerca_dorig+' </a>. </div>';
                         $('#modal_alertQuantitaTroppo').modal('show');
                         return;
                     }
@@ -1339,6 +1350,9 @@
                     document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
                 }
             }else {
+                cerca_dorig = text;
+                cerca_dorig = document.getElementById('descrizione_' + text).value;
+                document.getElementById('modal_alertQuantitaTroppo1').innerHTML = ' <div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo1\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Giacenza '+cerca_dorig+'  </a>. </div>';
                 $('#modal_alertQuantitaTroppo1').modal('show');
                 return;
             }
@@ -1390,6 +1404,9 @@
                         dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
                         document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
                     } else {
+                        cerca_dorig = text;
+                        cerca_dorig = document.getElementById('descrizione_' + text).value;
+                        document.getElementById('modal_alertQuantitaTroppo').innerHTML = '<div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Quantita\' Evadibile dell\'articolo '+cerca_dorig+' </a>. </div>';
                         $('#modal_alertQuantitaTroppo').modal('show');
                         return;
                     }
@@ -1406,9 +1423,11 @@
                     document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
                 }
             }else{
+                cerca_dorig = text;
+                cerca_dorig = document.getElementById('descrizione_' + text).value;
+                document.getElementById('modal_alertQuantitaTroppo1').innerHTML = ' <div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo1\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Giacenza '+cerca_dorig+'  </a>. </div>';
                 $('#modal_alertQuantitaTroppo1').modal('show');
                 return;
-
             }
         }
         else {
@@ -1605,6 +1624,10 @@
                 url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes + "/" + dorig,
                 context: document.body
             }).done(function (result) {
+                if(result == 'Articolo non trovato nel documento'){
+                    $('#modal_cerca_articolo').modal('hide');
+                    $('#modal_norigadoc').modal('show');
+                }
                 if (result != '') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#ajax_lista_articoli').html(result);
@@ -1637,6 +1660,10 @@
                 url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes+"/"+dorig,
                 context: document.body
             }).done(function (result) {
+                if(result == 'Articolo non trovato nel documento'){
+                    $('#modal_cerca_articolo').modal('hide');
+                    $('#modal_norigadoc').modal('show');
+                }
                 if (result != '') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_lista_articoli_daevadere').modal('show');

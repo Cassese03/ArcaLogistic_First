@@ -1267,7 +1267,7 @@ class AjaxController extends Controller{
         if(sizeof($articoli)> 0)
             $articoli = $articoli[0];
         else{
-            echo 'Articolo non trovato';
+            echo 'Articolo non trovato nel documento';exit();
         }
 
         $articoli1 = DB::select('SELECT * FROM AR WHERE  Cd_AR = \''.$q.'\' ');
