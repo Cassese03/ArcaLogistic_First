@@ -479,12 +479,12 @@ class AjaxController extends Controller{
         //TODO Controllare Data Scadenza togliere i commenti
 
         $date = date('d/m/Y',strtotime('today')) ;
-
+/*
         IF($Cd_ARLotto!='0')
             $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\' and Cd_ARLotto !=\''.$Cd_ARLotto.'\' AND DataScadenza > \''.$date.'\' and Cd_ARLotto in (select Cd_ARLotto from MGMov group by Cd_ARLotto having SUM(QuantitaSign) >= 0)  ');
         else
             $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\'  AND DataScadenza > \''.$date.'\' and Cd_AR in (select Cd_AR from MGMov group by Cd_AR having SUM(QuantitaSign) >= 0)  ');
-
+*/
         if(sizeof($articoli) > 0){
             $articolo = $articoli[0];
             echo '<h3>    Barcode: '.$articolo->barcode.'<br>
@@ -502,7 +502,7 @@ class AjaxController extends Controller{
                 <?php } else { ?>
                 $('#modal_prezzo').val('<?php echo number_format($articolo->Prezzo,2,'.','') ?>');
                 $('#modal_quantita').val(<?php echo intval($articolo->UMFatt) ?>);
-                <?php } ?>
+                <?php }/* ?>
                 $('#modal_lotto').html
                 <?php if($Cd_ARLotto!='0'){ ?>
                 ('<option><?php echo $Cd_ARLotto ?></option>')
@@ -510,7 +510,7 @@ class AjaxController extends Controller{
                 $('#modal_lotto').append( '<option>Nessun Lotto</option>')
                 <?php foreach($lotto as $l){?>
                 $('#modal_lotto').append('<option><?php echo $l->Cd_ARLotto ?></option>')
-                <?php } ?>
+                <?php } */?>
                 $('#modal_magazzino_P').html
                 <?php  if($magazzino_selezionato !='0'){ ?>
                 ('<option><?php echo $magazzino_selected->Cd_MG.' - '.$magazzino_selected->Descrizione?></option>')

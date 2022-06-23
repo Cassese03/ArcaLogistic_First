@@ -61,7 +61,7 @@
 
                     <?php  foreach($documenti as $do){ ?>
 
-                        <li class="list-group-item" <?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:red"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:green"'?>>
+                        <li class="list-group-item" <?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?>>
                             <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
                                 <div class="media-body">
                                     <div>

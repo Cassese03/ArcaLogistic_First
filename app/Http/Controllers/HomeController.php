@@ -784,7 +784,7 @@ class HomeController extends Controller{
                                                         from DORig
                                                         where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'
                                                         GROUP BY Cd_AR,QtaEvadibile,Qta,Cd_MGUbicazione_P,Cd_MGUbicazione_A,Id_DORig,PrezzoUnitarioV,Cd_ARLotto
-                                                        ORDER BY Cd_AR DESC');
+                                                        ORDER BY Cd_MGUbicazione_P ASC');
             foreach ($documento->righe as $r)
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');

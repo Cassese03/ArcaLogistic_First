@@ -19,6 +19,11 @@
 <style>
     @charset "UTF-8";
 
+    .divider {
+        border-right: 1px solid black;
+        padding: 0 0 0 0;
+    }
+
     .collapsable-source pre {
         font-size: small;
     }
@@ -113,7 +118,15 @@
         max-width: 100%;
         width: 100%;
     }
-
+    .block {
+        margin-left: -15px;
+        display: block;
+        width: 200%;
+        border: none;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+    }
     canvas.drawing, canvas.drawingBuffer {
         position: absolute;
         left: 0;
@@ -545,7 +558,7 @@
         <div class="page-content" style="overflow-x: hidden">
             <div class="content-sticky-footer">
 
-                <input type="text" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
+                <input type="text" style="height: 1px;width: 1px" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
@@ -584,22 +597,22 @@
 
                 <div style="position: sticky; top:0;z-index: 500;background-color: white;">
                     <div class="row">
-                        <div class="col-2" style="margin-left:-5px;text-align: center">
+                        <div class="col-3" style="margin-left:-5px;text-align: center">
                             <h6>&nbsp;Articolo</h6>
                         </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: right">
-                            <h6>&nbsp;&nbsp;&nbsp;Qta</h6>
+                        <div class="col-1" style="margin-left:-5px;text-align: right">
+                            <h6>&nbsp;Qta</h6>
                         </div>
                         <div class="col-2" style="margin-left:-5px;text-align: center">
-                            <h6>Giac</h6>
+                            <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Giac</h6>
                         </div>
                         <div class="col-2" style="margin-left:-5px;text-align: left">
-                            <h6>Ubic</h6>
+                            <h6>&nbsp;&nbsp;&nbsp;&nbsp;Ubic</h6>
                         </div>
                         <div class="col-2" style="margin-left:-5px;text-align: center">
                             <h6>Evadendo</h6>
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
 
                         </div>
                     </div>
@@ -612,30 +625,35 @@
 
                             <?php foreach($documento->righe as $r){ $totale = 0; ?>
                             <?php if($r->QtaEvadibile>0){?>
-                            <li  class="list-group-item" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
+                            <li  class="list-group" id="riga_<?php echo $r->Id_DORig ?>"  style="width:101%;border-color: black;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>">
                                 <a href="#" onclick="" class="media">
-                                    <div class="media-body" >
-                                        <div class="row" >
+                                    <div class="media-body">
+                                        <div class="row">
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="row">
-                                                    <div class="col-2" style="text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_AR;?></h5>
+                                                    <div class="col-3 border" style="border-color:black!important;text-align: center;">
+                                                        <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,7);?></h5>
                                                     </div>
-                                                    <div class="col-2" style="text-align: right">
+
+                                                    <div class="col-1 border" style="border-color:black!important;text-align: right">
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
                                                     </div>
-                                                    <div class="col-2" style="text-align: center">
+
+                                                    <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;" ><?php echo number_format($r->Giacenza,2)?></h5>
                                                         <input type="hidden" id="giacenza_<?php echo $r->Id_DORig ?>" value="<?php echo number_format($r->Giacenza,2)?>">
                                                     </div>
-                                                    <div class="col-2" style="text-align: center">
+
+                                                    <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
                                                     </div>
-                                                    <div class="col-2" style="text-align: center">
+
+                                                    <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
                                                     </div>
-                                                    <div class="col-2" style="padding-right: 25px">
-                                                        <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
+
+                                                    <div class="col-2 border" style="border-color:black!important;padding-right: 25px">
+                                                        <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm block" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
                                                             <i class="bi bi-check-circle">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
                                                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -1329,8 +1347,8 @@
                     document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
                     document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
                 } else {
-                    document.getElementById('riga_' + text).style.backgroundColor = 'green';
-                    document.getElementById('evasione_' + text).style.backgroundColor = 'green';
+                    document.getElementById('riga_' + text).style.backgroundColor = 'LimeGreen';
+                    document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
                 }
             }else {
                 $('#modal_alertQuantitaTroppo1').modal('show');
@@ -1400,8 +1418,8 @@
                         document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
                         document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
                     } else {
-                        document.getElementById('riga_' + text).style.backgroundColor = 'green';
-                        document.getElementById('evasione_' + text).style.backgroundColor = 'green';
+                        document.getElementById('riga_' + text).style.backgroundColor = 'LimeGreen';
+                        document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
                     }
                 }}else{
                 $('#modal_alertQuantitaTroppo1').modal('show');
