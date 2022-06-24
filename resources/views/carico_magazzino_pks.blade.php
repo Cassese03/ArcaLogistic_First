@@ -1158,7 +1158,7 @@
 <div class="modal" id="modal_norigadoc" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
         <button type="button" class="close" onclick="$('#modal_norigadoc').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
-        <strong>Warning!</strong> <br>L'articolo selezionato non si trova in questo/i documento/i</a>.
+        <strong>Warning!</strong> <br>L'articolo selezionato non si trova in questo/i documento/i o già completamente evaso </a>.
     </div>
 </div>
 
@@ -1344,7 +1344,7 @@
                     }
                 } else {
                     document.getElementById('lung').value = check2.length;
-                    const myTimeout = setTimeout(check, 1000);
+                    const myTimeout = setTimeout(check, 100);
                     return;
                 }
             }
@@ -1701,7 +1701,7 @@
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_norigadoc').modal('show');
                 }
-                if (result != '') {
+                if (result != '' && result != 'Articolo non trovato nel documento') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#ajax_lista_articoli').html(result);
                     evadi_articolo2('0');
@@ -1737,7 +1737,7 @@
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_norigadoc').modal('show');
                 }
-                if (result != '') {
+                if (result != ''&& result != 'Articolo non trovato nel documento') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_lista_articoli_daevadere').modal('show');
                     $('#ajax_lista_articoli').html(result);

@@ -56,7 +56,7 @@
                         <li class="list-group-item">
                             <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
                                 <div class="media-body">
-                                    <h5><?php echo $f->Descrizione ?></h5>
+                                    <h6><?php echo $f->Descrizione ?></h6>
                                 </div>
                             </a>
                         </li>

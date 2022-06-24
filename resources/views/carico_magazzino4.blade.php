@@ -832,12 +832,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Articolo da Evadere</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
+                    <button type="reset" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div id="ajax_lista_articoli"></div>
-                <div class="modal-body">
+                <div class="modal-body" id="check_form">
 
                     <label>Numero Ordine</label>
                     <input class="form-control" type="text" id="modal_controllo_ordine" value=""  autocomplete="off" readonly>
@@ -859,8 +859,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
-                    <button type="button" class="btn btn-primary" onclick="$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus();evadi_articolo2('0');">Evadi Riga</button>
+                    <button type="reset" class="btn btn-secondary" data-dismiss="modal" onclick="$('#ajax_lista_articoli').innerHtml = '';$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">Chiudi</button>
+                    <button type="reset" class="btn btn-primary" onclick="$('#ajax_lista_articoli').innerHtml = '';$('#modal_lista_articoli_daevadere').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus();evadi_articolo2('0');">Evadi Riga</button>
                 </div>
             </div>
         </form>
@@ -1170,7 +1170,7 @@
 <div class="modal" id="modal_norigadoc" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="alert alert-warning alert-dismissible fade show">
         <button type="button" class="close" onclick="$('#modal_norigadoc').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">&times;</button>
-        <strong>Warning!</strong> <br>L'articolo selezionato non si trova in questo/i documento/i</a>.
+        <strong>Warning!</strong> <br>L'articolo selezionato non si trova in questo/i documento/i o già completamente evaso</a>.
     </div>
 </div>
 
@@ -1356,7 +1356,7 @@
                     }
                 } else {
                     document.getElementById('lung').value = check2.length;
-                    const myTimeout = setTimeout(check, 1000);
+                    const myTimeout = setTimeout(check, 100);
                     return;
                 }
             }
@@ -1676,7 +1676,7 @@
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_norigadoc').modal('show');
                 }
-                if (result != '') {
+                if (result != '' && result != 'Articolo non trovato nel documento') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#ajax_lista_articoli').html(result);
                     evadi_articolo2('0');
@@ -1708,12 +1708,11 @@
                 url: "<?php echo URL::asset('ajax/controllo_articolo_smart') ?>/" + testo + "/" + id_dotes + "/"+ dorig,
                 context: document.body
             }).done(function (result) {
-                if(result == 'Articolo non trovato'){
+                if(result == 'Articolo non trovato nel documento'){
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_norigadoc').modal('show');
                 }
-
-                if (result != '') {
+                if (result != '' && result != 'Articolo non trovato nel documento') {
                     $('#modal_cerca_articolo').modal('hide');
                     $('#modal_lista_articoli_daevadere').modal('show');
                     $('#ajax_lista_articoli').html(result);

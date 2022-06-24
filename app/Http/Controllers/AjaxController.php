@@ -308,8 +308,8 @@ class AjaxController extends Controller{
                 <li class="list-group-item">
                     <a href="/magazzino/trasporto_documento/BCV/<?php echo $f->Cd_CF ?>" class="media">
                         <div class="media-body">
-                            <h5><?php echo $f->Descrizione ?></h5>
-                            <p>Codice: <?php echo $f->Cd_CF ?></p>
+                            <h6><?php echo $f->Descrizione ?></h6>
+                            <?php //<p>Codice: <?php echo $f->Cd_CF </p> ?>
 
                         </div>
                     </a>
@@ -322,8 +322,8 @@ class AjaxController extends Controller{
                 <li class="list-group-item">
                     <a href="/magazzino/carico3/<?php echo $f->Id_CF ?>/<?php echo $dest ?>" class="media">
                         <div class="media-body">
-                            <h5><?php echo $f->Descrizione ?></h5>
-                            <p>Codice: <?php echo $f->Cd_CF ?></p>
+                            <h6><?php echo $f->Descrizione ?></h6>
+                            <?php //<p>Codice: <?php echo $f->Cd_CF</p> ?>
 
                         </div>
                     </a>
