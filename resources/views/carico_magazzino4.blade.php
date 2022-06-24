@@ -1211,6 +1211,11 @@
 </html>
 <script type="text/javascript">
 
+    window.setTimeout(function ()
+    {
+        document.getElementById('element').focus({preventScroll:true});
+    }, 0);
+
     cd_cf =  '<?php echo $fornitore->Cd_CF ?>';
 
     function segnalazione(){
