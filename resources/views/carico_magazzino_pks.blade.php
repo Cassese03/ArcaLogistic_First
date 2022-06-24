@@ -3,7 +3,7 @@
 <?php $evasione = 'false';?>
     <!doctype html>
 <html lang="en" class="md">
-
+@include('common.footer')
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
@@ -1364,15 +1364,23 @@
                 return;
             }
             else {
+                $('#ajax_loader').fadeIn();
                 $.ajax({
-                    url: "<?php echo URL::asset('ajax/evadi_articolo2')?>/" + dorig
-                }).done(function (result) {
-                    if (result.length > 1)
-                        $('#modal_alertQuantita0').modal('show');
-                    else
-                        $('#modal_alertEvasa').modal('show');
-                    location.reload();
-                });
+                    url: "<?php echo URL::asset('ajax/evadi_articolo2')?>/" + dorig,
+                    success:function (result) {
+                        $('#ajax_loader').fadeOut();
+                        if (result.length > 1)
+                            $('#modal_alertQuantita0').modal('show');
+                        else
+                            $('#modal_alertEvasa').modal('show');
+                        location.reload();
+                    },
+                    error: function (result) {
+                        $('#ajax_loader').fadeOut();
+                        location.reload();
+                    }
+                })
+
             }
         }
     }
@@ -1437,15 +1445,23 @@
                 return;
             }
             else {
+                $('#ajax_loader').fadeIn();
                 $.ajax({
-                    url: "<?php echo URL::asset('ajax/evadi_articolo2')?>/" + dorig
-                }).done(function (result) {
-                    if (result.length > 1)
-                        $('#modal_alertQuantita0').modal('show');
-                    else
-                        $('#modal_alertEvasa').modal('show');
-                    location.reload();
-                });
+                    url: "<?php echo URL::asset('ajax/evadi_articolo2')?>/" + dorig,
+                    success:function (result) {
+                        $('#ajax_loader').fadeOut();
+                        if (result.length > 1)
+                            $('#modal_alertQuantita0').modal('show');
+                        else
+                            $('#modal_alertEvasa').modal('show');
+                        location.reload();
+                    },
+                    error: function (result) {
+                        $('#ajax_loader').fadeOut();
+                        location.reload();
+                    }
+                })
+
             }
         }
     }

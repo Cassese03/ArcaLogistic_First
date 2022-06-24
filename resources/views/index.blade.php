@@ -69,6 +69,14 @@
                                     </div>
                                 </a>
                             </li>
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico2/PKS') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>CLP</h5>
+                                        <p>Scegli CLP da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
 
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/carico3/15700/OLI') ?>" class="media">
