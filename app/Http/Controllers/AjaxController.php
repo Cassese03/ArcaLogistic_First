@@ -840,7 +840,7 @@ class AjaxController extends Controller{
             $lotto = '0' ;
             $cd_cf = $r->Cd_CF;
             if($r->Cd_DO == 'OVS')
-                $magazzino = '00004';
+                $magazzino = 'STOCK';
             else
                 $magazzino = '00001';
             if($r->Cd_DO == 'PKS')
