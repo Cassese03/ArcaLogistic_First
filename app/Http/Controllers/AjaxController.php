@@ -600,7 +600,7 @@ class AjaxController extends Controller{
                 <a href="#"  class="media">
                     <div class="media-body">
                         <h5><?php echo $riga->Cd_AR;if($riga->Cd_ARLotto != '')echo '  Lotto: '.$riga->Cd_ARLotto;  ?></h5>
-                        <p>Quantita': <?php echo $riga->Qta ?></p>
+                        <p>Quantita': <?php echo $riga->QtaEvadibile ?></p>
                     </div>
                 </a>
             </li>
@@ -1124,8 +1124,12 @@ class AjaxController extends Controller{
                 echo 'Articolo non trovato'; exit();
             }
         }
-
-        $documento = DB::select('SELECT Sum(QtaEvadibile) as QtaEvadibile, Cd_CF, Id_DOTes FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF, Id_DOTes');
+        $giacenza  = DB::SELECT('SELECT sum(MGMov.QuantitaSign) as Giacenza from
+                                                        MGMov
+                                                        WHERE Cd_AR = \''.$q.'\' AND Cd_MGEsercizio = \'2022\' ')[0]->Giacenza;
+        if($giacenza == '')
+            $giacenza = 0;
+        $documento = DB::select('SELECT Sum(QtaEvadibile) as QtaEvadibile, Cd_CF, Id_DOTes FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF, Id_DOTes ORDER BY Sum(QtaEvadibile) DESC');
         if(sizeof($documento) > 0){
             foreach($documento as $d){
                 $fornitore = DB::SELECT('SELECT * FROM CF WHERE Cd_CF =  \''.$d->Cd_CF.'\' ')[0];
@@ -1133,11 +1137,11 @@ class AjaxController extends Controller{
                 <br>
                 <label style="text-align:left;float:left">Cliente</label>
                 <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="Cd_CF" value="'.$fornitore->Descrizione.'" readonly>
-                <label style="text-align:left;float:left">Tipo Documento</label>
-                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="NumeroDoc" value="Ordine" readonly>
+                <label style="text-align:left;float:left">Giacenza</label>
+                <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="Giacenza" value="'.$giacenza.'" readonly>
                 <label>Qta da Evadere</label>
                 <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>
-                <div class="modal-footer" style="width: 100%"><button type="button" class="btn btn-primary" onclick="top.location.href = \'/magazzino/carico4/'.$fornitore->Id_CF.'/'.$d->Id_DOTes.' \'">Apri Documento</button></div>';
+                <div class="modal-footer"><button style="width: 100%" type="button" class="btn btn-primary" onclick="top.location.href = \'/magazzino/carico4/'.$fornitore->Id_CF.'/'.$d->Id_DOTes.' \'">Apri Documento</button></div>';
 
                 /*$righe_doc = DB::SELECT('SELECT * FROM DORsig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
                 $righe = 0;

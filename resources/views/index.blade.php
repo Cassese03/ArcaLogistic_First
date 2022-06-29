@@ -95,7 +95,7 @@
                                     </div>
                                 </a>
                             </li>
-
+                        <!--
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/PKS') ?>" class="media">
                                     <div class="media-body">
@@ -104,6 +104,7 @@
                                     </div>
                                 </a>
                             </li>
+                        -->
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/ordini') ?>" class="media">
                                     <div class="media-body">
