@@ -31,7 +31,7 @@
         </form>
         <header class="row m-0 fixed-header">
             <div class="left">
-                    <a style="padding-left:20px;" href=<?php if($cd_do == 'OF')echo "/magazzino/carico02/OF";else echo "/magazzino/carico2/$cd_do"?> ><i class="material-icons">arrow_back_ios</i></a>
+                <a style="padding-left:20px;" href=<?php if($cd_do == 'OF')echo "/magazzino/carico02/OF";else echo "/magazzino/carico2/$cd_do"?> ><i class="material-icons">arrow_back_ios</i></a>
             </div>
             <div class="col center">
                 <a href="#" class="logo"><figure><img src="/img/logo_arca.png" alt=""></figure>Documenti (<?php echo $cd_do ?>)</a>
@@ -61,15 +61,15 @@
 
                     <?php  foreach($documenti as $do){ ?>
 
-                        <li class="list-group-item" <?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?>>
-                            <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
-                                <div class="media-body">
-                                    <div>
-                                        <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
-                                        <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
-                                    </div>
-                                    <br>
-                                    <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
+                    <li class="list-group-item" <?php if($cd_do != 'PKS'){ ?><?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?> <?php } ?>>
+                        <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
+                            <div class="media-body">
+                                <div>
+                                    <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
+                                    <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
+                                </div>
+                                <br>
+                                <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
                             </div>
                         </a>
                     </li>

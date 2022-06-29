@@ -61,15 +61,15 @@
 
                     <?php  foreach($documenti as $do){ ?>
 
-                        <li class="list-group-item" <?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?>>
-                            <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
-                                <div class="media-body">
-                                    <div>
-                                        <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
-                                        <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
-                                    </div>
-                                    <br>
-                                    <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
+                    <li class="list-group-item" <?php if($cd_do != 'PKS'){ ?><?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?> <?php } ?>>
+                        <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
+                            <div class="media-body">
+                                <div>
+                                    <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
+                                    <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
+                                </div>
+                                <br>
+                                <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
                             </div>
                         </a>
                     </li>
@@ -181,27 +181,27 @@
     function crea_documento(){
 
 
-            numero = $('#NumeroDoc').val();
-            data = $('#DataDoc').val();
-            numero_rif = $('#NumeroDocRif').val();
-            data_rif = $('#DataDocRif').val();
+        numero = $('#NumeroDoc').val();
+        data = $('#DataDoc').val();
+        numero_rif = $('#NumeroDocRif').val();
+        data_rif = $('#DataDocRif').val();
 
-            if (numero_rif == '')
-                numero_rif = '0';
-            if (data_rif == '')
-                data_rif = '0';
+        if (numero_rif == '')
+            numero_rif = '0';
+        if (data_rif == '')
+            data_rif = '0';
 
-            if(numero != '' && data != ''){
+        if(numero != '' && data != ''){
 
-                $.ajax({
-                    url: "<?php echo URL::asset('ajax/crea_documento_rif') ?>/<?php echo $fornitore->Cd_CF ?>/<?php echo $cd_do ?>/"+numero+"/"+data+"/"+numero_rif+"/"+data_rif
-                }).done(function(result) {
-                    $('#modal_alertDocumento').modal('show');
-                    top.location.href = "/magazzino/carico4/<?php echo $fornitore->Id_CF ?>/"+result;
+            $.ajax({
+                url: "<?php echo URL::asset('ajax/crea_documento_rif') ?>/<?php echo $fornitore->Cd_CF ?>/<?php echo $cd_do ?>/"+numero+"/"+data+"/"+numero_rif+"/"+data_rif
+            }).done(function(result) {
+                $('#modal_alertDocumento').modal('show');
+                top.location.href = "/magazzino/carico4/<?php echo $fornitore->Id_CF ?>/"+result;
 
-                });
+            });
 
-            } else alert('Inserire tutti i campi');
-        }
+        } else alert('Inserire tutti i campi');
+    }
 
 </script>
