@@ -549,12 +549,18 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, Popper.js, then Bootstrap JS -->
-@include('common.footer')
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/vendor/bootstrap-4.1.3/js/bootstrap.min.js"></script>
+<script src="/vendor/cookie/jquery.cookie.js"></script>
+<script src="/vendor/sparklines/jquery.sparkline.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/swiper/js/swiper.min.js"></script>
+<script src="/js/main.js"></script>
 <script src="//webrtc.github.io/adapter/adapter-latest.js" type="text/javascript"></script>
 <script src="/dist/quagga.js" type="text/javascript"></script>
-<script src="/js/live_w_locator_inventario.js" type="text/javascript"></script>
+<script src="/js/live_w_locator.js" type="text/javascript"></script>
 <script src="/js/jquery.scannerdetection.js" type="text/javascript"></script>
-<script src="/js/onscan.js" type="text/javascript"></script>
 
 </body>
 </html>
@@ -605,7 +611,6 @@
                 context: document.body
             }).done(function (result) {
                 if(result != '') {
-                    $('#modal_cerca_articolo').modal('hide');
                     $('#modal_lista_articoli').modal('show');
                     $('#ajax_lista_articoli').html(result);
                 }
@@ -630,7 +635,6 @@
                     context: document.body
                 }).done(function (result) {
                     if (result != '') {
-                        $('#modal_cerca_articolo').modal('hide');
                         $('#modal_evasione').modal('show');
                         $('#ajax_lista_documenti').html(result);
                     } else {
@@ -645,7 +649,6 @@
                     context: document.body
                 }).done(function (result) {
                     if (result != '') {
-                        $('#modal_cerca_articolo').modal('hide');
                         $('#modal_evasione').modal('show');
                         $('#ajax_lista_documenti').html(result);
                     } else {
@@ -670,7 +673,6 @@
                 context: document.body
             }).done(function (result) {
                 if(result != '') {
-                    $('#modal_cerca_articolo').modal('hide');
                     $('#modal_carico').modal('show');
                     $('#ajax_lista_articoli').html(result);
                 } else {

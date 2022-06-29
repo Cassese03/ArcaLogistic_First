@@ -1125,7 +1125,7 @@ class AjaxController extends Controller{
             }
         }
 
-        $documento = DB::select('SELECT  Sum(QtaEvadibile) as QtaEvadibile, Cd_CF FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF');
+        $documento = DB::select('SELECT Sum(QtaEvadibile) as QtaEvadibile, Cd_CF, Id_DOTes FROM DORig where Cd_AR = \''.$q.'\' and QtaEvadibile != \'0\' and Cd_DO in (\'OVC\',\'OVS\') Group BY Cd_CF, Id_DOTes');
         if(sizeof($documento) > 0){
             foreach($documento as $d){
                 $fornitore = DB::SELECT('SELECT * FROM CF WHERE Cd_CF =  \''.$d->Cd_CF.'\' ')[0];
@@ -1136,8 +1136,10 @@ class AjaxController extends Controller{
                 <label style="text-align:left;float:left">Tipo Documento</label>
                 <input class="form-control" type="text" placeholder="Inserisci Numero Documento" id="NumeroDoc" value="Ordine" readonly>
                 <label>Qta da Evadere</label>
-                <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>';
-                /*$righe_doc = DB::SELECT('SELECT * FROM DORig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
+                <input class="form-control" type="text" placeholder="Quantita da Evadere" id="QtaEvadibile" value="'.number_format($d->QtaEvadibile,2).'" readonly>
+                <div class="modal-footer" style="width: 100%"><button type="button" class="btn btn-primary" onclick="top.location.href = \'/magazzino/carico4/'.$fornitore->Id_CF.'/'.$d->Id_DOTes.' \'">Apri Documento</button></div>';
+
+                /*$righe_doc = DB::SELECT('SELECT * FROM DORsig WHERE Id_DOTes =  \''.$d->Id_DOTes.'\' ');
                 $righe = 0;
                 foreach($righe_doc as $r){
                     if($r->Cd_AR !='')
