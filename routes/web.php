@@ -106,7 +106,7 @@ Route::any('ajax/cerca_articolo_barcode/{cd_cf}/{barcode}', 'AjaxController@cerc
 //Route::any('ajax/evadi_documento1/{dotes}/{cd_do}/{magazzino_A}', 'AjaxController@evadi_documento1');
 Route::any('ajax/salva_documento1/{dotes}/{cd_do}/{magazzino_A}', 'AjaxController@salva_documento1');
 Route::any('ajax/evadi_articolo/{dorig}/{qtaevasa}/{magazzino}/{ubicazione}/{lotto}/{cd_cf}/{documento}/{cd_ar}/{magazzino_A}', 'AjaxController@evadi_articolo');
-Route::any('ajax/evadi_articolo2/{dorig}/{qtaevasa}/{magazzino}/{ubicazione}/{lotto}/{cd_cf}/{documento}/{cd_ar}/{magazzino_A}', 'AjaxController@evadi_articolo2');
+//Route::any('ajax/evadi_articolo2/{dorig}/{qtaevasa}/{magazzino}/{ubicazione}/{lotto}/{cd_cf}/{documento}/{cd_ar}/{magazzino_A}', 'AjaxController@evadi_articolo2');
 Route::any('ajax/cerca_articolo_codice/{cd_cf}/{codice}/{Cd_ARLotto}/{qta}', 'AjaxController@cerca_articolo_codice');
 Route::any('ajax/aggiungi_articolo_ordine/{id_ordine}/{codice}/{quantita}/{magazzino_A}/{ubicazione_A}/{lotto}/{magazzino_P}/{ubicazione_P}', 'AjaxController@aggiungi_articolo_ordine');
 Route::any('ajax/trasporto_articolo/{documento}/{codice}/{quantita}/{magazzino}/{ubicazione_P}/{magazzino_A}/{ubicazione_A}/{fornitore}/{lotto}/{dotes}', 'AjaxController@trasporto_articolo');
