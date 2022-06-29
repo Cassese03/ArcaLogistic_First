@@ -1349,6 +1349,7 @@
         if(check2.length != 1){
             if(check2.length > 0) {
                 if (lung == check2.length) {
+
                     if (controllo == 'false')
                         controllo_articolo_smart();
                     if (controllo == 'true') {
@@ -1356,7 +1357,7 @@
                     }
                 } else {
                     document.getElementById('lung').value = check2.length;
-                    const myTimeout = setTimeout(check, 100);
+                    const myTimeout = setTimeout(check, 300);
                     return;
                 }
             }
@@ -1372,53 +1373,53 @@
         qta = 1;
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
-            giacenza = document.getElementById('giacenza_' + text).value;
-            evasione = document.getElementById('evasione_' + text).value;
+            giacenza = document.getElementById('giacenza_' + text).value
+            qtaevasione = document.getElementById('evasione_' + text).value;
             qtaevadibile = document.getElementById('evadibile_' + text).value;
-            if(giacenza >= (parseInt(evasione)+parseInt(qta)) && (parseInt(evasione)+parseInt(qta)) <= qtaevadibile){
+
+            if(parseInt(giacenza) >= parseInt(qta) && parseInt(giacenza) >= (parseInt(qtaevasione)+parseInt(qta))){
                 document.getElementById('cerca_articolo2').value = '';
-                text = document.getElementById('modal_controllo_dorig').value;
                 dorig = document.getElementById('DORIG').value;
-                if (dorig.search(text) == (-1)) {
-                    righe = document.getElementById('button').value;
-                    righe++;
-                    document.getElementById('button').value = righe;
-                    if (dorig != '')
-                        document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
-                    if (dorig == '')
-                        document.getElementById('DORIG').value = text + '=' + qta;
-                } else {
-                    qtaevadibile = document.getElementById('evadibile_' + text).value;
-                    giacenza = document.getElementById('giacenza_' + text).value;
-                    pos = dorig.search(text);
-                    pos = pos + text.length;
-                    pos++;
-                    qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
-                    if (qta <= qtaevadibile) {
-                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
-                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
-                    } else {
-                        cerca_dorig = text;
-                        cerca_dorig = document.getElementById('descrizione_' + text).value;
-                        document.getElementById('modal_alertQuantitaTroppo').innerHTML = '<div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Quantita\' Evadibile dell\'articolo '+cerca_dorig+' </a>. </div>';
-                        $('#modal_alertQuantitaTroppo').modal('show');
-                        return;
+                if (parseInt(qta) <= parseInt(qtaevadibile)) {
+                    if (dorig.search(text) == (-1)) {
+                        righe = document.getElementById('button').value;
+                        righe++;
+                        document.getElementById('button').value = righe;
+                        if (dorig != '')
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
+                        if (dorig == '')
+                            document.getElementById('DORIG').value = text + '=' + qta;
                     }
-                }
-                document.getElementById('cerca_articolo2').focus();
-                wow = document.getElementById('evasione_' + text).value;
-                wow++;
-                document.getElementById('evasione_' + text).value = wow;
-                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + wow;
-                document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
-                if (parseInt(wow) < parseInt(qtaevadibile)) {
-                    document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
-                    document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
-                } else {
-                    document.getElementById('riga_' + text).style.backgroundColor = 'LimeGreen';
-                    document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
-                }
-            }else {
+                    else {
+                        qtaevadibile = document.getElementById('evadibile_' + text).value;
+                        pos = dorig.search(text);
+                        pos = pos + text.length;
+                        pos++;
+                        qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
+                        if (qta <= qtaevadibile) {
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta;
+                        } else {
+                            cerca_dorig = text;
+                            cerca_dorig = document.getElementById('descrizione_' + text).value;
+                            document.getElementById('modal_alertQuantitaTroppo').innerHTML = '<div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Quantita\' Evadibile dell\'articolo '+cerca_dorig+' </a>. </div>';
+                            $('#modal_alertQuantitaTroppo').modal('show');
+                            return;
+                        }
+                    }
+
+                    document.getElementById('cerca_articolo2').focus();
+                    document.getElementById('evasione_' + text).value = qta;
+                    document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                    document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                    if (parseInt(qta) < parseInt(qtaevadibile)) {
+                        document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
+                        document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
+                    } else {
+                        document.getElementById('riga_' + text).style.backgroundColor = 'LimeGreen';
+                        document.getElementById('evasione_' + text).style.backgroundColor = 'LimeGreen';
+                    }
+                }}else{
                 cerca_dorig = text;
                 cerca_dorig = document.getElementById('descrizione_' + text).value;
                 document.getElementById('modal_alertQuantitaTroppo1').innerHTML = ' <div class="alert alert-warning alert-dismissible fade show"> <button type="button" class="close"  onclick="$(\'#modal_alertQuantitaTroppo1\').modal(\'hide\');$(\'#cerca_articolo2\').val(\'\');$(\'#cerca_articolo2\').focus()">&times;</button> <strong>Alert!</strong> <br>Impossibile Evadere più della Giacenza '+cerca_dorig+'  </a>. </div>';
@@ -1450,6 +1451,7 @@
                         location.reload();
                     }
                 })
+
             }
         }
     }
@@ -1656,6 +1658,7 @@
     }
 
     function controllo_articolo_smart() {
+
         // prendere il dorig portarlo in controllo smart e confrontare la riga, se ci sono 3 dorig con lop stesso ar prendere quello con la qta disponibile
         dorig = document.getElementById('DORIG').value;
         if(dorig == '')

@@ -479,12 +479,12 @@ class AjaxController extends Controller{
         //TODO Controllare Data Scadenza togliere i commenti
 
         $date = date('d/m/Y',strtotime('today')) ;
-/*
-        IF($Cd_ARLotto!='0')
-            $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\' and Cd_ARLotto !=\''.$Cd_ARLotto.'\' AND DataScadenza > \''.$date.'\' and Cd_ARLotto in (select Cd_ARLotto from MGMov group by Cd_ARLotto having SUM(QuantitaSign) >= 0)  ');
-        else
-            $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\'  AND DataScadenza > \''.$date.'\' and Cd_AR in (select Cd_AR from MGMov group by Cd_AR having SUM(QuantitaSign) >= 0)  ');
-*/
+        /*
+                IF($Cd_ARLotto!='0')
+                    $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\' and Cd_ARLotto !=\''.$Cd_ARLotto.'\' AND DataScadenza > \''.$date.'\' and Cd_ARLotto in (select Cd_ARLotto from MGMov group by Cd_ARLotto having SUM(QuantitaSign) >= 0)  ');
+                else
+                    $lotto = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \'' . $codice . '\'  AND DataScadenza > \''.$date.'\' and Cd_AR in (select Cd_AR from MGMov group by Cd_AR having SUM(QuantitaSign) >= 0)  ');
+        */
         if(sizeof($articoli) > 0){
             $articolo = $articoli[0];
             echo '<h3>    Barcode: '.$articolo->barcode.'<br>
@@ -896,11 +896,12 @@ class AjaxController extends Controller{
             $Riga = DB::SELECT('SELECT * FROM DoRig where Id_DoRig=\'' . $Id_DoRig . '\'');
             $insert_evasione['Cd_Aliquota'] = $r->Cd_Aliquota;
             $insert_evasione['Cd_CGConto'] = $r->Cd_CGConto;
+            $insert_evasione['Descrizione'] = $r->Descrizione;
             $insert_evasione['Id_DoTes'] = $Id_DoTes1;
 
 
             $qta_evasa      = DB::SELECT('SELECT * FROM DORig WHERE Id_DoRig= \''.$Id_DoRig.'\' ')[0]->QtaEvasa;
-            $qta_evasa      = intval($qta_evasa)+intval($qtadaEvadere);
+            $qta_evasa      = intval($qta_evasa) + intval($qtadaEvadere);
             $qta_evadibile  = DB::SELECT('SELECT * FROM DORig WHERE Id_DoRig= \''.$Id_DoRig.'\' ')[0]->QtaEvadibile;
             $qta_evadibile  = intval($qta_evadibile)-intval($qtadaEvadere);
             $Id_DoRig_OLD   = DB::table('DoRig')->insertGetId($insert_evasione);
@@ -908,7 +909,7 @@ class AjaxController extends Controller{
 
             if ($qtadaEvadere < $Riga[0]->QtaEvadibile) {
                 DB::UPDATE('Update DoRig set QtaEvadibile = \'' . $qta_evadibile . '\'WHERE Id_DoRig = \'' . $Id_DoRig . '\'');
-                DB::UPDATE('Update DoRig set QtaEvasa = \'' . $qta_evasa . '\'WHERE Id_DoRig = \'' . $Id_DoRig_OLD . '\'');
+                // DB::UPDATE('Update DoRig set QtaEvasa = \'' . $qta_evasa . '\'WHERE Id_DoRig = \'' . $Id_DoRig_OLD . '\'');
             }else {
                 DB::UPDATE('Update DoRig set QtaEvadibile = \'0\'WHERE Id_DoRig = \''.$Id_DoRig.'\'');
                 DB::update('Update dorig set Evasa = \'1\'   where Id_DoRig = \'' . $Id_DoRig . '\' ');

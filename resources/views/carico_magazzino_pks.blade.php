@@ -1338,14 +1338,14 @@
         if(check2.length != 1){
             if(check2.length > 0) {
                 if (lung == check2.length) {
+
                     if (controllo == 'false')
                         controllo_articolo_smart();
-                    if (controllo == 'true') {
+                    if (controllo == 'true')
                         controllo_articolo_smart2(check2);
-                    }
                 } else {
                     document.getElementById('lung').value = check2.length;
-                    const myTimeout = setTimeout(check, 100);
+                    const myTimeout = setTimeout(check, 300);
                     return;
                 }
             }
@@ -1450,15 +1450,15 @@
                 document.getElementById('cerca_articolo2').value = '';
                 text = document.getElementById('modal_controllo_dorig').value;
                 dorig = document.getElementById('DORIG').value;
-                    if (dorig.search(text) == (-1)) {
-                        righe = document.getElementById('button').value;
-                        righe++;
-                        document.getElementById('button').value = righe;
-                        if (dorig != '')
-                            document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
-                        if (dorig == '')
-                            document.getElementById('DORIG').value = text + '=' + qta;
-                    } else {
+                if (dorig.search(text) == (-1)) {
+                    righe = document.getElementById('button').value;
+                    righe++;
+                    document.getElementById('button').value = righe;
+                    if (dorig != '')
+                        document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
+                    if (dorig == '')
+                        document.getElementById('DORIG').value = text + '=' + qta;
+                } else {
                     qtaevadibile = document.getElementById('evadibile_' + text).value;
                     pos = dorig.search(text);
                     pos = pos + text.length;
@@ -1518,7 +1518,7 @@
                         location.reload();
                     }
                 })
-     //          window.open('<?php echo URL::asset('ajax/evadi_articolo2')?>/'+dorig , '_blank');
+                //          window.open('<?php echo URL::asset('ajax/evadi_articolo2')?>/'+dorig , '_blank');
 
             }
         }
