@@ -505,7 +505,7 @@ class HomeController extends Controller{
         if(sizeof($fornitori) > 0) {
             $fornitore = $fornitori[0];
             // $documenti = DB::select(' SELECT TOP 10 * from DOTes where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\' and RigheEvadibili > \'0\' order by Id_DOTes DESC');
-            $documenti = DB::select('SELECT TOP 10 *, Evadibile =
+            $documenti = DB::select('SELECT TOP 30 *, Evadibile =
             (SELECT Evasione = CASE(
             SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >  0 ,1,2)
             FROM DORIG
@@ -575,7 +575,7 @@ class HomeController extends Controller{
         $fornitori = DB::select('SELECT * from CF where Id_CF = '.$id_fornitore.' order by Id_CF desc');
         if(sizeof($fornitori) > 0) {
             $fornitore = $fornitori[0];
-            $documenti = DB::select('SELECT TOP 10 [Id_DoTes],[NumeroDoc],[DataDoc],[NumeroDocRif],[DataDocRif]  from DOTes where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\'  AND  DATEDIFF(DAY,GETDATE(),TimeIns) > -7 order by Id_DOTes DESC');
+            $documenti = DB::select('SELECT TOP 30 [Id_DoTes],[NumeroDoc],[DataDoc],[NumeroDocRif],[DataDocRif]  from DOTes where Cd_CF = \''.$fornitore->Cd_CF.'\' and Cd_DO = \''.$cd_do.'\'  AND  DATEDIFF(DAY,GETDATE(),TimeIns) > -7 order by Id_DOTes DESC');
             $numero_documento = DB::select('SELECT MAX(numeroDoc)+1 as num from DOTes WHERE Cd_MGEsercizio = \'2022\' and Cd_DO = \''.$cd_do.'\'')[0]->num;
             $dodo = DB::SELECT('select * from DODOPrel where Cd_DO = \''.$cd_do.'\'');
             foreach ($dodo as $d){

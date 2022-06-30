@@ -74,7 +74,7 @@
                             </div>
                         </a>
                     </li>
-                    <?php } if(sizeof($documenti)==10){ ?>
+                    <?php } if(sizeof($documenti)>=10){ ?>
 
                         <button type="button"  class="btn btn-success btn-sm" style="width:100%;background-color: red" onclick="gotobolla()"> Mostra Tutti i Documenti</button>
                     <?php }  ?>

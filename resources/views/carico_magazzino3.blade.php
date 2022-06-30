@@ -75,11 +75,12 @@
                     </li>
                     <input type="hidden" id="iddotes">
 
-                    <?php } if(sizeof($documenti)==10){ ?>
+                    <?php } if(sizeof($documenti) >= 30){ ?>
                     <button type="button"  class="btn btn-success btn-sm" style="width:100%;background-color: red" onclick="gotobolla()"> Mostra Tutti i Documenti</button>
                     <?php } ?>
-                    <button type="button"  class="btn btn-success btn-sm" style="width:100%;background-color: red" onclick="redirect_plus('1')"> Visualizza più evasioni</button>
-
+                        <li>
+                            <button type="button"  class="btn btn-success btn-sm" style="width:100%;background-color: red;height:100%" onclick="redirect_plus('1')"> Visualizza più evasioni</button>
+                        </li>
                 </ul>
 
             </div>
