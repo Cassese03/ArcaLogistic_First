@@ -9,7 +9,6 @@
 </head>
 
 <style>
-
     @charset "UTF-8";
 
     .collapsable-source pre {
@@ -20,16 +19,24 @@
         display: flex;
         align-items: center;
         width: 260px;
+        autocomplete:off;
     }
 
     .input-field label {
         flex: 0 0 auto;
         padding-right: 0.5rem;
-    }
+        autocomplete:off;
 
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 2px;
+    }
     .input-field input {
         flex: 1 1 auto;
         height: 20px;
+        autocomplete:off;
+
     }
 
     .input-field button {
@@ -37,6 +44,8 @@
         height: 28px;
         font-size: 20px;
         width: 40px;
+        autocomplete:off;
+
     }
 
     .icon-barcode {
@@ -122,10 +131,14 @@
     /* line 19, ../sass/_viewport.scss */
     .controls .input-group {
         float: left;
+        autocomplete:off;
+
     }
     /* line 21, ../sass/_viewport.scss */
     .controls .input-group input, .controls .input-group button {
         display: block;
+        autocomplete:off;
+
     }
     /* line 25, ../sass/_viewport.scss */
     .controls .reader-config-group {
@@ -141,6 +154,67 @@
         display: inline-block;
         text-align: right;
     }
+
+    .form__group {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 50%;
+    }
+
+    .form__field {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        color: black;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+
+    ::placeholder {
+        color: transparent;
+    }
+
+    :placeholder-shown ~ .form__label {
+        font-size: 1.3rem;
+        cursor: text;
+        top: 20px;
+    }
+    }
+
+    .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+
+    .form__field:focus {
+    ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #11998e;
+        font-weight:700;
+    }
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #11998e,#38ef7d;);
+    border-image-slice: 1;
+    }
+    /* reset input */
+    .form__field{
+    :required,:invalid { box-shadow:none; }
+    }
+    /* demo */
     /* line 37, ../sass/_viewport.scss */
     .controls:after {
         content: '';
@@ -220,6 +294,8 @@
 
         .reader-config-group label > select, .reader-config-group label > input {
             max-width: calc(50% - 2px);
+            autocomplete:off;
+
         }
 
         #interactive.viewport {
@@ -255,9 +331,6 @@
             width: 130px;
             height: 180px;
         }
-    }
-    #\31  {
-        background: hotpink;
     }
 </style>
 
@@ -298,8 +371,10 @@
                 </div>
 
                 <!-- <div id="interactive" class="viewport" style="position: relative;margin-top:30px;"></div> -->
-                <input type="text" id="cerca_articolo"   onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off">
-                <button class="btn btn-primary" style="margin:0 auto;display:block;margin-top: 100px" onclick="$('#modal_cerca_articolo').modal('show');">Scegli Prodotto</button>
+                <div style="width: 80%;padding-left: 20%">
+                    <input type="input" class="form__field" placeholder="Articolo" autocomplete="off" />
+                    <input type="input" class="form__field" placeholder="Articolo" onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off" required id="cerca_articolo2" />
+                </div>
 
             </div>
         </div>
@@ -382,11 +457,8 @@
                     <div id="ajax_modal_carico"></div>
                     <label>Articolo</label>
                     <input class="form-control" type="text" id="modal_Cd_AR" readonly>
-                    <label>Lotto</label>
-                    <select class="form-control" id="modal_Cd_ARLotto" onchange="cambioLotto()">
-                    </select>
                     <label>Magazzino</label>
-                    <input class="form-control" type="text" id="modal_Cd_MG" readonly>
+                    <select class="form-control" type="text" id="modal_Cd_MG" onchange="cambioMagazzino()"></select>
                     <label>Quantita Sistema</label>
                     <input class="form-control" type="number" id="modal_quantita" readonly>
                     <label>Quantita Rilevata</label>
@@ -396,7 +468,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Chiudi</button>
-                    <button type="button" class="btn btn-primary" onclick="rettifica_articolo();">Carica Articolo</button>
+                    <button type="button" class="btn btn-primary" onclick="rettifica_articolo();">Rettifica Articolo</button>
                 </div>
             </div>
         </form>
@@ -457,12 +529,18 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, Popper.js, then Bootstrap JS -->
-@include('common.footer')
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/vendor/bootstrap-4.1.3/js/bootstrap.min.js"></script>
+<script src="/vendor/cookie/jquery.cookie.js"></script>
+<script src="/vendor/sparklines/jquery.sparkline.min.js"></script>
+<script src="/vendor/circle-progress/circle-progress.min.js"></script>
+<script src="/vendor/swiper/js/swiper.min.js"></script>
+<script src="/js/main.js"></script>
 <script src="//webrtc.github.io/adapter/adapter-latest.js" type="text/javascript"></script>
 <script src="/dist/quagga.js" type="text/javascript"></script>
-<script src="/js/live_w_locator_inventario.js" type="text/javascript"></script>
+<script src="/js/live_w_locator.js" type="text/javascript"></script>
 <script src="/js/jquery.scannerdetection.js" type="text/javascript"></script>
-<script src="/js/onscan.js" type="text/javascript"></script>
 
 </body>
 </html>
@@ -491,12 +569,9 @@
         $('#modal_quantita_da_rettificare').val(parseFloat(quantita_rilevata)-parseFloat(quantita));
     }
 
-    function cambioLotto(){
-        lotto = $('#modal_Cd_ARLotto').val();
-        magazzino = $('#modal_Cd_ARLotto option:selected').attr('magazzino');
-        quantita = $('#modal_Cd_ARLotto option:selected').attr('quantita');
+    function cambioMagazzino(){
 
-        $('#modal_Cd_MG').val(magazzino);
+        quantita = $('#modal_Cd_MG option:selected').attr('quantita');
         $('#modal_quantita').val(quantita);
 
     }
@@ -528,7 +603,9 @@
 
     function cerca_articolo_smart2(){
 
-        testo = $('#cerca_articolo').val();
+        testo = $('#cerca_articolo2').val();
+        pos = testo.search('/');
+        if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
         if(testo != '') {
 
             $.ajax({
@@ -553,14 +630,15 @@
 
         quantita_da_rettificare = $('#modal_quantita_da_rettificare').val();
         codice = $('#modal_Cd_AR').val();
-        lotto = $('#modal_Cd_ARLotto').val();
-        position  = lotto.search("-");
+        pos = codice.search('/');
+        if(pos !=(-1)){ codice = codice.substr(0,pos)+'slash'+codice.substr(pos+1)}
+        lotto = '0';
         magazzino = $('#modal_Cd_MG').val();
 
 
         if(quantita_da_rettificare != ''){
             $.ajax({
-                url: "<?php echo URL::asset('/ajax/rettifica_articolo') ?>/"+codice+"/"+quantita_da_rettificare+"/"+lotto.substring(0,position)+"/"+magazzino
+                url: "<?php echo URL::asset('/ajax/rettifica_articolo') ?>/"+codice+"/"+quantita_da_rettificare+"/"+lotto+"/"+magazzino
             }).done(function(result) {
                 alert(result);
                 location.reload();

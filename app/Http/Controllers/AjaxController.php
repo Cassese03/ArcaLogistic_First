@@ -1340,19 +1340,17 @@ class AjaxController extends Controller{
             $disponibilita = DB::select('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'');
             if (sizeof($disponibilita) > 0) {
                 $quantita = floatval($disponibilita[0]->disponibilita);
-                $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_ARLotto,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\' and Cd_ARLotto IS NOT NULL group by Cd_ARLotto, Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
+                $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'  group by Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
             }
-
+            print_r($prova);
             /*  echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
             ?>
             <script type="text/javascript">
                 $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
-                $('#modal_Cd_ARLotto').html('<option value="">Nessun Lotto</option>');
                 <?php foreach($prova as $l){?>
-                $('#modal_Cd_ARLotto').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>" <?php echo ($Cd_ARLotto == $l->Cd_ARLotto)?'selected':'' ?>><?php echo $l->Cd_ARLotto.' - '.$l->Cd_MG ?></option>')
+                $('#modal_Cd_MG').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>"><?php echo $l->Cd_MG?></option>')
                 <?php } ?>
-
-                cambioLotto();
+                cambioMagazzino();
 
             </script>
         <?php }
@@ -1361,21 +1359,13 @@ class AjaxController extends Controller{
 
 
     public function rettifica_articolo($codice,$quantita,$lotto,$magazzino){
+        $codice = str_replace('slash','/',$codice);
+        $codice = str_replace('-','/',$codice);
 
-        try {
-            DB::beginTransaction();
 
             $id_MGMovInt =  DB::table('MGMovInt')->insertGetId(array('Tipo' => 0,'DataMov' =>date('Ymd'),'Descrizione' => 'Movimenti Rettifica'));
-            DB::insert('INSERT INTO MGMoV(DataMov,PartenzaArrivo,PadreComponente,Cd_MGEsercizio,Cd_AR,Cd_MG,Quantita,Ret,Id_MgMovInt,Cd_ARLotto) VALUES (\''.date('Ymd').'\',\'A\',\'P\','.date('Y').',\''.$codice.'\',\''.$magazzino.'\','.$quantita.',1,'.$id_MGMovInt.',\''.$lotto .'\' )');
+            DB::insert('INSERT INTO MGMoV(DataMov,PartenzaArrivo,PadreComponente,Cd_MGEsercizio,Cd_AR,Cd_MG,Quantita,Ret,Id_MgMovInt) VALUES (\''.date('Ymd').'\',\'A\',\'P\','.date('Y').',\''.$codice.'\',\''.$magazzino.'\','.$quantita.',1,'.$id_MGMovInt.' )');
             echo 'Quantità Rettificata con Successo';
-
-            DB::commit();
-        } catch (\PDOException $e) {
-            // Woopsy
-            print_r($e);
-            DB::rollBack();
-        }
-
 
     }
 
