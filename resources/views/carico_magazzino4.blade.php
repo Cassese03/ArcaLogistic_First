@@ -778,7 +778,7 @@
                         </i>
                     </button>
 
-                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo $righe?>)</button>
+                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo number_format($righe,0,',','')?>)</button>
 
                     <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
                         <i class="bi bi-plus-circle">
@@ -1371,6 +1371,7 @@
             return;
         }
         qta = 1;
+        qta_da_evadare = qta;
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
             giacenza = document.getElementById('giacenza_' + text).value
@@ -1383,7 +1384,6 @@
                 if (parseInt(qta) <= parseInt(qtaevadibile)) {
                     if (dorig.search(text) == (-1)) {
                         righe = document.getElementById('button').value;
-                        righe++;
                         document.getElementById('button').value = righe;
                         if (dorig != '')
                             document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
@@ -1411,7 +1411,8 @@
                     document.getElementById('cerca_articolo2').focus();
                     document.getElementById('evasione_' + text).value = qta;
                     document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
-                    document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                    righe = parseInt(righe) + parseInt(qta_da_evadare);
+                    document.getElementById('button').value = righe;
                     if (parseInt(qta) < parseInt(qtaevadibile)) {
                         document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
                         document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';
@@ -1457,6 +1458,7 @@
     }
     function evadi_articolo(conf){
         qta = document.getElementById('modal_controllo_quantita').value;
+        qta_da_evadare = qta;
         if(conf != '1') {
             text = document.getElementById('modal_controllo_dorig').value;
             giacenza = document.getElementById('giacenza_' + text).value
@@ -1469,7 +1471,6 @@
                 if (parseInt(qta) <= parseInt(qtaevadibile)) {
                     if (dorig.search(text) == (-1)) {
                         righe = document.getElementById('button').value;
-                        righe++;
                         document.getElementById('button').value = righe;
                         if (dorig != '')
                             document.getElementById('DORIG').value = document.getElementById('DORIG').value + "','" + text + '=' + qta;
@@ -1497,7 +1498,8 @@
                     document.getElementById('cerca_articolo2').focus();
                     document.getElementById('evasione_' + text).value = qta;
                     document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
-                    document.getElementById('button').innerHTML = 'Evadi Righe (' + righe + ')';
+                    righe = parseInt(righe) + parseInt(qta_da_evadare);
+                    document.getElementById('button').value = righe;
                     if (parseInt(qta) < parseInt(qtaevadibile)) {
                         document.getElementById('riga_' + text).style.backgroundColor = 'yellow';
                         document.getElementById('evasione_' + text).style.backgroundColor = 'yellow';

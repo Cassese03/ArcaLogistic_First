@@ -789,7 +789,7 @@ class HomeController extends Controller{
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
             }
-            $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
+            $righe = DB::select('SELECT SUM(QtaEvadibile) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
             $articolo = DB::select('SELECT Cd_AR from DORig where Id_DoTes in ('.$id_dotes.') group by Cd_AR');
             $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
             return View::make('carico_magazzino4', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe'));
@@ -848,7 +848,7 @@ class HomeController extends Controller{
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
             }
-            $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
+            $righe = DB::select('SELECT SUM(QtaEvadibile) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and QtaEvadibile > \'0\'')[0]->Righe;
             $articolo = DB::select('SELECT Cd_AR from DORig where Id_DoTes in ('.$id_dotes.') group by Cd_AR');
             $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
             return View::make('carico_magazzino_pks', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe'));
@@ -907,7 +907,7 @@ class HomeController extends Controller{
             {
                 $r->lotti = DB::select('SELECT * FROM ARLotto WHERE Cd_AR = \''.$r->Cd_AR.'\' AND DataScadenza > \''.$date.'\' ORDER BY TimeIns DESC');
             }
-            $righe = DB::select('SELECT count(Riga) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and Cd_AR = \''.$articolo.'\' and QtaEvadibile > \'0\'')[0]->Righe;
+            $righe = DB::select('SELECT SUM(QtaEvadibile) as Righe from DORig where Id_DoTes in ('.$id_dotes.') and Cd_AR = \''.$articolo.'\' and QtaEvadibile > \'0\'')[0]->Righe;
             $flusso= DB::SELECT('select * from DODOPrel where Cd_DO_Prelevabile =\''.$cd_do.'\'  ');
             $giacenza = DB::SELECT('SELECT SUM(QuantitaSign) as Giacenza FROM MGMov WHERE Cd_AR = \''.$articolo.'\' and Cd_MGEsercizio = \'2022\'')[0]->Giacenza;
             return View::make('carico_magazzino00', compact('fornitore', 'id_dotes', 'documento','articolo','flusso','righe','giacenza'));
