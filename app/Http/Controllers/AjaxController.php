@@ -1404,13 +1404,22 @@ class AjaxController extends Controller{
 
 
     public function rettifica_articolo($codice,$quantita,$lotto,$magazzino){
+
         $codice = str_replace('slash','/',$codice);
         $codice = str_replace('-','/',$codice);
+        $cerco_ubic = DB::SELECT('SELECT * FROM ARMGUbicazione where Cd_AR = \''.$codice.'\' and DefaultMGUbicazione = 1');
 
+        if(sizeof($cerco_ubic) > 0)
+            $ubicazione_P = $cerco_ubic[0]->Cd_MGUbicazione;
+        else
+            $ubicazione_P = '';
 
-            $id_MGMovInt =  DB::table('MGMovInt')->insertGetId(array('Tipo' => 0,'DataMov' =>date('Ymd'),'Descrizione' => 'Movimenti Rettifica'));
+        $id_MGMovInt =  DB::table('MGMovInt')->insertGetId(array('Tipo' => 0,'DataMov' =>date('Ymd'),'Descrizione' => 'Movimenti Rettifica'));
+        if($ubicazione_P != '')
+            DB::insert('INSERT INTO MGMoV(DataMov,PartenzaArrivo,PadreComponente,Cd_MGEsercizio,Cd_AR,Cd_MG,Quantita,Ret,Id_MgMovInt,Cd_MGUbicazione) VALUES (\''.date('Ymd').'\',\'A\',\'P\','.date('Y').',\''.$codice.'\',\''.$magazzino.'\','.$quantita.',1,'.$id_MGMovInt.',\''.$ubicazione_P.'\' )');
+        else
             DB::insert('INSERT INTO MGMoV(DataMov,PartenzaArrivo,PadreComponente,Cd_MGEsercizio,Cd_AR,Cd_MG,Quantita,Ret,Id_MgMovInt) VALUES (\''.date('Ymd').'\',\'A\',\'P\','.date('Y').',\''.$codice.'\',\''.$magazzino.'\','.$quantita.',1,'.$id_MGMovInt.' )');
-            echo 'Quantità Rettificata con Successo';
+        echo 'Quantità Rettificata con Successo';
 
     }
 
