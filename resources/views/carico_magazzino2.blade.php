@@ -53,13 +53,13 @@
                 <ul class="list-group" id="ajax" style="max-height:500px;">
 
                     <?php  foreach($fornitori as $f){ ?>
-                        <li class="list-group-item">
-                            <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
-                                <div class="media-body">
-                                    <h6><?php echo $f->Descrizione ?></h6>
-                                </div>
-                            </a>
-                        </li>
+                    <li class="list-group-item">
+                        <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
+                            <div class="media-body">
+                                <h6><?php echo $f->Descrizione ?></h6>
+                            </div>
+                        </a>
+                    </li>
 
                     <?php }  ?>
 

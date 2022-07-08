@@ -332,7 +332,54 @@ class AjaxController extends Controller{
             <?php }
         }
     }
+    public function cerca_fornitore_new_2($q = '',$dest){
 
+        $dest1 = DB::SELECT('SELECT * FROM DO WHERE Cd_DO = \''.$dest.'\' ')[0]->CliFor;
+
+        if($dest1 == ('F')) {
+            if ($q == '') {
+                $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Fornitore = 1 Order By Id_CF DESC');
+            } else {
+                $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Fornitore = 1 and (Cd_CF Like \'%' . $q . '%\' or  Descrizione Like \'%' . $q . '%\')  Order By Id_CF DESC');
+            }
+        }
+        if($dest1 == ('C')) {
+            if ($q == '') {
+                $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Cliente = 1 Order By Id_CF DESC');
+            } else {
+                $fornitori = DB::select('SELECT [Id_CF],[Cd_CF],[Descrizione] FROM CF where Cliente = 1 and (Cd_CF Like \'%' . $q . '%\' or  Descrizione Like \'%' . $q . '%\')  Order By Id_CF DESC');
+            }
+        }
+        if($dest=='BCV'){
+            foreach($fornitori as $f){ ?>
+
+                <li class="list-group-item">
+                    <a href="/magazzino/trasporto_documento/BCV/<?php echo $f->Cd_CF ?>" class="media">
+                        <div class="media-body">
+                            <h6><?php echo $f->Descrizione ?></h6>
+                            <?php //<p>Codice: <?php echo $f->Cd_CF </p> ?>
+
+                        </div>
+                    </a>
+                </li>
+
+            <?php }
+        }else{
+            foreach($fornitori as $f){ ?>
+
+                <li class="list-group-item">
+                    <a href="/magazzino/carico03/<?php echo $f->Id_CF ?>/<?php echo $dest ?>" class="media">
+                        <div class="media-body">
+                            <h6><?php echo $f->Descrizione ?></h6>
+                            <?php //<p>Codice: <?php echo $f->Cd_CF</p> ?>
+
+                        </div>
+                    </a>
+                </li>
+
+            <?php }
+        }
+    }
 
 
     public function cerca_cliente($q = ''){
@@ -456,13 +503,12 @@ class AjaxController extends Controller{
 
     public function cerca_articolo_codice($cd_cf,$codice,$Cd_ARLotto,$qta){
         $codice = str_replace('slash','/',$codice);
-
         $articoli = DB::select('SELECT AR.Id_AR,AR.Cd_AR,AR.Descrizione,ARAlias.Alias as barcode,ARARMisura.UMFatt,DORig.PrezzoUnitarioV,LSArticolo.Prezzo from AR
             LEFT JOIN ARAlias ON AR.Cd_AR = ARAlias.Cd_AR
             LEFT JOIN ARARMisura ON ARARMisura.Cd_AR = AR.CD_AR
             LEFT JOIN LSArticolo ON LSArticolo.Cd_AR = AR.Cd_AR
             LEFT JOIN DORig ON DOrig.Cd_CF LIKE \''.$cd_cf.'\' and DORig.Cd_AR = AR.Cd_AR
-            where AR.CD_AR LIKE \''.$codice.'\'
+            where AR.CD_AR = \''.$codice.'\'
             order by DORig.DataDoc DESC');
 
         $magazzino_selected = DB::select('SELECT MgMov.Cd_MG, Mg.Descrizione from MGMov LEFT JOIN MG ON MG.Cd_MG = MgMov.Cd_MG WHERE MgMov.Cd_ARLotto = \''.$Cd_ARLotto.'\'  and MgMov.Cd_AR = \''.$codice.'\' and MgMov.Cd_MGEsercizio = \'2022\' ');
@@ -522,7 +568,6 @@ class AjaxController extends Controller{
                 $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
 
 
-                cambioMagazzino();
             </script>
             <?php
         }
@@ -1038,8 +1083,8 @@ class AjaxController extends Controller{
             $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto on AR.Cd_AR = ARLotto.Cd_AR ' . $where . '  Order By Id_AR DESC');
 */
 
-        $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\'  or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');
-        if(sizeof($articoli) > 0){
+        $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');
+        if(sizeof($articoli) < 0){
             $q =  str_replace("/","-
             ",$q);
             $articoli = DB::select('SELECT AR.[Id_AR],AR.[Cd_AR],AR.[Descrizione],ARLotto.[Cd_ARLotto] FROM AR LEFT JOIN ARLotto ON AR.Cd_AR = ARLotto.Cd_ARLotto LEFT JOIN ARAlias ON ARAlias.Cd_AR = AR.Cd_AR where AR.Cd_AR = \''.$q.'\'  or  AR.Descrizione Like \'%'.$q.'%\' or AR.CD_AR IN (SELECT CD_AR from ARAlias where Alias = \''.$q.'\') Order By AR.Id_AR DESC');

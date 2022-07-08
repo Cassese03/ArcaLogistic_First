@@ -62,7 +62,7 @@
                     <?php  foreach($documenti as $do){ ?>
 
                     <li class="list-group-item" <?php if($cd_do != 'PKS'){ ?><?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?> <?php } ?>>
-                        <a href="/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
+                        <a href="/magazzino/<?php if($cd_do == 'PKS' || $cd_do == 'OLI' || $cd_do == 'OLE') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/<?php echo $do->Id_DoTes ?>" class="media">
                             <div class="media-body">
                                 <div>
                                     <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>

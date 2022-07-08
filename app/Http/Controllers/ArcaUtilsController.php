@@ -116,6 +116,14 @@ class ArcaUtilsController extends Controller{
                                     $insert_righe_ordine['PrezzoTotaleV'] = $prezzo * $quantita;
                                 $insert_righe_ordine['Cd_MG_A'] = $magazzino_A;
                 */
+                $cerco_ubic = DB::SELECT('SELECT * FROM ARMGUbicazione where Cd_AR = \''.$codice_articolo.'\' and DefaultMGUbicazione = 1');
+
+                if(sizeof($cerco_ubic) > 0)
+                    if($documento[0]->Cd_Do == 'OLI' || $documento[0]->Cd_Do == 'OLE')
+                        $insert_righe_ordine['Cd_MGUbicazione_A'] = $cerco_ubic[0]->Cd_MGUbicazione;
+                    else
+                        $insert_righe_ordine['Cd_MGUbicazione_A'] = $cerco_ubic[0]->Cd_MGUbicazione;
+
                 $insert_righe_ordine['Cd_MG_A'] = $magazzino_A;
                 if (sizeof($id_dorig) != '0') {
                     if (str_replace(" ", "", $id_dorig[0]->Cd_DO) == 'TRM' && $id_dorig  [0]->Cd_CF == 'F000143')
@@ -200,6 +208,11 @@ class ArcaUtilsController extends Controller{
                         $insert_righe_ordine['PrezzoTotaleV'] = floatval($prezzo * $quantita) + floatval($esiste[0]->PrezzoTotaleV);*/
                     $insert_righe_ordine['Cd_MG_A'] = $magazzino_A;
                     $insert_righe_ordine['Cd_MG_P'] = $magazzino_P;
+                    $cerco_ubic = DB::SELECT('SELECT * FROM ARMGUbicazione where Cd_AR = \''.$codice_articolo.'\' and DefaultMGUbicazione = 1');
+
+                    if(sizeof($cerco_ubic) > 0)
+
+                        $ubicazione_A = $cerco_ubic[0]->Cd_MGubicazione;
 
                     DB::table('DORig')->where('Id_DORig', $esiste[0]->Id_DORig)->update($insert_righe_ordine);
                     $Id_DORig = $esiste[0]->Id_DORig;

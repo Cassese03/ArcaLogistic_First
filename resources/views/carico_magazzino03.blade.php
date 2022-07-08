@@ -51,12 +51,12 @@
 
                 <div class="row mx-0" style="margin-bottom:10px;">
                     <div class="col-12">
-                        <?php /*
+
                         <a href="#" class="btn btn-success btn-sm" style="width:100%" onclick="apri_modal_documento();">+ Crea Nuovo Documento</a>
-                        <?php if($cd_do != 'DTR'){ ?>
+                        <?php if($cd_do == 'DTR'){ ?>
                         <a href="#" class="btn btn-success btn-sm" style="width:100%;background-color: red" onclick="$('#modal_evasione').modal('show');"> Evadi Documento</a>
                         <?php }?>
- */?>
+
                     </div>
                 </div>
 

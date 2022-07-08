@@ -84,6 +84,7 @@ Route::any('ajax/cerca_articolo_trasporto/{q}', 'AjaxController@cerca_articolo_t
 Route::any('ajax/cerca_articolo_new/{q}/{dest}/{forn}', 'AjaxController@cerca_articolo_new');
 Route::any('ajax/cerca_fornitore/{q}', 'AjaxController@cerca_fornitore');
 Route::any('ajax/cerca_fornitore_new/{q}/{dest}', 'AjaxController@cerca_fornitore_new');
+Route::any('ajax/cerca_fornitore_new_2/{q}/{dest}', 'AjaxController@cerca_fornitore_new_2');
 Route::any('ajax/cerca_cliente/{q}', 'AjaxController@cerca_cliente');
 Route::any('ajax/cerca_cliente_new/{q}/{dest}', 'AjaxController@cerca_cliente_new');
 Route::any('ajax/cerca_fornitore', 'AjaxController@cerca_fornitore');

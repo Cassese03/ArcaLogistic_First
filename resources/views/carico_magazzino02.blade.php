@@ -52,12 +52,10 @@
                 <ul class="list-group" id="ajax" style="max-height:500px;">
 
                     <?php  foreach($fornitori as $f){ ?>
-
                     <li class="list-group-item">
-                        <a <?php if(str_replace(" ","",$documenti) == 'OF') echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"'; else  echo 'href="/magazzino/carico03/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
+                        <a <?php echo 'href="/magazzino/carico03/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
                             <div class="media-body">
-                                <h5><?php echo $f->Cd_CF ?></h5>
-                                <p>Nome: <?php echo $f->Descrizione ?></p>
+                                <h6><?php echo $f->Descrizione ?></h6>
                             </div>
                         </a>
                     </li>
@@ -106,7 +104,7 @@
         dest = document.getElementById('dest').value;
 
         $.ajax({
-            url: "<?php echo URL::asset('ajax/cerca_fornitore_new') ?>/"+encodeURIComponent(testo)+"/"+dest,
+            url: "<?php echo URL::asset('ajax/cerca_fornitore_new_2') ?>/"+encodeURIComponent(testo)+"/"+dest,
             context: document.body
         }).done(function(result) {
             $('#ajax').html(result);

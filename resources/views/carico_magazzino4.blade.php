@@ -687,7 +687,7 @@
                                                         <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,9);?></h5>
                                                     </div>
 
-                                                    <div class="col-1 border" style="border-color:black!important;text-align: right">
+                                                    <div class="col-1 border" style="border-color:black!important;text-align: left">
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
                                                     </div>
 

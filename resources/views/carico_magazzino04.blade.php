@@ -329,7 +329,7 @@
                 -->
 
 
-                <button style="margin-top:-20px !important;width:80%;margin:0 auto;display:block;margin-bottom:0;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">Aggiungi Prodotto</button>
+                <button style="width:80%;margin:0 auto;display:block;margin-bottom:0;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">Aggiungi Prodotto</button>
                 <?php if(sizeof($documento->righe) > 0){ ?>
 
                 <div class="row">
@@ -348,10 +348,10 @@
                                             <div class="col-xs-6 col-sm-6 col-md-6">
                                                 <h5 <?php if($r->QtaEvadibile==0)echo 'style="color: red"'?>><?php echo $r->Cd_AR.' '.$r->Descrizione;?><br><?php /*echo 'Prezzo : '.round(floatval($r->PrezzoUnitarioV), 2);*/echo 'Giacenza :'.number_format($r->Giacenza,2) ?> <br> Qta: <?php echo floatval($r->QtaEvadibile)?><?php /* echo  'Magazzino di Partenza: '.$r->Cd_MG_P;if($r->Cd_MGUbicazione_A != null) echo ' - '.$r->Cd_MGUbicazione_A;?><br><?php echo' Magazzino di Arrivo: '.$r->Cd_MG_A;?><br><?php if($r->Cd_ARLotto != Null)echo 'Lotto: '.$r->Cd_ARLotto;*/ ?></h5>
                                             </div>
-                                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: right">
 
                                                 <form  method="post" onsubmit="return confirm('Vuoi Eliminare Questa Riga ?')">
-                                                    <button style="width:32%;" type="reset" name="segnalazione" value="" class="btn btn-warning btn-sm" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('show');">
+                                                    <!-- <button style="width:32%;" type="reset" name="segnalazione" value="" class="btn btn-warning btn-sm" onclick="$('#modal_segnalazione<?php echo $r->Id_DORig?>').modal('show');">
                                                         <i class="fa fa-exclamation-triangle" aria-hidden="true">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
                                                                 <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
@@ -366,7 +366,7 @@
                                                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                                             </svg>
                                                         </i>
-                                                    </button>
+                                                    </button>-->
                                                     <input type="hidden" name="Id_DORig" value="<?php echo $r->Id_DORig ?>">
                                                     <button  style="width:32%;" type="submit" name="elimina_riga" value="Elimina" class="btn btn-danger btn-sm" >
                                                         <i class="bi bi-trash-fill">
@@ -850,7 +850,6 @@
         if(pos !=(-1)){ testo = testo.substr(0,pos)+'slash'+testo.substr(pos+1)}
 
         if(testo != '') {
-
             $.ajax({
                 url: "<?php echo URL::asset('ajax/cerca_articolo_smart') ?>/" + encodeURIComponent(testo)+"/"+cd_cf,
                 context: document.body

@@ -69,11 +69,48 @@
                                     </div>
                                 </a>
                             </li>
+
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/carico2/PKS') ?>" class="media">
                                     <div class="media-body">
                                         <h5>CLP</h5>
                                         <p>Scegli CLP da lavorare</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico03/15700/OLI') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Crea OLI</h5>
+                                        <p>Crea un OLI</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico03/15700/OLE') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Crea OLE</h5>
+                                        <p>Crea un OLE</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico02/OVC') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Crea OVC</h5>
+                                        <p>Crea un OVC</p>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="list-group-item">
+                                <a href="<?php echo URL::asset('magazzino/carico02/OVS') ?>" class="media">
+                                    <div class="media-body">
+                                        <h5>Crea OVS</h5>
+                                        <p>Crea un OVS</p>
                                     </div>
                                 </a>
                             </li>

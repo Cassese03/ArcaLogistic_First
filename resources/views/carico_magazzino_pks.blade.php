@@ -685,11 +685,11 @@
                                                     <div class="col-3 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,9);?></h5>
                                                     </div>
-                                                    <div class="col-2 border" style="border-color:black!important;text-align: right">
+                                                    <div class="col-2 border" style="border-color:black!important;text-align: left">
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
                                                     </div>
                                                     <div class="col-2 border" style="border-color:black!important;text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
+                                                        <h5 style="padding-top :10px;"><?php if($r->Cd_MGUbicazione_P == '') echo $r->Cd_MGUbicazione_A; else echo $r->Cd_MGUbicazione_P;?></h5>
                                                     </div>
                                                     <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
