@@ -940,6 +940,8 @@ class AjaxController extends Controller{
 
             $Riga = DB::SELECT('SELECT * FROM DoRig where Id_DoRig=\'' . $Id_DoRig . '\'');
             $insert_evasione['Cd_Aliquota'] = $r->Cd_Aliquota;
+            if($r->ProvvigioneRiga_1 != '')
+                $insert_evasione['ProvvigioneRiga_1'] = $r->ProvvigioneRiga_1;
             $insert_evasione['Cd_CGConto'] = $r->Cd_CGConto;
             $insert_evasione['Descrizione'] = $r->Descrizione;
             $insert_evasione['Id_DoTes'] = $Id_DoTes1;
@@ -950,7 +952,7 @@ class AjaxController extends Controller{
             $qta_evadibile  = DB::SELECT('SELECT * FROM DORig WHERE Id_DoRig= \''.$Id_DoRig.'\' ')[0]->QtaEvadibile;
             $qta_evadibile  = intval($qta_evadibile)-intval($qtadaEvadere);
             $Id_DoRig_OLD   = DB::table('DoRig')->insertGetId($insert_evasione);
-            $Id_DoRig_OLD   = DB::SELECT('SELECT TOP 1 * FROM DORig where Id_DORig = '.$Id_DoRig_OLD.' ORDER BY Id_DORig DESC')[0]->Id_DORig;
+            $Id_DoRig_OLD   = DB::SELECT('SELECT TOP 1 * FROM DORig ORDER BY Id_DORig DESC')[0]->Id_DORig;
 
             if ($qtadaEvadere < $Riga[0]->QtaEvadibile) {
                 DB::UPDATE('Update DoRig set QtaEvadibile = \'' . $qta_evadibile . '\'WHERE Id_DoRig = \'' . $Id_DoRig . '\'');

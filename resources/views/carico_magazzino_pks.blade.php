@@ -647,9 +647,9 @@
                 <input type="hidden" id="lung" value="0">
                 <?php if(sizeof($documento->righe) > 0){ ?>
 
-                <div style="position: sticky; top:0;z-index: 500;background-color: white;">
+                <div style="position: sticky;width:100%;top:0;z-index: 500;background-color: white;">
                     <div class="row">
-                        <div class="col-3" style="margin-left:-5px;text-align: center">
+                        <div class="col-4" style="margin-left:-5px;text-align: center">
                             <h6>&nbsp;Articolo</h6>
                         </div>
                         <div class="col-2" style="margin-left:-5px;text-align: right">
@@ -662,7 +662,7 @@
                         <div class="col-2" style="margin-left:-5px;text-align: center">
                             <h6>Evadendo</h6>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
 
                         </div>
                     </div>
@@ -682,8 +682,8 @@
                                             <div class="col-xs-12 col-sm-12 col-md-12">
                                                 <div class="row">
                                                     <input type="hidden" id="descrizione_<?php echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR ?>">
-                                                    <div class="col-3 border" style="border-color:black!important;text-align: center">
-                                                        <h5 style="padding-top :10px;"><?php echo substr($r->Cd_AR,0,9);?></h5>
+                                                    <div class="col-4 border" style="border-color:black!important;text-align: center">
+                                                        <h5 style="padding-top :10px;"><?php echo $r->Cd_AR;?></h5>
                                                     </div>
                                                     <div class="col-2 border" style="border-color:black!important;text-align: left">
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
@@ -694,7 +694,7 @@
                                                     <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;text-align: right;" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
                                                     </div>
-                                                    <div class="col-3 border" style="border-color:black!important;padding-right: 25px">
+                                                    <div class="col-2 border" style="border-color:black!important;padding-right: 25px">
                                                         <button type="reset" name="evadi_riga" value="<?php echo $r->Cd_AR;?>" class="btn btn-success btn-sm block" onclick="controllo_articolo_smart2('<?php echo $r->Cd_AR?>')">
                                                             <i class="bi bi-check-circle">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
