@@ -1385,12 +1385,12 @@ class AjaxController extends Controller{
             $articolo = $articoli[0];
             $quantita = 0;
             $disponibilita = DB::select('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'');
-            if (sizeof($disponibilita) > 0) {
+            if (sizeof($disponibilita) > 0 && ($disponibilita[0]->disponibilita > 0 || $disponibilita[0]->disponibilita < 0)) {
                 $quantita = floatval($disponibilita[0]->disponibilita);
                 $prova = DB::SELECT('SELECT ISNULL(sum(QuantitaSign),0) as disponibilita,Cd_MG from MGMOV where Cd_MGEsercizio = '.date('Y').' and Cd_AR = \'' . $articolo->Cd_AR . '\'  group by Cd_MG HAVING SUM(QuantitaSign)!= 0  ');
+            }else{
+                $prova = DB::select('SELECT  0 as disponibilita, \'00001\' as Cd_MG');
             }
-            print_r($prova);
-            /*  echo '<h3>Disponibilità: ' . $quantita . '</h3>';*/
             ?>
             <script type="text/javascript">
                 $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
@@ -1400,7 +1400,8 @@ class AjaxController extends Controller{
                 cambioMagazzino();
 
             </script>
-        <?php }
+        <?php
+        }
     }
 
 
