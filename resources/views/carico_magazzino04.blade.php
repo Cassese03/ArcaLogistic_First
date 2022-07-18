@@ -1,5 +1,5 @@
 <?php $magazzino_ord = DB::select('SELECT * from MG'); //TODO MANCANO GLI ALERT?>
-    <!doctype html>
+<!doctype html>
 <html lang="en" class="md">
 
 <head>

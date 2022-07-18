@@ -1381,8 +1381,13 @@
                     pos++;
                     qta = parseInt(1) + parseInt(document.getElementById('DORIG').value.substr(pos));
                     if (qta <= qtaevadibile) {
-                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(1));
-                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        if(qtaevadibile <= 9) {
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(1));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        }else{
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        }
                     } else {
                         cerca_dorig = text;
                         cerca_dorig = document.getElementById('descrizione_' + text).value;
@@ -1466,8 +1471,13 @@
                     pos++;
                     qta = parseInt(qta) + parseInt(document.getElementById('DORIG').value.substr(pos));
                     if (qta <= qtaevadibile) {
-                        dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
-                        document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        if(qtaevadibile <= 9) {
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(1));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        }else{
+                            dopo = document.getElementById('DORIG').value.substr(parseInt(pos) + parseInt(2));
+                            document.getElementById('DORIG').value = document.getElementById('DORIG').value.substr(0, pos--) + qta + dopo;
+                        }
                     } else {
                         cerca_dorig = text;
                         cerca_dorig = document.getElementById('descrizione_' + text).value;
