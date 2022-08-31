@@ -655,14 +655,14 @@
                         <div class="col-2" style="margin-left:-15px;text-align: right">
                             <h6>&nbsp;Qta</h6>
                         </div>
-                        <div class="col-2" style="margin-left:-25px;text-align: center">
-                            <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Giac</h6>
+                        <div class="col-2" style="margin-left:-5px;text-align: center">
+                            <h6>Evadendo</h6>
                         </div>
                         <div class="col-2" style="text-align: center">
                             <h6>&nbsp;&nbsp;&nbsp;&nbsp;Ubic</h6>
                         </div>
-                        <div class="col-2" style="margin-left:-5px;text-align: center">
-                            <h6>Evadendo</h6>
+                        <div class="col-2" style="margin-left:-25px;text-align: center">
+                            <h6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Giac</h6>
                         </div>
                     </div>
                 </div>
@@ -688,20 +688,20 @@
                                                         <h5 style="padding-top :10px;"> <?php echo floatval($r->QtaEvadibile) ?></h5>
                                                     </div>
 
-                                                    <div class="col-2 border" style="border-color:black!important;text-align: center">
-                                                        <h5 style="padding-top :10px;" ><?php echo number_format($r->Giacenza,1)?></h5>
-                                                        <input type="hidden" id="giacenza_<?php echo $r->Id_DORig ?>" value="<?php echo number_format($r->Giacenza,2)?>">
-                                                        <input type="hidden" id="descrizione_<?php echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR ?>">
+                                                    <div class="col-2 border" style="border-color:black!important;">
+                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
                                                     </div>
 
                                                     <div class="col-2 border" style="border-color:black!important;text-align: center">
                                                         <h5 style="padding-top :10px;"><?php echo $r->Cd_MGUbicazione_P;?></h5>
                                                     </div>
 
-                                                    <div class="col-2 border" style="border-color:black!important;">
-                                                        <h5 style="padding-top :10px;"><input onfocus="blur()" style="border:none;width: 100%;<?php if($r->Giacenza == 0) echo  /*#ec6565 #e94949*/'background-color: #ff8080'?>" readonly id="evasione_<?php echo $r->Id_DORig ?>" value="0"> </h5><input type="hidden" id="evadibile_<?php echo $r->Id_DORig ?>" value="<?php echo $r->QtaEvadibile ?>"></h5>
-                                                    </div>
 
+                                                    <div class="col-2 border" style="border-color:black!important;text-align: center">
+                                                        <h5 style="padding-top :10px;" ><?php echo number_format($r->Giacenza,1)?></h5>
+                                                        <input type="hidden" id="giacenza_<?php echo $r->Id_DORig ?>" value="<?php echo number_format($r->Giacenza,2)?>">
+                                                        <input type="hidden" id="descrizione_<?php echo $r->Id_DORig ?>" value="<?php echo $r->Cd_AR ?>">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 border" style="border-color:black!important;">
@@ -776,7 +776,7 @@
                         </i>
                     </button>
 
-                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo number_format($righe,0,',','')?>)</button>
+                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Articoli<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo number_format($righe,0,',','')?>)</button>
 
                     <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
                         <i class="bi bi-plus-circle">
@@ -924,7 +924,7 @@
         <form method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Righe da Evadere</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Articoli da Evadere</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_lista_documenti').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -1413,7 +1413,7 @@
 
                     document.getElementById('cerca_articolo2').focus();
                     document.getElementById('evasione_' + text).value = qta;
-                    document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                    document.getElementById('evasione_' + text).innerHTML = 'Articoli in Evasione : ' + qta;
                     righe = parseInt(righe) + parseInt(qta_da_evadare);
                     document.getElementById('button').value = righe;
                     if (parseInt(qta) < parseInt(qtaevadibile)) {
@@ -1505,7 +1505,7 @@
 
                     document.getElementById('cerca_articolo2').focus();
                     document.getElementById('evasione_' + text).value = qta;
-                    document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                    document.getElementById('evasione_' + text).innerHTML = 'Articoli in Evasione : ' + qta;
                     righe = parseInt(righe) + parseInt(qta_da_evadare);
                     document.getElementById('button').value = righe;
                     if (parseInt(qta) < parseInt(qtaevadibile)) {

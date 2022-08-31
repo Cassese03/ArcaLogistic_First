@@ -931,7 +931,8 @@ class AjaxController extends Controller{
                 $insert_evasione['Cd_ARLotto'] = $lotto;
             $Id_DoTes1 = $Id_DoTes;
             $insert_evasione['Cd_AR'] = $cd_ar;
-            if($r->ScontoRiga != '')
+            $insert_evasione['ScontoRiga'] = '';
+            if($r->ScontoRiga != '' && $r->ScontoRiga != null)
                 $insert_evasione['ScontoRiga'] = $r->ScontoRiga;
             $insert_evasione['Id_DORig_Evade'] = $Id_DoRig;
             $insert_evasione['PrezzoUnitarioV'] = $r->PrezzoUnitarioV;
@@ -1391,11 +1392,14 @@ class AjaxController extends Controller{
             }else{
                 $prova = DB::select('SELECT  0 as disponibilita, \'00001\' as Cd_MG');
             }
+
+            $ubicazione = DB::SELECT('SELECT * FROM ARMGUbicazione where Cd_AR = \''.$articolo->Cd_AR.'\' ');
+
             ?>
             <script type="text/javascript">
                 $('#modal_Cd_AR').val('<?php echo $articolo->Cd_AR ?>');
                 <?php foreach($prova as $l){?>
-                $('#modal_Cd_MG').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>"><?php echo $l->Cd_MG?></option>')
+                $('#modal_Cd_MG').append('<option quantita="<?php echo floatval($l->disponibilita) ?>" magazzino="<?php echo $l->Cd_MG ?>"><?php echo $l->Cd_MG?><?php if(sizeof($ubicazione)>0) echo ' - '.$ubicazione[0]->Cd_MGUbicazione;?></option>')
                 <?php } ?>
                 cambioMagazzino();
 

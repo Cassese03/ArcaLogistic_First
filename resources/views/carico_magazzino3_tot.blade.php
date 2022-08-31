@@ -58,7 +58,9 @@
                 </div>
 
                 <ul class="list-group" id="ajax" style="max-height:500px;">
-
+                    <li class="list-group-item" onclick="seleziona_tutti()">
+                        <h6 style="text-align: center"> Clicca qui per selezionare tutti i documenti </h6>
+                    </li>
                     <?php  foreach($documenti as $do){ ?>
 
                     <li class="list-group-item" <?php if($cd_do != 'PKS'){ ?><?php if($do->Evadibile == 'Non Evadibile') echo 'style="background-color:OrangeRed"'?><?php if($do->Evadibile == 'Parzialmente') echo 'style="background-color:yellow"'?><?php if($do->Evadibile == 'Evadibile') echo 'style="background-color:LimeGreen"'?> <?php } ?>>
@@ -66,7 +68,7 @@
                             <div class="media-body">
                                 <div>
                                     <h5 style="text-align:left;float:left;"><?php echo $cd_do ?> N.<?php echo $do->NumeroDoc ?> Del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></h5>
-                                    <input type="checkbox" id="check"  style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
+                                    <input type="checkbox" id="check" name="chk" style="height: 30px;width: 30px;text-align:right;float:right" class="form-control" onclick="redirect_plus('<?php echo $do->Id_DoTes?>')">
                                 </div>
                                 <br>
                                 <p style="color: black">Codice: <?php echo $do->NumeroDocRif ?> del <?php echo date('d/m/Y',strtotime($do->DataDoc)) ?></p>
@@ -175,6 +177,40 @@
                 alert('Nessun Documento Selezionato');
             else
                 top.location.href = "/magazzino/<?php if($cd_do == 'PKS') echo 'caricopks';else echo 'carico4'; ?>/<?php echo $fornitore->Id_CF ?>/"+dotes;
+        }
+    }
+
+    function seleziona_tutti(){
+
+        var ele = document.getElementsByName('chk');
+
+        if(ele[0].checked == false){
+            <?php foreach($documenti as $do){?>
+            redirect_plus('<?php echo $do->Id_DoTes?>')
+            <?php } ?>
+            selects();
+        }
+
+        else{
+            document.getElementById("iddotes").value = '';
+            deSelect();
+        }
+
+    }
+
+    function selects(){
+        var ele=document.getElementsByName('chk');
+        for(var i=0; i<ele.length; i++){
+            if(ele[i].type=='checkbox')
+                ele[i].checked=true;
+        }
+    }
+    function deSelect(){
+        var ele=document.getElementsByName('chk');
+        for(var i=0; i<ele.length; i++){
+            if(ele[i].type=='checkbox')
+                ele[i].checked=false;
+
         }
     }
     function crea_documento(){

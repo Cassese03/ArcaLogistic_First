@@ -767,7 +767,7 @@
                         </i>
                     </button>
 
-                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi Righe<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo number_format($righe,0,',','')?>)</button>
+                    <button style="width:65%;display:block;background-color:red;border: red" class="btn btn-primary" type="button" onclick="evadi_articolo2('1');" >Evadi articoli<input style="background-color:red;border: red"  size='1' class="btn btn-primary" type="text" readonly id="button" value="0"> /(<?php echo number_format($righe,0,',','')?>)</button>
 
                     <button style="width:14%;display:block;" class="btn btn-primary" onclick="$('#modal_cerca_articolo').modal('show');">
                         <i class="bi bi-plus-circle">
@@ -915,7 +915,7 @@
         <form method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Righe da Evadere</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">articoli da Evadere</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modal_lista_documenti').modal('hide');$('#cerca_articolo2').val('');$('#cerca_articolo2').focus()">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -1400,7 +1400,7 @@
                 wow = document.getElementById('evasione_' + text).value;
                 wow++;
                 document.getElementById('evasione_' + text).value = wow;
-                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + wow;
+                document.getElementById('evasione_' + text).innerHTML = 'Articoli in Evasione : ' + wow;
                 righe = parseInt(righe) + parseInt(qta_da_evadare);
                 document.getElementById('button').value = righe;
                 if (parseInt(wow) < parseInt(qtaevadibile)) {
@@ -1488,7 +1488,7 @@
                 }
                 document.getElementById('cerca_articolo2').focus();
                 document.getElementById('evasione_' + text).value = qta;
-                document.getElementById('evasione_' + text).innerHTML = 'Righe in Evasione : ' + qta;
+                document.getElementById('evasione_' + text).innerHTML = 'Articoli in Evasione : ' + qta;
                 righe = parseInt(righe) + parseInt(qta_da_evadare);
                 document.getElementById('button').value = righe;
                 if (parseInt(qta) < parseInt(qtaevadibile)) {

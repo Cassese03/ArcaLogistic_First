@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <ul class="list-group" id="ajax" >
+                <ul class="list-group" id="ajax">
 
                     <?php  foreach($documenti as $do){ ?>
 

@@ -373,7 +373,8 @@
                 <!-- <div id="interactive" class="viewport" style="position: relative;margin-top:30px;"></div> -->
                 <div style="width: 80%;padding-left: 20%">
                     <input type="input" class="form__field" placeholder="Articolo" autocomplete="off" />
-                    <input type="input" class="form__field" placeholder="Articolo" onkeyup="cerca_articolo_smart2()"  autofocus autocomplete="off" required id="cerca_articolo2" />
+                    <input type="input" class="form__field" placeholder="Articolo" autofocus autocomplete="off" required id="cerca_articolo2" />
+                    <button type="button" style="width: 100%;border-color: transparent;" onclick="cerca_articolo_smart2()"> Cerca </button>
                 </div>
 
             </div>
