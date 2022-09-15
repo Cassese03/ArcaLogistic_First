@@ -1,5 +1,5 @@
 <?php  $utente = session('utente');?>
-<!doctype html>
+    <!doctype html>
 <html lang="en" class="md">
 
 <head>
@@ -98,7 +98,7 @@
                             </li>
 
                             <li class="list-group-item">
-                                <a href="<?php echo URL::asset('magazzino/carico02/OVC') ?>" class="media">
+                                <a href="<?php echo URL::asset('magazzino/carico2/OVC') ?>" class="media">
                                     <div class="media-body">
                                         <h5>Crea OVC</h5>
                                         <p>Crea un OVC</p>
@@ -107,7 +107,7 @@
                             </li>
 
                             <li class="list-group-item">
-                                <a href="<?php echo URL::asset('magazzino/carico02/OVS') ?>" class="media">
+                                <a href="<?php echo URL::asset('magazzino/carico2/OVS') ?>" class="media">
                                     <div class="media-body">
                                         <h5>Crea OVS</h5>
                                         <p>Crea un OVS</p>
@@ -132,7 +132,7 @@
                                     </div>
                                 </a>
                             </li>
-                        <!--
+                            <!--
                             <li class="list-group-item">
                                 <a href="<?php echo URL::asset('magazzino/cercadoc/PKS') ?>" class="media">
                                     <div class="media-body">
@@ -158,7 +158,7 @@
                                     </div>
                                 </a>
                             </li>
-                        <!--
+                            <!--
                          <li class="list-group-item">
 
                                 <a href="<?php echo URL::ASSET('articoli') ?>" class="media">
