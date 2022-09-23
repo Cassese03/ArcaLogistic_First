@@ -307,7 +307,7 @@
 
         <div class="page-content">
             <div class="content-sticky-footer">
-                <input style="height: 1px;width: 1px" type="text" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
+                <input style="height: 1px;width: 1px" type="hidden" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
                 <input type="hidden" id="lung" value="0">
 
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
@@ -711,10 +711,35 @@
 
 <script type="text/javascript">
 
-    cd_cf =  '<?php echo $fornitore->Cd_CF ?>';
+    $(document).scannerDetection({
+        timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+        startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
+        endChar: [13], // be sure the scan is complete if key 13 (enter) is detec
+        // ted
+        avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
+        onComplete: function(code, qty){
+            document.getElementById('cerca_articolo2').value = code;
+            check();
+        } // main callback function
 
+    });
+    /*
+        var codice;
 
+        window.setTimeout(function ()
+        {
+            document.addEventListener('paste', (event) => {event.preventDefault();codice = (event.clipboardData || window.clipboardData).getData('text');document.getElementById('cerca_articolo2').value = codice;check();});
+        }, 0);
 
+        window.setTimeout(function ()
+        {
+            document.addEventListener('scanButtonDown', (event) => {event.preventDefault();codice = (event.clipboardData || window.clipboardData).getData('text');document.getElementById('cerca_articolo2').value = codice;check();});
+        }, 0);
+
+        window.setTimeout(function ()
+        {
+            document.getElementById('element').focus({preventScroll:true});
+        }, 0);*/
     function invia(){
         testo = 'Il documento (documento) è stato salvato.<br> Le righe del documento sono:';
         <?php foreach($documento->righe as $r){ ?>
@@ -768,7 +793,9 @@
 
     function carica_articolo(){
 
-        codice    =      $('#modal_Cd_AR').val();
+        codice      =      $('#modal_Cd_AR').val();
+        pos = codice.search('/');
+        if(pos !=(-1)){ codice = codice.substr(0,pos)+'slash'+codice.substr(pos+1)}
         quantita  =      $('#modal_quantita').val();
         /* prezzo    =      $('#modal_prezzo').val();*/
         magazzino_A =      '00001 - Magazzino Centrale';
@@ -870,6 +897,8 @@
         if(fornitore.length > 6) {
             const myArray = fornitore.split("','");
             codice = myArray[1];
+            pos = codice.search('/');
+            if(pos !=(-1)){ codice = codice.substr(0,pos)+'slash'+codice.substr(pos+1)}
             lotto = myArray[2];
             qta = myArray[3];
         }

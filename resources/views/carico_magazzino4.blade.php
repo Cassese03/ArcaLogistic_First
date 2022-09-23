@@ -610,7 +610,7 @@
         <div class="page-content" style="overflow-x: hidden">
             <div class="content-sticky-footer">
 
-                <input type="text" style="height: 1px;width: 1px" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
+                <input type="hidden" style="height: 1px;width: 1px" id="cerca_articolo2" onkeyup="check();" autofocus autocomplete="off">
                 <div class="background bg-125"><img src="/img/background.png" alt=""></div>
                 <div class="w-100">
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
@@ -1261,11 +1261,35 @@
 </html>
 <script type="text/javascript">
 
-    window.setTimeout(function ()
-    {
-        document.getElementById('element').focus({preventScroll:true});
-    }, 0);
+    $(document).scannerDetection({
+        timeBeforeScanTest: 200, // wait for the next character for upto 200ms
+        startChar: [120], // Prefix character for the cabled scanner (OPL6845R)
+        endChar: [13], // be sure the scan is complete if key 13 (enter) is detec
+        // ted
+        avgTimeByChar: 40, // it's not a barcode if a character takes longer than 40ms
+        onComplete: function(code, qty){
+            document.getElementById('cerca_articolo2').value = code;
+            check();
+        } // main callback function
 
+    });
+    /*
+        var codice;
+
+        window.setTimeout(function ()
+        {
+            document.addEventListener('paste', (event) => {event.preventDefault();codice = (event.clipboardData || window.clipboardData).getData('text');document.getElementById('cerca_articolo2').value = codice;check();});
+        }, 0);
+
+        window.setTimeout(function ()
+        {
+            document.addEventListener('scanButtonDown', (event) => {event.preventDefault();codice = (event.clipboardData || window.clipboardData).getData('text');document.getElementById('cerca_articolo2').value = codice;check();});
+        }, 0);
+
+        window.setTimeout(function ()
+        {
+            document.getElementById('element').focus({preventScroll:true});
+        }, 0);*/
     cd_cf =  '<?php echo $fornitore->Cd_CF ?>';
 
     function segnalazione(){
