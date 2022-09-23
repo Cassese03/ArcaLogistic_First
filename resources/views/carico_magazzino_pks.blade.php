@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/vendor/materializeicon/material-icons.css">
     <link rel="stylesheet" href="/vendor/swiper/css/swiper.min.css">
     <link id="theme" rel="stylesheet" href="/css/style.css" type="text/css">
-    <title>Arca Logistic</title>
+    <title>Smart Logistic</title>
 </head>
 
 <style>
@@ -577,7 +577,7 @@
     }    }
 </style>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -616,6 +616,8 @@
                     <h1 class="text-center text-white title-background"><?php echo $fornitore->Descrizione ?><br><small><?php echo $documento->Cd_Do ?> <h7 style="font-weight: bold">N.<?php echo $documento->NumeroDoc ?></h7> Del <?php echo date('d/m/Y',strtotime($documento->DataDoc)) ?></small></h1>
                 </div>
                 <div class="form-check" style="margin-top: -15px!important;">
+                    <br>
+
                     <!--
                     <label class="switch">
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">

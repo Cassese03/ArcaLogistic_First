@@ -1576,7 +1576,7 @@ class AjaxController extends Controller{
         $mail->addBCC('casseselorenzo03@gmail.com');
         $mail->isHTML(true);
 
-        $mail->Subject = 'Arca Logistic - Gambardella ' . $id_dotes;
+        $mail->Subject = 'Smart Logistic - Gambardella ' . $id_dotes;
 
         $mail->Body = $where . '<br>';
 

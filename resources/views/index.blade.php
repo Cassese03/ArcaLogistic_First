@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="vendor/materializeicon/material-icons.css">
     <link rel="stylesheet" href="vendor/swiper/css/swiper.min.css">
     <link id="theme" rel="stylesheet" href="css/style.css" type="text/css">
-    <title>Arca Logistic</title>
+    <title>Smart Logistic</title>
 </head>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>
@@ -32,8 +32,8 @@
                             <h6 style="float: right;color: white">Accesso effettuato da : <?php echo $utente->Cd_Operatore ?></h6>
                             <img src="img/logo_arca.png" style="width:80%;padding:10%;margin:0 auto;display:block;">
 
-                            <h1 class="text-center text-white title-background" style="margin-top:0">
-                                <small>Arca Logistic<br></small>
+                            <h1 class="text-center text-white title-background" style="margin-top:0;text-align: center">
+                                <small>Smart Logistic</small><br><small>SOFTMAINT S.R.L.</small><br>
                                 <?php  echo $ditta->RagioneSociale ?></h1>
 
                         </div>

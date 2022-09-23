@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/vendor/materializeicon/material-icons.css">
     <link rel="stylesheet" href="/vendor/swiper/css/swiper.min.css">
     <link id="theme" rel="stylesheet" href="/css/style.css" type="text/css">
-    <title>Arca Logistic</title>
+    <title>Smart Logistic</title>
 </head>
 
 <style>
@@ -276,7 +276,7 @@
     }
 </style>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

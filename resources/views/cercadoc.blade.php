@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
     @include('common.header')
-    <title>Arca Logistic</title>
+    <title>Smart Logistic</title>
 </head>
 
 <style>
@@ -334,7 +334,7 @@
     }
 </style>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>

@@ -95,7 +95,7 @@ if( $query_articoli === false) { die( print_r( sqlsrv_errors(), true) ); }
 $articolo = sqlsrv_fetch_array( $query_articoli, SQLSRV_FETCH_ASSOC);
 
 $sql = "SELECT ARGruppo1.Cd_ARGruppo1,ARGruppo2.Cd_ARGruppo2,ARGruppo3.Cd_ARGruppo3,CONCAT(ARGruppo1.Cd_ARGruppo1,';',ARGruppo2.Cd_ARGruppo2,';',ARGruppo3.Cd_ARGruppo3) as id,
-CONCAT(ARGruppo1.Descrizione,' - ',ARGruppo2.Descrizione,' - ',ARGruppo3.Descrizione) as Descrizione from ARGruppo3 
+CONCAT(ARGruppo1.Descrizione,' - ',ARGruppo2.Descrizione,' - ',ARGruppo3.Descrizione) as Descrizione from ARGruppo3
 JOIN ARGruppo2 ON ARGruppo2.Cd_ARGruppo2 = ARGruppo3.Cd_ARGruppo2
 JOIN ARGruppo1 ON ARGruppo1.Cd_ARGruppo1 = ARGruppo2.Cd_ARGruppo1";
 $query_gruppi = sqlsrv_query( $conn, $sql );
@@ -113,7 +113,7 @@ if(sizeof($articolo) > 0){ ?>
     if( $query_alias === false) { die( print_r( sqlsrv_errors(), true) ); }
 
 
-    $sql = 'SELECT LSArticolo.Id_LSArticolo,LS.Cd_LS,LS.Descrizione,LSArticolo.Prezzo from LSArticolo 
+    $sql = 'SELECT LSArticolo.Id_LSArticolo,LS.Cd_LS,LS.Descrizione,LSArticolo.Prezzo from LSArticolo
         JOIN LSRevisione ON LSArticolo.id_LSRevisione = LSRevisione.Id_LSRevisione
         JOIN LS ON LS.Cd_LS = LSRevisione.Cd_LS
         where LSArticolo.CD_AR = \''.$articolo['Cd_AR'].'\'';
@@ -138,7 +138,7 @@ if(sizeof($articolo) > 0){ ?>
     <title>MobileUX</title>
 </head>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </div>

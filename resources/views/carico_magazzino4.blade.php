@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/vendor/materializeicon/material-icons.css">
     <link rel="stylesheet" href="/vendor/swiper/css/swiper.min.css">
     <link id="theme" rel="stylesheet" href="/css/style.css" type="text/css">
-    <title>Arca Logistic</title>
+    <title>Smart Logistic</title>
 </head>
 
 <style>
@@ -577,7 +577,7 @@
     }    }
 </style>
 
-<body class="color-theme-red push-content-right theme-light">
+<body class="color-theme-blue push-content-right theme-light">
 
 <div class="loader justify-content-center ">
     <div class="maxui-roller align-self-center"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
@@ -621,7 +621,8 @@
                         <input type="checkbox" id="evasione_manuale" onclick="manuale();" autofocus autocomplete="off" value="<?php echo $evasione; ?>">
                         <span class="slider round"></span>
                     </label>
-                    -->
+                    -->                <br>
+
                     <br>
                     <label style="font-weight: bold;margin: auto auto 0 auto;">Evasione Manuale</label>
                     <div class="button r" id="button-1">
