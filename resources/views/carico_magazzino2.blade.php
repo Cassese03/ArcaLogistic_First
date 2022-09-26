@@ -56,7 +56,7 @@
                     <li class="list-group-item">
                         <a <?php echo 'href="/magazzino/carico3/'.$f->Id_CF.'/'.$documenti.'"';?> class="media">
                             <div class="media-body">
-                                <h6><?php echo $f->Descrizione ?></h6>
+                                <h6><?php echo $f->Descrizione;echo ' - '.$f->Evadibile?></h6>
                             </div>
                         </a>
                     </li>

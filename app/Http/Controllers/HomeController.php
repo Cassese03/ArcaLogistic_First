@@ -479,7 +479,20 @@ class HomeController extends Controller{
     }
 
     public function carico_magazzino2($documenti){
-        $fornitori = DB::select('SELECT TOP 10 * from CF where Id_CF in(SELECT r.Id_CF FROM DORig d,Cf r WHERE d.Cd_CF=r.Cd_CF and Cd_DO = \''.$documenti  .'\' and QtaEvadibile > \'0\' and Cd_MGEsercizio =\'2022\' group by r.Id_CF ) and Cliente=\'1\'');
+        $fornitori = DB::select('SELECT TOP 10 *, Evadibile = (SELECT Evasione = CASE(
+            SELECT COUNT(*) FROM (SELECT  DISTINCT  Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) >  0 ,1,2)
+            FROM DORIG
+            LEFT JOIN DOTes on DOTes.Id_DoTes = DORig.Id_DOTes
+            WHERE DOTes.Cd_CF = CF.Cd_CF) AS ciao
+            )
+            WHEN 1 THEN Case(SELECT DISTINCT top 1 Righe_Evadibili = IIF((SELECT SUM(MGMov.QuantitaSign) from  MGMov WHERE DORIG.Cd_AR = MGMov.Cd_AR AND MGMov.Cd_MGEsercizio = \'2022\' and QtaEvadibile > 0) > 0 ,1,2)
+            FROM DORIG
+            LEFT JOIN DOTes on DOTes.Id_DoTes = DORig.Id_DOTes
+            WHERE DOTes.Cd_CF = CF.Cd_CF
+            order by Righe_Evadibili desc) WHEN 1 THEN \'Evadibile\' WHEN 2 THEN \'Non Evadibile\' END
+            WHEN 2 THEN \'Parzialmente\'
+            ELSE \'Errore\'
+            END) from CF where Id_CF in(SELECT r.Id_CF FROM DORig d,Cf r WHERE d.Cd_CF=r.Cd_CF and Cd_DO = \''.$documenti  .'\' and QtaEvadibile > \'0\' and Cd_MGEsercizio =\'2022\' group by r.Id_CF ) and Cliente=\'1\'');
         if(sizeof($fornitori) > 0) {
             $fornitore = $fornitori[0];
             return View::make('carico_magazzino2', compact('documenti','fornitori'));
